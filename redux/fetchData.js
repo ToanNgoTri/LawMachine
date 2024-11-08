@@ -100,13 +100,11 @@ export function* mySaga(state,action){
     yield put(loader())
     // console.log('state',state.lawName);
     
-       const c = yield call( async ()=> await database().ref(`/LawInfo/${state.lawName}`).once('value') )
-       const d =   c.val()      
 
     const b = yield call( async ()=> await database().ref(`/LawContent/${state.lawName}`).once('value') )
     const a =   b.val()      
 
-    yield put(handle({a}))
+    yield put(handle({a}))    // cái này để lấy hiệu ứng loading thôi
 
     
   }catch(e){

@@ -18,9 +18,7 @@ import {useNetInfo} from '@react-native-community/netinfo';
 // import {RefLoading} from '../App';
 
 export function Detail2({navigation}) {
-  // const [SearchResult, setSearchResult] = useState([]); // đây Object là các luật, điểm, khoản có kết quả tìm kiếm
   const [input, setInput] = useState(undefined);
-  // const [valueInput, setValueInput] = useState('');
 
   const [warning, setWanring] = useState(false);
 

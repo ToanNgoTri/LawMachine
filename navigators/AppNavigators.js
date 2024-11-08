@@ -63,7 +63,7 @@ const AppNavigators = () => {
                     ...(focused ? styles.IconActive : styles.IconInActive),
                     fontSize: 10,
                   }}>
-                  Đã tải về
+                  Downloaded
                 </Text>
               </Animated.View>
             );
@@ -100,7 +100,7 @@ const AppNavigators = () => {
                     ...(focused ? styles.IconActive : styles.IconInActive),
                     fontSize: 10,
                   }}>
-                  Tìm văn bản
+                  Search Law
                 </Text>
               </View>
             );
@@ -115,7 +115,7 @@ const AppNavigators = () => {
           },
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Search"
         component={Detail1}
         options={{
@@ -149,7 +149,7 @@ const AppNavigators = () => {
             // SearchScrollview.forSearch.current.scrollTo({y: 0});
           },
         }}
-      /> */}
+      />
     </Tab.Navigator>
   );
 };
@@ -197,8 +197,7 @@ const StackNavigator = () => {
         }
       });
   }, []);
-  
-// console.log('Content',Content);
+console.log('Content',Content);
 useEffect(() => {// kiem tra xem k co mang xai dc k
 
 let b ={}
@@ -229,8 +228,8 @@ if(!Array.isArray(Content)){
           options={{animationEnabled: false, header: () => null,}}
         />
 
-        {Object.keys(Content) &&
-          Object.keys(Content).map((key, i) => (
+        {(Content) &&
+          (Content).map((key, i) => (
             <Stack.Screen
               key={i}
               name={`${key}`}

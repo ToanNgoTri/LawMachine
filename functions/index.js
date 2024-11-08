@@ -155,7 +155,7 @@ exports.searchLawFunction = onRequest( async(req, res) => {
         })
       
         let LawInfo = {}
-        const inf = await db.ref(`/LawInfo`).once("value", function(snapshot) {
+        const inf = await db.ref(`/`).once("value", function(snapshot) {
           LawInfo = snapshot.val()
         })
       
