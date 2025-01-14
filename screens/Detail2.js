@@ -152,7 +152,12 @@ export function Detail2({}) {
             }, []);
           return (
             <View>
-              <Text style={ i2.match(/aa/) ?{textAlign: 'center'}: {textAlign: 'justify'}}>
+              <Text
+                style={
+                  i2.match(/aa/)
+                    ? {textAlign: 'center'}
+                    : {textAlign: 'justify'}
+                }>
                 {'   '}
                 {searchedPara}
               </Text>
@@ -243,11 +248,10 @@ export function Detail2({}) {
   const netInfo = useNetInfo();
   let internetConnected = netInfo.isConnected;
 
-
   // console.log('info',info);
-  
+
   useEffect(() => {
-    if(internetConnected == true && !info){
+    if (internetConnected == true && !info) {
       dispatch({type: 'getlastedlaws'});
     }
   }, [internetConnected]);
@@ -305,14 +309,19 @@ export function Detail2({}) {
     // }
   }
 
-
   const NoneOfResutl = () => {
     return (
       <View
-        style={{height: 250, alignItems: 'center', justifyContent: 'flex-end'}}>
-        <Text style={{fontSize: 40, textAlign: 'center', color: 'gray'}}>
-          {' '}
-          Không có kết quả nào{' '}
+        style={{
+          height: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingBottom: 30,
+          paddingLeft: 30,
+          paddingRight: 30,
+        }}>
+        <Text style={{fontSize: 35, textAlign: 'center', color: 'gray'}}>
+          Không có kết quả nào được tìm thấy
         </Text>
       </View>
     );
@@ -345,6 +354,7 @@ export function Detail2({}) {
             )}
           </Text>
           <Text style={styles.descriptionText}>
+            {'   '}
             {highlight(
               SearchResult[detailId]['lawDescription'],
               valueInput,
@@ -408,7 +418,7 @@ export function Detail2({}) {
       <View style={{backgroundColor: 'green', paddingTop: insets.top}}>
         <Text style={styles.titleText}>{`Tìm kiếm văn bản`}</Text>
 
-        <View style={{...styles.inputContainer,height:52}}>
+        <View style={{...styles.inputContainer, height: 52}}>
           <View style={{...styles.containerBtb, paddingTop: 5}}>
             <TouchableOpacity
               style={{
@@ -470,7 +480,6 @@ export function Detail2({}) {
                 borderRadius: 15,
                 borderColor: warning ? '#FF4500' : 'none',
                 borderWidth: warning ? 1 : 0,
-                
               }}>
               <TextInput
                 ref={textInput}
@@ -531,7 +540,7 @@ export function Detail2({}) {
                 fontSize: 12,
                 textAlign: 'center',
                 fontWeight: 'bold',
-                lineHeight:14,
+                lineHeight: 14,
               }}>
               {warning ? 'Vui lòng nhập từ khóa hợp lệ' : ' '}
             </Text>
@@ -727,7 +736,7 @@ export function Detail2({}) {
             onEndReachedThreshold={0}
             ListFooterComponent={
               paper < Math.ceil(Object.keys(LawFilted).length / 10) ? (
-                <ActivityIndicator color="black"/>
+                <ActivityIndicator color="black" />
               ) : (
                 <></>
               )
@@ -798,8 +807,6 @@ export function Detail2({}) {
               elevation: 20,
               // borderWidth:1,
               // borderColor:'#363636',
-              
-
             }}>
             <View
               style={{
@@ -1109,8 +1116,6 @@ const styles = StyleSheet.create({
   // },
   item: {
     minHeight: 80,
-    // height: 120,
-    // backgroundColor: 'green',
     display: 'flex',
     justifyContent: 'center',
     paddingLeft: 20,
@@ -1125,14 +1130,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: 16,
-    paddingBottom: 5,
+    paddingBottom: 2,
+    // backgroundColor: 'yellow',
   },
   descriptionText: {
     textAlign: 'center',
     color: 'black',
     fontSize: 14,
     textAlign: 'justify',
-    // backgroundColor:'blue'
   },
   // chapterArrow: {
   //   backgroundColor: 'black',

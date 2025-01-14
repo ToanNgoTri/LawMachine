@@ -15,7 +15,7 @@ import CheckBox from 'react-native-check-box';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNetInfo} from '@react-native-community/netinfo';
-import React, {useEffect, useState, useRef, useContext} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {useNavigation, useScrollToTop} from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
@@ -24,6 +24,8 @@ export function Detail1({}) {
   // console.log(SearchResult);
 
   const [input, setInput] = useState(undefined);
+
+  const [inputForNavi, setInputForNavi] = useState('')
 
   const [paper, setPaper] = useState(0);
   // console.log('paper',paper);
@@ -175,10 +177,9 @@ export function Detail1({}) {
   const NoneOfResutl = () => {
     return (
       <View
-        style={{height: 250, alignItems: 'center', justifyContent: 'flex-end'}}>
-        <Text style={{fontSize: 40, textAlign: 'center', color: 'gray'}}>
-          {' '}
-          Không có kết quả nào{' '}
+        style={{height: '100%', alignItems: 'center', justifyContent: 'center',paddingBottom:30,paddingLeft:30,paddingRight:30}}>
+        <Text style={{fontSize: 35, textAlign: 'center', color: 'gray'}}>
+          Không có kết quả nào được tìm thấy
         </Text>
       </View>
     );
@@ -212,7 +213,7 @@ export function Detail1({}) {
           // marginBottom: 6,
         }}
         onPress={() => {
-          navigation.push(`accessLaw`, {screen: key, input: input});
+          navigation.push(`accessLaw`, {screen: key, input: inputForNavi});
           setName(i);
         }}>
         <View style={styles.item}>
@@ -382,6 +383,7 @@ export function Detail1({}) {
                   } else {
                     dispatch({type: 'searchContent', input: input});
                   }
+                  setInputForNavi(input)
                 }}></TextInput>
               <TouchableOpacity
                 onPress={() => {
@@ -486,6 +488,7 @@ export function Detail1({}) {
                 } else {
                   dispatch({type: 'searchContent', input: input});
                 }
+                setInputForNavi(input)
               }}>
               <Ionicons
                 name="search-outline"
@@ -898,11 +901,14 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
+    marginBottom:2
+
   },
   descriptionText: {
-    textAlign: 'justify',
+    textAlign: 'center',
     color: 'black',
     fontSize: 14,
+    textAlign: 'justify',
   },
   // chapterArrow: {
   //   backgroundColor: 'black',

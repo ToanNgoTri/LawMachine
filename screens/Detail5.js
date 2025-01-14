@@ -43,9 +43,9 @@ export default function Detail() {
   // console.log('headerHeight', headerHeight);
 
   // const [tittle, setTittle] = useState();     // để collapse chương nếu không có mục 'phần thứ...' hoặc mục' phần thứ...' nếu có
-  const [tittleArray, setTittleArray] = useState([true]); // đây là 'phần thứ...' hoặc chương (nói chung là section cao nhất)
+  const [tittleArray, setTittleArray] = useState([]); // đây là 'phần thứ...' hoặc chương (nói chung là section cao nhất)
 
-  const [tittleArray2, setTittleArray2] = useState([true]); // nếu có 'phần thứ...' thì đây sẽ là chương
+  const [tittleArray2, setTittleArray2] = useState([]); // nếu có 'phần thứ...' thì đây sẽ là chương
 
   const [positionYArr, setPositionYArr] = useState([]); // tập hợp pos Y Search
   const [positionYArrArtical, setPositionYArrArtical] = useState([]);
@@ -507,16 +507,16 @@ export default function Detail() {
             }, []);
           return (
             <View>
-              <Text style={{textAlign:'justify'}}>{searchedPara}</Text>
+              <Text  style={{textAlign:'justify'}}>{searchedPara}</Text>
             </View>
           );
           // return <View >{searchedPara}</View>;
           // return <Text >{searchedPara}</Text>;
         } else {
-          return para[0];
+          return para[0]
         }
       } else {
-        return para[0];
+          return para[0]
       }
 
       // }
@@ -725,10 +725,10 @@ export default function Detail() {
                 //     : {width: '99%', marginBottom: 20}
                 // }
               >
-                <Text style={styles.dieu}>
+                <Text  style={{...styles.dieu}}>
                   {highlight(Object.keys(key2), valueInput,true)}
                 </Text>
-                <Text style={styles.lines}>
+                <Text  style={{...styles.lines}}>
                   {highlight(Object.values(key2), valueInput, false)}
                 </Text>
               </View>
@@ -776,6 +776,7 @@ export default function Detail() {
                     collapse2(chapterOrdinal);
                   }}>
                   <Text
+                  electable={true}
                     style={{
                       fontSize: 14,
                       color: 'white',
@@ -800,7 +801,7 @@ export default function Detail() {
                 style={
                   showArticle ||
                   find ||
-                  (!tittleArray.includes(i) && styles.content) //////////////////////////////////////////////////////////////////
+                  (tittleArray.includes(i) && styles.content) //////////////////////////////////////////////////////////////////
                 }>
                 <View
                   onLayout={event => {
@@ -815,10 +816,10 @@ export default function Detail() {
                   }}
                   // style={go ? {width: '100%'} : {width: '99%'}}
                 >
-                  <Text style={styles.dieu}>
+                  <Text  style={styles.dieu}>
                     {highlight(Object.keys(keyC), valueInput, true)}
                   </Text>
-                  <Text style={styles.lines}>
+                  <Text  style={styles.lines}>
                     {highlight(Object.values(keyC), valueInput, false)}
                   </Text>
                 </View>
@@ -852,10 +853,10 @@ export default function Detail() {
           //     : {width: '99%', marginBottom: 20}
           // }
         >
-          <Text style={styles.dieu}>
+          <Text  style={styles.dieu}>
             {highlight([ObjKeys], valueInput, true)}
           </Text>
-          <Text style={styles.lines}>
+          <Text  style={styles.lines}>
             {highlight([key[ObjKeys]], valueInput, false)}
           </Text>
         </View>
@@ -1075,7 +1076,7 @@ export default function Detail() {
                 <Text style={styles.ModalInfoTitle}>Tên gọi:</Text>
               </View>
               <View style={{flex: 1}}>
-                <Text style={styles.ModalInfoContent}>
+                <Text style={{...styles.ModalInfoContent}}>
                   {Info && Info['lawNameDisplay']}
                 </Text>
               </View>
@@ -1085,7 +1086,7 @@ export default function Detail() {
                 <Text style={styles.ModalInfoTitle}>Trích yếu nội dung:</Text>
               </View>
               <View style={{flex: 1}}>
-                <Text style={styles.ModalInfoContent}>
+                <Text style={{...styles.ModalInfoContent,textAlign:'justify'}}>
                   {Info && Info['lawDescription']}
                 </Text>
               </View>
@@ -1250,7 +1251,7 @@ export default function Detail() {
                           }}>
                           <Text
                             style={{
-                              ...styles.ModalInfoContentLawRelated,
+                              ...styles.ModalInfoContentLawRelated,textAlign:'justify'
                               // fontWeight:
                               //   LawHaveNoWord || LawHaveWord ? 'bold' : '300',
                             }}>
@@ -1358,7 +1359,6 @@ export default function Detail() {
                         </Text>
                       </TouchableOpacity>
                     )}
-
                     {Object.keys(key)[0].match(/^phần thứ .*/gim)
                       ? b(key, i, Object.keys(key)[0])
                       : Object.keys(key)[0].match(/^chương .*/gim)
@@ -1833,7 +1833,7 @@ const styles = StyleSheet.create({
   },
   dieu: {
     fontWeight: 'bold',
-    // marginBottom: 5,
+    textAlign:'justify',
     marginTop: 10,
     paddingLeft: 10,
     paddingRight: 10,
@@ -1854,6 +1854,7 @@ const styles = StyleSheet.create({
     color: 'black',
     lineHeight: 23,
     overflow: 'hidden',
+    
   },
   highlight: {
     color: 'black',

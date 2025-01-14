@@ -47,8 +47,8 @@ export default function Home({}) {
       disabled={isActive}
         key={i}
         style={{
-          paddingBottom: 20,
-          paddingTop: 20,
+          paddingBottom: 10,
+          paddingTop: 10,
           justifyContent: 'center',
           backgroundColor:
             Object.values(item)[0] && Object.values(item)[0]['lawNameDisplay'].match(/^(Hiến)/gim)
@@ -75,7 +75,7 @@ export default function Home({}) {
             !Object.values(item)[0]['lawNameDisplay'].match(/^(luật|bộ luật|hiến)/gim) && (
               <Text style={{...styles.itemDescription}}>
                 {/* {Info[item] && Info[item]['lawDescription']} */}
-                {Object.values(item)[0] && Object.values(item)[0]['lawDescription'] }
+                {'   '}{Object.values(item)[0] && Object.values(item)[0]['lawDescription'] }
 
               </Text>
             )}
@@ -412,7 +412,7 @@ async function sortedData(data){
 
 
   <DraggableFlatList
-  style={{backgroundColor: '#EEEFE4'}}
+  style={{backgroundColor: '#EEEFE4',marginBottom:50}}
   keyboardShouldPersistTaps="handled"
   // data={Info && (searchLawResult || Object.keys(Info))}
   data={data}
@@ -551,7 +551,7 @@ async function sortedData(data){
                     textAlign: 'justify',
                     lineHeight:23
                   }}>
-                  {'   '}Đây là ứng dụng tra cứu Luật của tập thể SViet xây dựng và phát triển. Ứng dụng không
+                  {'   '}Đây là ứng dụng tra cứu Luật của tập thể Pixel Places Game xây dựng và phát triển. Ứng dụng không
                   đại diện cho bất kỳ cơ quan nào thuộc Chính phủ. Cuối cùng, xin chân thành cảm ơn tất cả các bạn 
                   và người dùng ứng dụng đã tin tưởng và ủng hộ chúng tôi !
                 </Text>
@@ -609,13 +609,15 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     flexDirection: 'column',
+    // backgroundColor:'yellow',
+    alignItems:'center'
   },
   itemDisplay: {
     fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
     fontSize: 17,
-    marginBottom:5
+    marginBottom:2
   },
   itemDescription: {
     color: '#EEEEEE',
