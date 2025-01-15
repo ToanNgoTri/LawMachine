@@ -44,6 +44,7 @@ export function Detail1({}) {
 
   const [choosenLaw, setChoosenLaw] = useState([]);
   const [LawFilted, setLawFilted] = useState(false);
+console.log('LawFilted',LawFilted);
 
   // const inf = useContext(InfoDownloaded);
 
@@ -74,6 +75,19 @@ export function Detail1({}) {
     );
   }, [SearchResult]);
 
+  function LawFilterContent(choosenLaw, SearchResult) {
+    let contentFilted = {};
+
+    Object.keys(SearchResult).filter(key => {
+      if (choosenLaw.includes(key)) {
+        contentFilted[key] = SearchResult[key];
+      }
+    });
+
+    setLawFilted(contentFilted);
+  }
+
+
   useEffect(() => {
     if (result) {
       let lawObject = {};
@@ -84,6 +98,10 @@ export function Detail1({}) {
         };
       });
       setSearchResult(lawObject);
+
+      // setSearchResult((result.slice(0, 10)));
+      setLawFilted(((lawObject)));
+
     }
   }, [result]);
 
@@ -140,17 +158,6 @@ export function Detail1({}) {
   // }
 
   
-  function LawFilterContent(choosenLaw, SearchResult) {
-    let contentFilted = {};
-
-    Object.keys(SearchResult).filter(key => {
-      if (choosenLaw.includes(key)) {
-        contentFilted[key] = SearchResult[key];
-      }
-    });
-
-    setLawFilted(contentFilted);
-  }
 
   useEffect(() => {
     collapse(name);
@@ -228,6 +235,8 @@ export function Detail1({}) {
     );
   };
 
+  console.log('paper',paper);
+  
   function convertResultLoading(obj) {
     const first10Entries = Object.entries(obj).slice(0, paper * 10);
 // console.log(first10Entries.length);
@@ -239,7 +248,8 @@ export function Detail1({}) {
   }
 
   function loadMoreData() {
-    if(paper < Math.ceil(Object.keys(SearchResult).length / 10) && checkedAllFilter){
+    
+    if(paper < Math.ceil(Object.keys(SearchResult).length / 10) ){
 
       setPaper(paper + 1);
     }
@@ -369,11 +379,11 @@ export function Detail1({}) {
                 placeholder="Nhập từ khóa..."
                 placeholderTextColor={'gray'}
                 onSubmitEditing={() => {
-                  if(paper>2){
-                    setPaper(0);
-                  }else{
+                  // if(paper>2){
+                  //   setPaper(0);
+                  // }else{
                     setPaper(1);
-                  }
+                  // }
                   if(FlatListToScroll.current){
                     FlatListToScroll.current.scrollToOffset({ offset: 0})
                   }
@@ -473,12 +483,13 @@ export function Detail1({}) {
 
                 //   }
                 //   setValueInputForNav(input);
-                  if(paper>2){
-                    setPaper(0);
 
-                  }else{
+                  // if(paper>2){
+                  //   setPaper(0);
+
+                  // }else{
                     setPaper(1);
-                  }
+                  // }
                 if(FlatListToScroll.current){
                   FlatListToScroll.current.scrollToOffset({ offset: 0})
                 }
@@ -504,7 +515,7 @@ export function Detail1({}) {
         ) : (
           <FlatList
           ref={FlatListToScroll}
-            data={Object.keys( LawFilted|| convertResultLoading(SearchResult))}
+            data={Object.keys( convertResultLoading(LawFilted))}
             renderItem={item => <Item title={item} />}
             onEndReached={(distanceFromEnd)=>{if(!distanceFromEnd.distanceFromEnd){loadMoreData()}
             }}
@@ -543,7 +554,7 @@ ListFooterComponent={paper<Math.ceil(Object.keys(SearchResult).length/10)?<Activ
             }}>
             <TouchableOpacity //overlay
               style={{
-   left: 0,
+                left: 0,
                 right: 0,
                 top: 0,
                 bottom: 0,
@@ -803,17 +814,17 @@ ListFooterComponent={paper<Math.ceil(Object.keys(SearchResult).length/10)?<Activ
                   setShowFilter(false);
                   return () => {};
                 }, 500);
-                setChoosenLaw(Object.keys(LawFilted))
+                // setChoosenLaw(Object.keys(LawFilted))
                 Animated.timing(animated, {
                   toValue: !showFilter ? 100 : 0,
                   easing:Easing.in,
                   duration: 300,
                   useNativeDriver: false,
                 }).start();
-                if(checkedAllFilter){
-                  setLawFilted(false)
-                }
-                setPaper(0)
+                // if(checkedAllFilter){
+                //   setLawFilted(false)
+                // }
+                setPaper(1)
                 if (FlatListToScroll.current) {
                   FlatListToScroll.current.scrollToOffset({offset: 0});
                 }

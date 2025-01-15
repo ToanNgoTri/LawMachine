@@ -45,6 +45,9 @@ export function Detail2({}) {
 
   const [checkedAllFilter, setCheckedAllFilter] = useState(true);
   const [choosenLaw, setChoosenLaw] = useState([]);
+  // console.log('choosenLaw',choosenLaw.length);
+  
+
   const [LawFilted, setLawFilted] = useState(false);
   // console.log('LawFilted',LawFilted);
 
@@ -158,8 +161,7 @@ export function Detail2({}) {
                     ? {textAlign: 'center'}
                     : {textAlign: 'justify'}
                 }>
-                {'   '}
-                {searchedPara}
+                {'   '}{searchedPara}
               </Text>
             </View>
           );
@@ -354,7 +356,6 @@ export function Detail2({}) {
             )}
           </Text>
           <Text style={styles.descriptionText}>
-            {'   '}
             {highlight(
               SearchResult[detailId]['lawDescription'],
               valueInput,
@@ -1022,7 +1023,7 @@ export function Detail2({}) {
                   setShowFilter(false);
                   return () => {};
                 }, 500);
-                setChoosenLaw(Object.keys(LawFilted));
+                // setChoosenLaw(Object.keys(LawFilted));
                 Animated.timing(animated, {
                   toValue: !showFilter ? 100 : 0,
                   easing: Easing.in,
@@ -1122,6 +1123,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     flexDirection: 'column',
     alignItems: 'center',
+    // backgroundColor:'red'
   },
 
   chapterText: {
@@ -1134,10 +1136,11 @@ const styles = StyleSheet.create({
     // backgroundColor: 'yellow',
   },
   descriptionText: {
-    textAlign: 'center',
     color: 'black',
     fontSize: 14,
-    textAlign: 'justify',
+    // textAlign: 'auto',
+    // backgroundColor:'blue',
+    // textAlignVertical:'bottom'
   },
   // chapterArrow: {
   //   backgroundColor: 'black',
