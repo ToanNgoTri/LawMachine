@@ -46,7 +46,6 @@ export function Detail2({}) {
   const [checkedAllFilter, setCheckedAllFilter] = useState(true);
   const [choosenLaw, setChoosenLaw] = useState([]);
   // console.log('choosenLaw',choosenLaw.length);
-  
 
   const [LawFilted, setLawFilted] = useState(false);
   // console.log('LawFilted',LawFilted);
@@ -161,7 +160,8 @@ export function Detail2({}) {
                     ? {textAlign: 'center'}
                     : {textAlign: 'justify'}
                 }>
-                {'   '}{searchedPara}
+                {'   '}
+                {searchedPara}
               </Text>
             </View>
           );
@@ -384,7 +384,7 @@ export function Detail2({}) {
 
   return (
     <>
-      {(loading2 || loading3 || !internetConnected) && (
+      {(loading2 || !internetConnected) && (
         <View
           style={{
             position: 'absolute',
@@ -649,6 +649,33 @@ export function Detail2({}) {
           </TouchableOpacity>
         </View>
       </View>
+
+      {loading3 && (
+        <View
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 127.5,
+            bottom: 0,
+            opacity: 0.7,
+            backgroundColor: 'black',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 10,
+          }}>
+          <Text
+            style={{
+              color: 'white',
+              marginBottom: 15,
+              fontWeight: 'bold',
+            }}>
+            Đang tải văn bản mới nhất ...
+          </Text>
+          <ActivityIndicator size="large" color="white"></ActivityIndicator>
+        </View>
+      )}
+      
       <View style={{marginTop: 0, flex: 1}}>
         {/* { ( !info3 && !info )? (
             <></>
