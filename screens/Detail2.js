@@ -95,15 +95,18 @@ export function Detail2({}) {
   }, [info3]);
 
   function highlight(para, word, i2) {
-    // console.log('para',para);
+    // word = word.replace(/\s/img,'\\,?\\s\\,?')
+// console.log(word);
+
+
     if (para) {
       // đôi khi Điều ... không có khoản (nội dung chính trong điều) thì điều này giúp không load ['']
       if (word.match(/(\w+|\(|\)|\.|\+|\-|\,|\&|\?|\;|\!|\/)/gim)) {
-        let inputRexgex = para.match(new RegExp(String(word), 'igmu'));
+        let inputRexgex = para.match(new RegExp(String(word.replace(/\s/img,',?\\s,?')), 'igmu'));
         // let inputRexgex = para[0].match(new RegExp('hội', 'igmu'));
         if (inputRexgex) {
           let searchedPara = para
-            .split(new RegExp(String(word), 'igmu'))
+            .split(new RegExp(String(word.replace(/\s/img,',?\\s,?')), 'igmu'))
             // .split(new RegExp('hội', 'igmu'))
             .reduce((prev, current, i) => {
               if (!i) {
@@ -328,10 +331,31 @@ export function Detail2({}) {
       </View>
     );
   };
+  function pressToSearch() {
+      
+    Keyboard.dismiss();
+              if (paper > 2) {
+                setPaper(0);
+              } else {
+                setPaper(1);
+              }
+              if (FlatListToScroll.current) {
+                FlatListToScroll.current.scrollToOffset({offset: 0});
+              }
+              if (!input || input.match(/^(\s)*$/)) {
+                setWanring(true);
+              } else {
+                dispatch({type: 'searchLaw', input: input});
+                setValueInput(input);
+              }
+              setChoosenKindLaw([0, 1, 2]);
+  }
 
   const Item = ({title}) => {
     let detailId = title.item;
     let i = title.index;
+
+
 
     return (
       <TouchableOpacity
@@ -493,22 +517,8 @@ export function Detail2({}) {
                 placeholder="Nhập từ khóa..."
                 placeholderTextColor={'gray'}
                 onSubmitEditing={() => {
-                  Keyboard.dismiss();
-                  if (paper > 2) {
-                    setPaper(0);
-                  } else {
-                    setPaper(1);
-                  }
-                  if (FlatListToScroll.current) {
-                    FlatListToScroll.current.scrollToOffset({offset: 0});
-                  }
-                  if (!input || input.match(/^(\s)*$/)) {
-                    setWanring(true);
-                  } else {
-                    dispatch({type: 'searchLaw', input: input});
-                    setValueInput(input);
-                  }
-                  setChoosenKindLaw([0, 1, 2]);
+                  pressToSearch()
+                  
                 }}></TextInput>
               <TouchableOpacity
                 onPress={() => {
@@ -556,23 +566,8 @@ export function Detail2({}) {
                 borderColor: '#f67c1a',
                 minWidth: 40,
               }}
-              onPress={async () => {
-                Keyboard.dismiss();
-                if (paper > 2) {
-                  setPaper(0);
-                } else {
-                  setPaper(1);
-                }
-                if (FlatListToScroll.current) {
-                  FlatListToScroll.current.scrollToOffset({offset: 0});
-                }
-                if (!input || input.match(/^(\s)*$/)) {
-                  setWanring(true);
-                } else {
-                  dispatch({type: 'searchLaw', input: input});
-                  setValueInput(input);
-                }
-                setChoosenKindLaw([0, 1, 2]);
+              onPress={ () => {
+                pressToSearch()
               }}>
               <Ionicons
                 name="search-outline"
@@ -650,7 +645,7 @@ export function Detail2({}) {
         </View>
       </View>
 
-      {loading3 && (
+      { loading2 || loading3 && (
         <View
           style={{
             position: 'absolute',
