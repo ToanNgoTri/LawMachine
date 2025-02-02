@@ -22,8 +22,7 @@ import {useRoute, useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ModalStatus} from '../App';
 import {useSelector, useDispatch} from 'react-redux';
-// import {InfoDownloaded} from '../App';
-// import {loader, noLoading} from '../redux/fetchData';
+import {useNetInfo} from '@react-native-community/netinfo';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 // import {useAnimatedHeaderHeight} from '@react-navigation/native-stack';
 // import {useHeaderHeight} from '@react-navigation/elements';
@@ -64,6 +63,10 @@ export default function Detail() {
   const route = useRoute();
 
   const navigation = useNavigation();
+
+  const netInfo = useNetInfo();
+  let internetConnected = netInfo.isConnected;
+
 
   async function StoreInternal() {
     async function k() {
@@ -1243,16 +1246,12 @@ export default function Detail() {
                           <TouchableOpacity
                             key={`${i}lawRelated`}
                             onPress={() => {
-
-                              navigation.push(`accessLaw`, {
-                                    screen: Info['lawRelated'][key],
-                                  });
-                              // if (LawHaveWord || LawHaveNoWord) {
-                              //   navigation.push(`accessLaw`, {
-                              //     screen: info3[correctIndex]._id,
-                              //   });
-                                ModalVisibleStatus.updateModalStatus(false);
-                              // }
+                              if(internetConnected){
+                                navigation.push(`accessLaw`, {
+                                  screen: Info['lawRelated'][key],
+                                });
+                              ModalVisibleStatus.updateModalStatus(false);
+                            }
                             }}>
                             <Text
                               style={{
