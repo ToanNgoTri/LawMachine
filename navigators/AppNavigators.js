@@ -422,7 +422,7 @@ const StackNavigator = () => {
               <TouchableOpacity
               style={{
                 backgroundColor: 'red',
-                height: '60%',
+                height: 40,
                 alignItems: 'center',
                 justifyContent: 'center',
                 overflow: 'hidden',
