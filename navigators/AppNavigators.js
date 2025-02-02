@@ -17,6 +17,7 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  Image
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -386,7 +387,8 @@ const StackNavigator = () => {
                   name="chevron-back-outline"
                   style={styles.IconInfo}></Ionicons>
               </TouchableOpacity>
-            ), // headerStyle: { backgroundColor: 'black',alignItems:'center',justifyContent:'flex-end',display:'flex',padding:100 },
+            ), 
+            // headerStyle: { backgroundColor: 'black',alignItems:'center',justifyContent:'flex-end',display:'flex',padding:100 },
             // headerTitle: props => (
             //   <TouchableOpacity
             //     style={{
@@ -416,7 +418,36 @@ const StackNavigator = () => {
             //     <Image style={{alignItems:'center',justifyContent:'center',backgroundColor:'red'}} source={require('../assets/t.png')}></Image>
             //   </TouchableOpacity>
             // ),
-            headerTitle:()=> <></>,
+            headerTitle:()=> (
+              <TouchableOpacity
+              style={{
+                backgroundColor: 'red',
+                height: '60%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
+                borderRadius: 30,
+                // marginBottom:40
+                // paddingTop:5,
+                // paddingBottom:5
+              }}
+              // onPress={() => {
+              //   navigation.popToTop();
+              //   console.log(1);
+              // }}
+              onPressIn={() => {
+                navigation.popToTop();
+                console.log(2);
+              }}
+              // onPressOut={() => {
+              //   navigation.popToTop();
+              //   console.log(3);
+              // }}
+              >
+              <Image style={{alignItems:'center',justifyContent:'center',backgroundColor:'red'}} source={require('../assets/t.png')}></Image>
+            </TouchableOpacity>
+
+            ),
             headerRight: () => (
               <View style={{alignItems: 'center'}}>
                 <TouchableOpacity

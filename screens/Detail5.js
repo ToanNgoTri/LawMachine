@@ -63,7 +63,7 @@ export default function Detail() {
 
   const route = useRoute();
 
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
 
   async function StoreInternal() {
     async function k() {
@@ -1206,7 +1206,7 @@ export default function Detail() {
                 </View>
                 <View style={{flex: 1, paddingBottom: 10, paddingTop: 10}}>
                   {Info &&
-                    Info['lawRelated'].map((key, i) => {
+                    Object.keys(Info['lawRelated']).map((key, i) => {
                       let nameLaw = key;
 
                       // let LawHaveWord;
@@ -1238,35 +1238,41 @@ export default function Detail() {
                       //   }
                       // }
 
-                      return (
-                        <TouchableOpacity
-                          key={`${i}lawRelated`}
-                          onPress={() => {
-                            // if (LawHaveWord || LawHaveNoWord) {
-                            //   navigation.push(`accessLaw`, {
-                            //     screen: info3[correctIndex]._id,
-                            //   });
-                            //   ModalVisibleStatus.updateModalStatus(false);
-                            // }
-                          }}>
-                          <Text
-                            style={{
-                              ...styles.ModalInfoContentLawRelated,textAlign:'justify'
-                              // fontWeight:
-                              //   LawHaveNoWord || LawHaveWord ? 'bold' : '300',
+                      if(Info['lawRelated'][key]){
+                        return (
+                          <TouchableOpacity
+                            key={`${i}lawRelated`}
+                            onPress={() => {
+
+                              navigation.push(`accessLaw`, {
+                                    screen: Info['lawRelated'][key],
+                                  });
+                              // if (LawHaveWord || LawHaveNoWord) {
+                              //   navigation.push(`accessLaw`, {
+                              //     screen: info3[correctIndex]._id,
+                              //   });
+                                ModalVisibleStatus.updateModalStatus(false);
+                              // }
                             }}>
-                            -{' '}
-                            {
-                              // LawHaveNoWord
-                              //   ? LawHaveNoWord
-                              //   : LawHaveWord
-                              //   ? LawHaveWord
-                              //   : nameLaw
-                              nameLaw
-                            }
-                          </Text>
-                        </TouchableOpacity>
-                      );
+                            <Text
+                              style={{
+                                ...styles.ModalInfoContentLawRelated,textAlign:'justify',
+                                fontWeight:'bold',fontStyle:'italic'
+                                //   LawHaveNoWord || LawHaveWord ? 'bold' : '300',
+                              }}>
+                              -{' '}
+                              {
+                                // LawHaveNoWord
+                                //   ? LawHaveNoWord
+                                //   : LawHaveWord
+                                //   ? LawHaveWord
+                                //   : nameLaw
+                                nameLaw
+                              }
+                            </Text>
+                          </TouchableOpacity>
+                        );
+                        }
                     })}
                 </View>
               </View>
