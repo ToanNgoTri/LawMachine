@@ -23,7 +23,7 @@
     "react-native-file-access": "^3.1.1",
     "react-native-gesture-handler": "^2.22.0",
     "react-native-pager-view": "^6.6.1",
-    "react-native-reanimated": "^3.16.6",
+    "react-native-reanimated": "^3.16.7",
     "react-native-safe-area-context": "^5.1.0",
     "react-native-screens": "^4.5.0",
     "react-native-vector-icons": "^10.2.0",
