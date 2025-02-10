@@ -96,17 +96,18 @@ export function Detail2({}) {
 
   function highlight(para, word, i2) {
     // word = word.replace(/\s/img,'\\,?\\s\\,?')
-// console.log(word);
-
+    // console.log(word);
 
     if (para) {
       // đôi khi Điều ... không có khoản (nội dung chính trong điều) thì điều này giúp không load ['']
       if (word.match(/(\w+|\(|\)|\.|\+|\-|\,|\&|\?|\;|\!|\/)/gim)) {
-        let inputRexgex = para.match(new RegExp(String(word.replace(/\s/img,',?\\s,?')), 'igmu'));
+        let inputRexgex = para.match(
+          new RegExp(String(word.replace(/\s/gim, ',?\\s,?')), 'igmu'),
+        );
         // let inputRexgex = para[0].match(new RegExp('hội', 'igmu'));
         if (inputRexgex) {
           let searchedPara = para
-            .split(new RegExp(String(word.replace(/\s/img,',?\\s,?')), 'igmu'))
+            .split(new RegExp(String(word.replace(/\s/gim, ',?\\s,?')), 'igmu'))
             // .split(new RegExp('hội', 'igmu'))
             .reduce((prev, current, i) => {
               if (!i) {
@@ -332,30 +333,27 @@ export function Detail2({}) {
     );
   };
   function pressToSearch() {
-      
     Keyboard.dismiss();
-              if (paper > 2) {
-                setPaper(0);
-              } else {
-                setPaper(1);
-              }
-              if (FlatListToScroll.current) {
-                FlatListToScroll.current.scrollToOffset({offset: 0});
-              }
-              if (!input || input.match(/^(\s)*$/)) {
-                setWanring(true);
-              } else {
-                dispatch({type: 'searchLaw', input: input});
-                setValueInput(input);
-              }
-              setChoosenKindLaw([0, 1, 2]);
+    if (paper > 2) {
+      setPaper(0);
+    } else {
+      setPaper(1);
+    }
+    if (FlatListToScroll.current) {
+      FlatListToScroll.current.scrollToOffset({offset: 0});
+    }
+    if (!input || input.match(/^(\s)*$/)) {
+      setWanring(true);
+    } else {
+      dispatch({type: 'searchLaw', input: input});
+      setValueInput(input);
+    }
+    setChoosenKindLaw([0, 1, 2]);
   }
 
   const Item = ({title}) => {
     let detailId = title.item;
     let i = title.index;
-
-
 
     return (
       <TouchableOpacity
@@ -517,8 +515,7 @@ export function Detail2({}) {
                 placeholder="Nhập từ khóa..."
                 placeholderTextColor={'gray'}
                 onSubmitEditing={() => {
-                  pressToSearch()
-                  
+                  pressToSearch();
                 }}></TextInput>
               <TouchableOpacity
                 onPress={() => {
@@ -566,8 +563,8 @@ export function Detail2({}) {
                 borderColor: '#f67c1a',
                 minWidth: 40,
               }}
-              onPress={ () => {
-                pressToSearch()
+              onPress={() => {
+                pressToSearch();
               }}>
               <Ionicons
                 name="search-outline"
@@ -645,32 +642,33 @@ export function Detail2({}) {
         </View>
       </View>
 
-      { loading2 || loading3 && (
-        <View
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 127.5,
-            bottom: 0,
-            opacity: 0.7,
-            backgroundColor: 'black',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 10,
-          }}>
-          <Text
+      {loading2 ||
+        (loading3 && (
+          <View
             style={{
-              color: 'white',
-              marginBottom: 15,
-              fontWeight: 'bold',
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: 127.5,
+              bottom: 0,
+              opacity: 0.7,
+              backgroundColor: 'black',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 10,
             }}>
-            Đang tải văn bản mới nhất ...
-          </Text>
-          <ActivityIndicator size="large" color="white"></ActivityIndicator>
-        </View>
-      )}
-      
+            <Text
+              style={{
+                color: 'white',
+                marginBottom: 15,
+                fontWeight: 'bold',
+              }}>
+              Đang tải văn bản mới nhất ...
+            </Text>
+            <ActivityIndicator size="large" color="white"></ActivityIndicator>
+          </View>
+        ))}
+
       <View style={{marginTop: 0, flex: 1}}>
         {/* { ( !info3 && !info )? (
             <></>
