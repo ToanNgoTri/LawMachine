@@ -359,6 +359,7 @@ const StackNavigator = () => {
           name={`accessLaw`}
           component={Detail5}
           options={({navigation}) => ({
+          
             // header:()=>{      <View style={{height: (Platform.OS === 'ios') ? 10 : 0,backgroundColor:'yellow',position:'relative'}}>
             // </View>
             // },
@@ -376,6 +377,10 @@ const StackNavigator = () => {
                 // }}
                 onPressIn={() => {
                   navigation.goBack();
+                  // if(navigation.getState().routes && navigation.getState().routes.length>1){
+                  //   ModalVisibleStatus.updateModalStatus(true);
+                  // }
+                  
                 }}
                 // onPressOut={() => {
                 //   navigation.goBack();
