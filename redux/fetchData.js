@@ -89,24 +89,30 @@ export const getlastedlaws = createSlice({
 }
 })
 
+export const getCountLaw = createSlice({
+  name: 'getCountLaw',     
+  initialState: {
+    loading4: false,
+    result4:0,
+  },
+  reducers: {
+    loader4: (state,action) => {
+      state.loading4= true;
+    },
+
+    handle4: (state,action) => {
+      state.result4=action.payload.b;
+      state.loading4= false;
+    },
+}
+})
+
 
 
 export function* mySaga(state,action){
   
   try{
     yield put(loader())
-
-
-
-    // let info = yield fetch(`https://us-central1-project2-197c0.cloudfunctions.net/callOneLaw?screen=${state.lawName}`,{
-    //   method: 'GET',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   // body:JSON.stringify({screen:state.lawName})
-    // })
-  
 
     let info = yield fetch(`https://us-central1-project2-197c0.cloudfunctions.net/callOneLaw`,{
       method: 'POST',
@@ -123,7 +129,6 @@ export function* mySaga(state,action){
 
     yield put(handle(a))
     
-    // yield put(noLoading())
 
   }catch(e){
 
@@ -134,15 +139,6 @@ export function* mySaga1(state,action){
   try{
     yield put(loader1())
 
-    // let info = yield  fetch(`https://us-central1-project2-197c0.cloudfunctions.net/searchContent?input=${state.input}`,{
-    //   method: 'GET',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   // body:JSON.stringify({input:state.input})
-    // })
-    
     
     let info = yield  fetch(`https://us-central1-project2-197c0.cloudfunctions.net/searchContent`,{
       method: 'POST',
@@ -167,15 +163,6 @@ export function* mySaga2(state,action){
         
     yield put(loader2())
     
-    // let info = yield  fetch(`https://us-central1-project2-197c0.cloudfunctions.net/searchLaw?input=${state.input}`,{
-    //   method: 'GET',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   // body:JSON.stringify({input:state.input})
-    // })
-  
 
     let info = yield  fetch(`https://us-central1-project2-197c0.cloudfunctions.net/searchLaw`,{
     // let info = yield  fetch(`http://192.168.1.10:5001/project2-197c0/us-central1/searchLaw`,{
@@ -196,26 +183,6 @@ export function* mySaga2(state,action){
 }
 
 
-// export function* mySaga3(state,action){
-//   yield put(loader3())
-
-
-//     let info = yield fetch(`https://us-central1-project2-197c0.cloudfunctions.net/stackscreen`,{
-//       method: 'GET',
-//       headers: {
-//         Accept: 'application/json',
-//         'Content-Type': 'application/json',
-//       },
-//       // body:JSON.stringify({screen:1})
-//     })
-    
-//     let b = yield info.json()
-
-
-//     yield put(handle3({b}))
-//   }
-
-
   export function* mySaga3(state,action){
     yield put(loader3())
   
@@ -234,6 +201,27 @@ export function* mySaga2(state,action){
   
       yield put(handle3({b}))
     }
+
+
+    export function* mySaga4(state,action){
+      yield put(loader4())
+    
+    
+        let info = yield fetch(`https://us-central1-project2-197c0.cloudfunctions.net/countAllLaw`,{
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          // body:JSON.stringify({screen:1})
+        })
+        
+        let b = yield info.json()
+    
+    
+        yield put(handle4({b}))
+      }
+  
   
 
 export function* saga(){
@@ -259,9 +247,14 @@ export function* saga3(){
 
 }
 
+export function* saga4(){
+  yield takeEvery('getCountLaw',mySaga4)
+
+}
 
   
 export const {loader,handle,noLoading} = read.actions;
 export const {loader1,handle1} = searchContent.actions;
 export const {loader2,handle2} = searchLaw.actions;
 export const {loader3,handle3} = getlastedlaws.actions;
+export const {loader4,handle4} = getCountLaw.actions;

@@ -185,24 +185,24 @@ export default function Home({}) {
   
   }, [inputSearchLaw]);
 
-  async function DeleteInternal() {
-    console.log('delete');
+  // async function DeleteInternal() {
+  //   console.log('delete');
     
 
-    const addContent = await FileSystem.unlink(
-      Dirs.CacheDir + '/order.txt'
-    );
+  //   const addContent = await FileSystem.unlink(
+  //     Dirs.CacheDir + '/order.txt'
+  //   );
 
 
-    const addDown = await FileSystem.unlink(
-      Dirs.CacheDir + '/downloaded.txt'
-    );
+  //   const addDown = await FileSystem.unlink(
+  //     Dirs.CacheDir + '/downloaded.txt'
+  //   );
 
-    const addInfo = await FileSystem.unlink(
-      Dirs.CacheDir + '/Info.txt'
-    );
+  //   const addInfo = await FileSystem.unlink(
+  //     Dirs.CacheDir + '/Info.txt'
+  //   );
 
-  }
+  // }
 
 
 

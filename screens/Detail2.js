@@ -19,14 +19,15 @@ import React, {useEffect, useState, useRef, useContext} from 'react';
 import {useNetInfo} from '@react-native-community/netinfo';
 import CheckBox from 'react-native-check-box';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Dirs, FileSystem} from 'react-native-file-access';
 
 export function Detail2({}) {
   const {loading2, info} = useSelector(state => state['searchLaw']);
   // console.log('info',info);
 
   const {loading3, info3} = useSelector(state => state['getlastedlaws']);
-  // console.log('info3',info3);
-  // console.log('loading3',loading3);
+
+  const {loading4, result4} = useSelector(state => state['getCountLaw']);
 
   const [input, setInput] = useState(false);
   const [valueInput, setValueInput] = useState('');
@@ -36,7 +37,8 @@ export function Detail2({}) {
   const [paper, setPaper] = useState(0);
 
   const [SearchResult, setSearchResult] = useState(
-    info3 ? convertResult(info3.slice(0, 10)) : [],
+    // info3 ? convertResult(info3.slice(0, 10)) : [],
+    []
   ); // đây Object là các luật, điểm, khoản có kết quả tìm kiếm
   // console.log('info3',info3);
 
@@ -254,13 +256,76 @@ export function Detail2({}) {
   const netInfo = useNetInfo();
   let internetConnected = netInfo.isConnected;
 
-  // console.log('info',info);
+
+  async function checkLastedLaw(){
+    
+    if (await FileSystem.exists(Dirs.CacheDir + '/lastedLaw.txt', 'utf8')) {
+console.log(1);
+
+        const FileInfoStringContent = await FileSystem.readFile(
+        Dirs.CacheDir + '/lastedLaw.txt',
+        'utf8',
+      );
+
+      let contentLastedLaw = JSON.parse(FileInfoStringContent);
+console.log('result4',result4);
+console.log("contentLastedLaw['currentCountLaw']",contentLastedLaw['lastedLaw']);
+      if(contentLastedLaw['currentCountLaw'] == result4){
+console.log(1.5);
+
+setSearchResult(contentLastedLaw['lastedLaw'] )
+setLawFilted(contentLastedLaw['lastedLaw'] )
+      }else{
+        console.log(2);
+        // dispatch({type: 'getlastedlaws'});
+
+        const addContent = await FileSystem.writeFile(
+          Dirs.CacheDir + '/lastedLaw.txt',
+          JSON.stringify({"currentCountLaw":result4,
+            "lastedLaw":convertResult(info3.slice(0, 10))
+          },
+            
+          ),
+          'utf8',
+        );
+        }
+    }else{
+      console.log(3);
+
+      // dispatch({type: 'getlastedlaws'});
+      const addContent = await FileSystem.writeFile(
+        Dirs.CacheDir + '/lastedLaw.txt',
+        JSON.stringify({"currentCountLaw":result4,
+          "lastedLaw":convertResult(info3.slice(0, 10))
+        },
+          
+        ),
+        'utf8',
+      );
+
+    }
+  }
+
 
   useEffect(() => {
     if (internetConnected == true && !info) {
-      dispatch({type: 'getlastedlaws'});
+      dispatch({type: 'getCountLaw'});
+      // dispatch({type: 'getlastedlaws'});
+      // checkLastedLaw()
     }
+    
+    
   }, [internetConnected]);
+  
+  useEffect(() => {
+
+    if(result4){
+
+      checkLastedLaw()
+    }
+    
+    
+  }, [result4]);
 
   function chooseDisplayKindLaw() {
     // 1 là luật, 2 là nd, 3 là TT
