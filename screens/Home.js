@@ -28,7 +28,6 @@ export default function Home({}) {
 
   const [updateStatus, SetUpdateStatus] = useState(false);
   const [Info, setInfo] = useState(false);
-  console.log('updateStatus', updateStatus);
 
   const [inputSearchLaw, setInputSearchLaw] = useState('');
   // const [searchLawResult, setSearchLawResult] = useState([]);
@@ -93,50 +92,6 @@ export default function Home({}) {
   };
 
   useEffect(() => {
-    // setSearchLawResult(
-    //   Info &&
-    //     Object.keys(Info).filter(item => {
-    //       if (
-    //         inputSearchLaw.match(/(\w+|\(|\)|\.|\+|\-|\,|\&|\?|\;|\!|\s?)/gim)
-    //       ) {
-    //         let inputSearchLawReg = inputSearchLaw;
-    //         if (inputSearchLaw.match(/\(/gim)) {
-    //           inputSearchLawReg = inputSearchLaw.replace(/\(/gim, '\\(');
-    //         }
-
-    //         if (inputSearchLaw.match(/\)/gim)) {
-    //           inputSearchLawReg = inputSearchLawReg.replace(/\)/gim, '\\)');
-    //         }
-    //         if (inputSearchLaw.match(/\//gim)) {
-    //           inputSearchLawReg = inputSearchLawReg.replace(/\//gim, '.');
-    //         }
-    //         if (inputSearchLaw.match(/\\/gim)) {
-    //           inputSearchLawReg = inputSearchLawReg.replace(/\\/gim, '.');
-    //         }
-    //         if (inputSearchLaw.match(/\./gim)) {
-    //           inputSearchLawReg = inputSearchLawReg.replace(/\./gim, '\\.');
-    //         }
-    //         if (inputSearchLaw.match(/\+/gim)) {
-    //           inputSearchLawReg = inputSearchLawReg.replace(/\+/gim, '\\+');
-    //         }
-    //         if (inputSearchLaw.match(/\?/gim)) {
-    //           inputSearchLawReg = inputSearchLawReg.replace(/\?/gim, '\\?');
-    //         }
-
-    //         return (
-    //           Info[item]['lawNameDisplay'].match(
-    //             new RegExp(inputSearchLawReg, 'igm'),
-    //           ) ||
-    //           Info[item]['lawDescription'].match(
-    //             new RegExp(inputSearchLawReg, 'igm'),
-    //           ) ||
-    //           Info[item]['lawNumber'].match(
-    //             new RegExp(inputSearchLawReg, 'igm'),
-    //           )
-    //         );
-    //       }
-    //     }),
-    // );
 
     if (inputSearchLaw) {
       setData(
@@ -188,41 +143,24 @@ export default function Home({}) {
     }
   }, [inputSearchLaw]);
 
-  // async function DeleteInternal() {
-  //   console.log('delete');
-
-  //   const addContent = await FileSystem.unlink(
-  //     Dirs.CacheDir + '/order.txt'
-  //   );
-
-  //   const addDown = await FileSystem.unlink(
-  //     Dirs.CacheDir + '/downloaded.txt'
-  //   );
-
-  //   const addInfo = await FileSystem.unlink(
-  //     Dirs.CacheDir + '/Info.txt'
-  //   );
-
-  // }
-
+  
   async function getPolicyAppear() {
     if (await FileSystem.exists(Dirs.CacheDir + '/Appear.txt', 'utf8')) {
-      // const FileInfoStringContent = await FileSystem.readFile(
-      //   Dirs.CacheDir + '/Content.txt',
-      //   'utf8',
-      // );
-      // if (FileInfoStringContent) {
-      //   return {
-      //     status: true,
-      //   };
-      //   // f = JSON.parse(FileInfoStringInfo)
-      // }
-
       return false;
     } else {
       return true;
     }
   }
+
+  //   async function DeleteInternal() {
+  //   console.log('delete');
+
+  //   const addInfo = await FileSystem.unlink(
+  //     Dirs.CacheDir + '/Appear.txt'
+  //   );
+
+  // }
+
 
   async function getContentExist() {
     if (await FileSystem.exists(Dirs.CacheDir + '/order.txt', 'utf8')) {
@@ -249,6 +187,71 @@ export default function Home({}) {
     }
   }
 
+  async function exitUpdate(){
+
+
+    const latestVersion = await VersionCheck.getLatestVersion();
+
+
+    const fileAppear = await FileSystem.readFile(
+      Dirs.CacheDir + '/Appear.txt',
+      'utf8',
+    );
+
+    let contentAppear = JSON.parse(fileAppear);
+
+    contentAppear[latestVersion] = false
+
+    const addInfo = await FileSystem.writeFile(
+      Dirs.CacheDir + '/Appear.txt',
+      JSON.stringify(contentAppear),
+      'utf8',
+    );
+
+  }
+
+
+
+  async function acceptUpdate(){
+
+
+    const latestVersion = await VersionCheck.getLatestVersion();
+
+
+    const fileAppear = await FileSystem.readFile(
+      Dirs.CacheDir + '/Appear.txt',
+      'utf8',
+    );
+
+    let contentAppear = JSON.parse(fileAppear);
+
+    contentAppear[latestVersion] = true
+
+    const addInfo = await FileSystem.writeFile(
+      Dirs.CacheDir + '/Appear.txt',
+      JSON.stringify(contentAppear),
+      'utf8',
+    );
+
+  }
+
+
+//   async function log(){
+
+//     const fileAppear = await FileSystem.readFile(
+//       Dirs.CacheDir + '/Appear.txt',
+//       'utf8',
+//     );
+
+//     let contentAppear = JSON.parse(fileAppear);
+
+
+// console.log('contentAppear',contentAppear);
+//   }
+
+//   log()
+
+
   const checkForUpdate = async () => {
     // Lấy phiên bản hiện tại của ứng dụng
     const currentVersion = VersionCheck.getCurrentVersion();
@@ -256,8 +259,21 @@ export default function Home({}) {
     // Kiểm tra phiên bản mới nhất trên Google Play Store
     const latestVersion = await VersionCheck.getLatestVersion();
 
-    SetUpdateStatus(Number(latestVersion) > Number(currentVersion));
-    // setShowPolicy(Number(latestVersion) > Number(currentVersion));
+    const fileAppear = await FileSystem.readFile(
+      Dirs.CacheDir + '/Appear.txt',
+      'utf8',
+    );
+
+    let contentAppear = JSON.parse(fileAppear);
+
+    if(Number(latestVersion)> Number(currentVersion)){
+      if(!contentAppear[latestVersion]){
+        SetUpdateStatus(true);
+      }
+  
+    }
+
+
   };
 
   useEffect(() => {
@@ -468,8 +484,6 @@ export default function Home({}) {
               borderRadius: 20,
               transform: [{scale: Scale}],
               overflow: 'hidden',
-              // borderWidth:1,
-              // borderColor:'brown',
               shadowColor: 'black',
               shadowOpacity: 1,
               shadowOffset: {
@@ -593,14 +607,17 @@ export default function Home({}) {
                     setShowPolicy(false);
                     return () => {};
                   }, 300);
+
+                  const currentVersion = VersionCheck.getCurrentVersion();
+
                   const addContent = await FileSystem.writeFile(
                     Dirs.CacheDir + '/Appear.txt',
-                    JSON.stringify('abc'),
+                    JSON.stringify({[currentVersion]:false}),
                     'utf8',
                   );
 
                   Animated.timing(animated, {
-                    toValue: showPolicy ? 100 : 0,
+                    toValue: (showPolicy||updateStatus) ? 100 : 0,
                     // toValue:100,
                     duration: 300,
                     useNativeDriver: false,
@@ -631,14 +648,10 @@ export default function Home({}) {
                       SetUpdateStatus(false);
                       return () => {};
                     }, 300);
-                    const addContent = await FileSystem.writeFile(
-                      Dirs.CacheDir + '/Appear.txt',
-                      JSON.stringify('abc'),
-                      'utf8',
-                    );
+                    exitUpdate()
 
                     Animated.timing(animated, {
-                      toValue: showPolicy ? 100 : 0,
+                      toValue: (showPolicy||updateStatus) ? 100 : 0,
                       // toValue:100,
                       duration: 300,
                       useNativeDriver: false,
@@ -672,15 +685,10 @@ export default function Home({}) {
                       SetUpdateStatus(false);
                       return () => {};
                     }, 300);
-                    const addContent = await FileSystem.writeFile(
-                      Dirs.CacheDir + '/Appear.txt',
-                      JSON.stringify('abc'),
-                      'utf8',
-                    );
 
+                        acceptUpdate()
                     Animated.timing(animated, {
-                      toValue: showPolicy ? 100 : 0,
-                      // toValue:100,
+                      toValue: (showPolicy||updateStatus) ? 100 : 0,
                       duration: 300,
                       useNativeDriver: false,
                     }).start();
