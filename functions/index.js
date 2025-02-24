@@ -66,6 +66,21 @@ exports.searchLaw = onRequest(async (req, res) => {
   }
 });
 
+exports.countAllLaw = onRequest(async (req, res) => {
+  if (req.method === 'POST') {
+    try {
+      const database = client.db('LawMachine');
+      const LawContent = database.collection('LawContent');
+
+      const estimate = await LawContent.countDocuments();
+      
+    res.json(estimate)
+    } finally {
+    }
+  }
+});
+
+
 exports.searchContent = onRequest(async (req, res) => {
   if (req.method === 'POST') {
     // try {

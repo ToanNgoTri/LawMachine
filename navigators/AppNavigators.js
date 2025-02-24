@@ -202,40 +202,6 @@ const AppNavigators = () => {
           // width:'100%'
         },
       })}>
-                    <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          header: () => null,
-          tabBarIcon: ({focused, color, size}) => {
-            return (
-              <View style={{alignItems: 'center', top: -5, minWidth: 100,}}>
-                <Ionicons
-                  name="home-outline"
-                  style={
-                    focused ? styles.IconActive : styles.IconInActive
-                  }></Ionicons>
-                <Text
-                  style={{
-                    ...(focused ? styles.IconActive : styles.IconInActive),
-                    fontSize: 13,
-                    fontWeight: 'bold',
-                    
-                  }}>
-                  Đã tải xuống
-                </Text>
-              </View>
-            );
-          },
-
-          tabBarLabel: () => {
-            return null;
-          },
-        }}
-        listeners={{
-          tabPress: props => {},
-        }}
-      />
 
       <Tab.Screen
         name="SearchLaw"
@@ -271,6 +237,45 @@ const AppNavigators = () => {
           },
         }}
       />
+
+<Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          header: () => null,
+          tabBarIcon: ({focused, color, size}) => {
+            return (
+              <View style={{alignItems: 'center', top: -5, minWidth: 100,}}>
+                <Ionicons
+                  name="home-outline"
+                  style={
+                    focused ? styles.IconActive : styles.IconInActive
+                  }></Ionicons>
+                <Text
+                  style={{
+                    ...(focused ? styles.IconActive : styles.IconInActive),
+                    fontSize: 13,
+                    fontWeight: 'bold',
+                    
+                  }}>
+                  Đã tải xuống
+                </Text>
+              </View>
+            );
+          },
+
+          tabBarLabel: () => {
+            return null;
+          },
+        }}
+        listeners={{
+          tabPress: props => {},
+        }}
+      />
+
+
+
+
       <Tab.Screen
         name="Search"
         component={Detail1}

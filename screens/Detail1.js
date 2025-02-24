@@ -44,7 +44,6 @@ export function Detail1({}) {
 
   const [choosenLaw, setChoosenLaw] = useState([]);
   const [LawFilted, setLawFilted] = useState(false);
-console.log('LawFilted',LawFilted);
 
   // const inf = useContext(InfoDownloaded);
 
@@ -235,7 +234,6 @@ console.log('LawFilted',LawFilted);
     );
   };
 
-  console.log('paper',paper);
   
   function convertResultLoading(obj) {
     const first10Entries = Object.entries(obj).slice(0, paper * 10);
