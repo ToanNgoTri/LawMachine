@@ -7,7 +7,8 @@ import {
   FlatList,
   Keyboard,
   Animated,
-  ScrollView
+  ScrollView,
+  Linking,
 } from 'react-native';
 import {useState, useEffect, useRef} from 'react';
 // import dataOrg from '../data/data.json';
@@ -18,69 +19,75 @@ import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import DraggableFlatList, {
   ScaleDecorator,
-} from "react-native-draggable-flatlist";
+} from 'react-native-draggable-flatlist';
 
+import VersionCheck from 'react-native-version-check';
 
 export default function Home({}) {
   const navigation = useNavigation();
 
-
+  const [updateStatus, SetUpdateStatus] = useState(false);
   const [Info, setInfo] = useState(false);
+  console.log('updateStatus', updateStatus);
 
   const [inputSearchLaw, setInputSearchLaw] = useState('');
   // const [searchLawResult, setSearchLawResult] = useState([]);
   const [showPolicy, setShowPolicy] = useState(false);
-  const [showBackground, setShowBackground] = useState(false)
-  
+  const [showBackground, setShowBackground] = useState(false);
 
   const insets = useSafeAreaInsets(); // lất chiều cao để menu top iphone
 
   const ScrollViewToScroll = useRef(null);
   useScrollToTop(ScrollViewToScroll);
 
-  const Render = ({item, i,drag, isActive}) => {
-
+  const Render = ({item, i, drag, isActive}) => {
     return (
       <ScaleDecorator>
-      <TouchableOpacity
-      onLongPress={inputSearchLaw? null:drag}
-      disabled={isActive}
-        key={i}
-        style={{
-          paddingBottom: 10,
-          paddingTop: 10,
-          justifyContent: 'center',
-          backgroundColor:
-            Object.values(item)[0] && Object.values(item)[0]['lawNameDisplay'].match(/^(Hiến)/gim)
-              ? '#da251dff' 
-              :'green' 
-              ,
-          marginBottom: 6,
-          opacity:isActive?.5:1
-        }}
-        onPress={() => navigation.navigate(`accessLaw`, {screen: Object.keys(item)[0]})}>
-        <View style={styles.item}>
-          <Text
-            style={{
-              ...styles.itemDisplay,
-              color:
-                Object.values(item)[0] && Object.values(item)[0]['lawNameDisplay'].match(/^(Hiến)/gim)
-                  ? 'yellow'
-                  : 'white',
-            }}>
-            {/* {Info[item] && Info[item]['lawNameDisplay']} */}
-            {Object.values(item)[0]['lawNameDisplay']}
-          </Text>
-          {Object.values(item)[0] &&
-            !Object.values(item)[0]['lawNameDisplay'].match(/^(luật|bộ luật|hiến)/gim) && (
-              <Text style={{...styles.itemDescription}}>
-                {/* {Info[item] && Info[item]['lawDescription']} */}
-                {'   '}{Object.values(item)[0] && Object.values(item)[0]['lawDescription'] }
-
-              </Text>
-            )}
-        </View>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onLongPress={inputSearchLaw ? null : drag}
+          disabled={isActive}
+          key={i}
+          style={{
+            paddingBottom: 10,
+            paddingTop: 10,
+            justifyContent: 'center',
+            backgroundColor:
+              Object.values(item)[0] &&
+              Object.values(item)[0]['lawNameDisplay'].match(/^(Hiến)/gim)
+                ? '#da251dff'
+                : 'green',
+            marginBottom: 6,
+            opacity: isActive ? 0.5 : 1,
+          }}
+          onPress={() =>
+            navigation.navigate(`accessLaw`, {screen: Object.keys(item)[0]})
+          }>
+          <View style={styles.item}>
+            <Text
+              style={{
+                ...styles.itemDisplay,
+                color:
+                  Object.values(item)[0] &&
+                  Object.values(item)[0]['lawNameDisplay'].match(/^(Hiến)/gim)
+                    ? 'yellow'
+                    : 'white',
+              }}>
+              {/* {Info[item] && Info[item]['lawNameDisplay']} */}
+              {Object.values(item)[0]['lawNameDisplay']}
+            </Text>
+            {Object.values(item)[0] &&
+              !Object.values(item)[0]['lawNameDisplay'].match(
+                /^(luật|bộ luật|hiến)/gim,
+              ) && (
+                <Text style={{...styles.itemDescription}}>
+                  {/* {Info[item] && Info[item]['lawDescription']} */}
+                  {'   '}
+                  {Object.values(item)[0] &&
+                    Object.values(item)[0]['lawDescription']}
+                </Text>
+              )}
+          </View>
+        </TouchableOpacity>
       </ScaleDecorator>
     );
   };
@@ -130,8 +137,8 @@ export default function Home({}) {
     //       }
     //     }),
     // );
-  
-    if(inputSearchLaw){
+
+    if (inputSearchLaw) {
       setData(
         Info &&
           Info.filter(item => {
@@ -142,7 +149,7 @@ export default function Home({}) {
               if (inputSearchLaw.match(/\(/gim)) {
                 inputSearchLawReg = inputSearchLaw.replace(/\(/gim, '\\(');
               }
-  
+
               if (inputSearchLaw.match(/\)/gim)) {
                 inputSearchLawReg = inputSearchLawReg.replace(/\)/gim, '\\)');
               }
@@ -161,7 +168,7 @@ export default function Home({}) {
               if (inputSearchLaw.match(/\?/gim)) {
                 inputSearchLawReg = inputSearchLawReg.replace(/\?/gim, '\\?');
               }
-  
+
               return (
                 Object.values(item)[0]['lawNameDisplay'].match(
                   new RegExp(inputSearchLawReg, 'igm'),
@@ -174,25 +181,19 @@ export default function Home({}) {
                 )
               );
             }
-          })
+          }),
       );
-     
+
       // DeleteInternal()
-
     }
-
-
-  
   }, [inputSearchLaw]);
 
   // async function DeleteInternal() {
   //   console.log('delete');
-    
 
   //   const addContent = await FileSystem.unlink(
   //     Dirs.CacheDir + '/order.txt'
   //   );
-
 
   //   const addDown = await FileSystem.unlink(
   //     Dirs.CacheDir + '/downloaded.txt'
@@ -203,9 +204,6 @@ export default function Home({}) {
   //   );
 
   // }
-
-
-
 
   async function getPolicyAppear() {
     if (await FileSystem.exists(Dirs.CacheDir + '/Appear.txt', 'utf8')) {
@@ -220,16 +218,15 @@ export default function Home({}) {
       //   // f = JSON.parse(FileInfoStringInfo)
       // }
 
-      return false
-    }else{
-      return true
+      return false;
+    } else {
+      return true;
     }
   }
 
   async function getContentExist() {
     if (await FileSystem.exists(Dirs.CacheDir + '/order.txt', 'utf8')) {
-      
-      setShowBackground(false)
+      setShowBackground(false);
 
       // const FileInfoStringDownloaded = await FileSystem.readFile(
       //   Dirs.CacheDir + '/downloaded.txt',
@@ -247,36 +244,42 @@ export default function Home({}) {
           order: JSON.parse(FileOrder),
         };
       }
-    }else{
-    setShowBackground(true)
-
+    } else {
+      setShowBackground(true);
     }
   }
 
+  const checkForUpdate = async () => {
+    // Lấy phiên bản hiện tại của ứng dụng
+    const currentVersion = VersionCheck.getCurrentVersion();
+
+    // Kiểm tra phiên bản mới nhất trên Google Play Store
+    const latestVersion = await VersionCheck.getLatestVersion();
+
+    SetUpdateStatus(Number(latestVersion) > Number(currentVersion));
+    // setShowPolicy(Number(latestVersion) > Number(currentVersion));
+  };
 
   useEffect(() => {
     const listener = navigation.addListener('focus', () => {
-
-      setInputSearchLaw('')
+      setInputSearchLaw('');
 
       getContentExist().then(cont => {
-      if(!Object.keys(cont.order).length){
-        setShowBackground(true)
-      }else{
-        setShowBackground(false)
-      }
+        if (!Object.keys(cont.order).length) {
+          setShowBackground(true);
+        } else {
+          setShowBackground(false);
+        }
 
-      // console.log('cont',cont);
+        // console.log('cont',cont);
         if (cont) {
-          
           setInfo(cont.order);
 
           // let c = []
           // cont.order.map( (item)=>{
           //   c.push(Object.keys(item)[0])
           // })
-          setData(cont.order)  
-
+          setData(cont.order);
         } else {
           setInfo({});
           setData([]);
@@ -284,14 +287,12 @@ export default function Home({}) {
       });
     });
 
-    getPolicyAppear()
-    .then((status)=> setShowPolicy(status))
+    getPolicyAppear().then(status => setShowPolicy(status));
 
-
+    checkForUpdate();
   }, []);
 
   const animated = useRef(new Animated.Value(0)).current;
-
 
   let Opacity = animated.interpolate({
     inputRange: [0, 100],
@@ -305,22 +306,18 @@ export default function Home({}) {
 
   const [data, setData] = useState([]);
 
-async function sortedData(data){
+  async function sortedData(data) {
+    const addInfo = await FileSystem.writeFile(
+      Dirs.CacheDir + '/order.txt',
+      JSON.stringify(data),
+      'utf8',
+    );
 
+    // console.log('new data',data );
+  }
 
-  const addInfo = await FileSystem.writeFile(
-    Dirs.CacheDir + '/order.txt',
-    JSON.stringify(data),
-    'utf8',
-  );
-
-// console.log('new data',data );
-
-}  
-  
   // console.log('data',data);
-  
-  
+
   return (
     <>
       <View
@@ -371,7 +368,7 @@ async function sortedData(data){
               width: '10%',
               display: 'flex',
               // backgroundColor:'red',
-              justifyContent:'center'
+              justifyContent: 'center',
             }}>
             {inputSearchLaw && (
               <Ionicons
@@ -388,44 +385,39 @@ async function sortedData(data){
           </TouchableOpacity>
         </View>
       </View>
-        {showBackground ? (      <View
-        style={{paddingBottom:100,height: '100%', alignItems: 'center', justifyContent: 'center',width:'100%',backgroundColor: '#EEEFE4'}}>
-        <Text style={{fontSize: 40, textAlign: 'center', color: 'gray'}}>
-          {' '}
-          Chưa có văn bản tải xuống{' '}
-        </Text>
-      </View>
-)
+      {showBackground ? (
+        <View
+          style={{
+            paddingBottom: 100,
+            height: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            backgroundColor: '#EEEFE4',
+          }}>
+          <Text style={{fontSize: 40, textAlign: 'center', color: 'gray'}}>
+            {' '}
+            Chưa có văn bản tải xuống{' '}
+          </Text>
+        </View>
+      ) : (
+        <DraggableFlatList
+          style={{backgroundColor: '#EEEFE4', marginBottom: 50}}
+          keyboardShouldPersistTaps="handled"
+          // data={Info && (searchLawResult || Object.keys(Info))}
+          data={data}
+          renderItem={Render}
+          keyExtractor={item => Object.keys(item)[0]}
+          onDragEnd={({data}) => {
+            setData(data);
+            sortedData(data);
+          }}
+        />
+      )}
 
-:(
-//   <NestableScrollContainer>
-//   <NestableDraggableFlatList
-//   style={{backgroundColor: '#EEEFE4'}}
-//   keyboardShouldPersistTaps="handled"
-//   // data={Info && (searchLawResult || Object.keys(Info))}
-//   data={data}
-//   renderItem={Render}
-//   keyExtractor={(item) => Object.keys(item)[0]}
-//   onDragEnd={({ data }) => { setData(data);sortedData(data)}}
-// />
-//   </NestableScrollContainer>
+      {(showPolicy || updateStatus) && (
+        // {(true) && (
 
-
-  <DraggableFlatList
-  style={{backgroundColor: '#EEEFE4',marginBottom:50}}
-  keyboardShouldPersistTaps="handled"
-  // data={Info && (searchLawResult || Object.keys(Info))}
-  data={data}
-  renderItem={Render}
-  keyExtractor={(item) => Object.keys(item)[0]}
-  onDragEnd={({ data }) => { setData(data);sortedData(data)}}
-/>
-
-
-)
-        }
-
-      {showPolicy && (
         <>
           <Animated.View
             style={{
@@ -460,15 +452,15 @@ async function sortedData(data){
               //     useNativeDriver: false,
               //   }).start();
               // }}
-              ></TouchableOpacity>
+            ></TouchableOpacity>
           </Animated.View>
 
           <Animated.View
             style={{
               position: 'absolute',
-              top: 80,
-              bottom: 60,
-              minHeight: 500,
+              top: updateStatus ? 200 : 80,
+              bottom: updateStatus ? 300 : 60,
+              minHeight: updateStatus ? 210 : 500,
               right: 50,
               left: 50,
               backgroundColor: 'white',
@@ -487,113 +479,226 @@ async function sortedData(data){
               shadowRadius: 4,
               elevation: 20,
             }}>
-            <ScrollView style={{}} showsVerticalScrollIndicator={false}>
-              <View style={{marginBottom: 20, marginTop: 30}}>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    fontSize: 30,
-                    textAlign: 'center',
-                  }}>
-                  Lời mở đầu{' '}
-                </Text>
-              </View>
+            {!updateStatus ? (
+              <ScrollView style={{}} showsVerticalScrollIndicator={false}>
+                <View style={{marginBottom: 20, marginTop: 30}}>
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: 30,
+                      textAlign: 'center',
+                    }}>
+                    Lời mở đầu{' '}
+                  </Text>
+                </View>
 
-              <View style={{}}>
-                <Text
-                  style={{
-                    fontWeight: 600,
-                    paddingLeft: 20,
-                    paddingRight: 20,
-                    textAlign: 'justify',
-                    lineHeight:23,
+                <View style={{}}>
+                  <Text
+                    style={{
+                      fontWeight: 600,
+                      paddingLeft: 20,
+                      paddingRight: 20,
+                      textAlign: 'justify',
+                      lineHeight: 23,
+                    }}>
+                    {'  '}Các thông tin, nội dung và dịch vụ mà Thư viện Luật
+                    cung cấp chỉ mang tính chất tham khảo, với mục đích đem lại
+                    cho người sử dụng những thông tin tổng quát về các quy định
+                    của pháp luật qua từng thời kỳ. Thêm vào đó, việc thay đổi,
+                    bổ sung các quy định luật pháp là điều không tránh khỏi ở
+                    mỗi giai đoạn phát triển, bởi vậy, mọi trường hợp người sử
+                    dụng muốn vận dụng các quy định pháp luật vào từng trường
+                    hợp cụ thể, nhất thiết phải tham khảo ý kiến của các cơ quan
+                    nhà nước có thẩm quyền hoặc của các chuyên gia tư vấn pháp
+                    lý về việc áp dụng các quy định này.
+                  </Text>
+                </View>
+                <View style={{}}>
+                  <Text
+                    style={{
+                      fontWeight: 600,
+                      paddingLeft: 20,
+                      paddingRight: 20,
+                      textAlign: 'justify',
+                      lineHeight: 23,
+                    }}>
+                    {'  '}Mặc dù đã cố gắng hạn chế những sai sót trong quá
+                    trình nhập liệu và đăng tải, các thông tin, nội dung văn bản
+                    pháp luật do Thư viện Luật cung cấp không tránh khỏi những
+                    khiếm khuyết hay sai sót do lỗi đánh máy, trình bày, hay
+                    tính đúng sai về hiệu lực pháp lý của văn bản. Việc người sử
+                    dụng chấp nhận sử dụng dịch vụ của Thư viện Luật ngay từ lần
+                    đầu tiên cũng đồng nghĩa với việc chấp nhận những khiếm
+                    khuyết này, cũng như không làm nảy sinh bất cứ trách nhiệm
+                    pháp lý nào của Thư viện Luật với người sử dụng khi xảy ra
+                    thiệt hại (nếu có) từ việc vận dụng các nội dung, thông tin
+                    mà Thư viện Luật cung cấp
+                  </Text>
+                </View>
+                <View style={{}}>
+                  <Text
+                    style={{
+                      fontWeight: 600,
+                      paddingLeft: 20,
+                      paddingRight: 20,
+                      textAlign: 'justify',
+                      lineHeight: 23,
+                    }}>
+                    {'   '}Đây là ứng dụng tra cứu Luật của tập thể Pixel Places
+                    Game xây dựng và phát triển. Ứng dụng không đại diện cho bất
+                    kỳ cơ quan nào thuộc Chính phủ. Cuối cùng, xin chân thành
+                    cảm ơn tất cả các bạn và người dùng ứng dụng đã tin tưởng và
+                    ủng hộ chúng tôi !
+                  </Text>
+                </View>
+              </ScrollView>
+            ) : (
+              <ScrollView style={{}} showsVerticalScrollIndicator={false}>
+                <View style={{marginBottom: 10, marginTop: 20}}>
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: 30,
+                      textAlign: 'center',
+                    }}>
+                    Thông báo{' '}
+                  </Text>
+                </View>
 
-                  }}>
-                  {'  '}Các thông tin, nội dung và dịch vụ mà Thư viện Luật cung cấp
-                  chỉ mang tính chất tham khảo, với mục đích đem lại cho người
-                  sử dụng những thông tin tổng quát về các quy định của pháp luật
-                   qua từng thời kỳ. Thêm vào đó, việc thay đổi, bổ
-                  sung các quy định luật pháp là điều không tránh khỏi ở mỗi
-                  giai đoạn phát triển, bởi vậy, mọi trường hợp người sử dụng
-                  muốn vận dụng các quy định pháp luật vào từng trường hợp cụ
-                  thể, nhất thiết phải tham khảo ý kiến của các cơ quan nhà nước
-                  có thẩm quyền hoặc của các chuyên gia tư vấn pháp lý về việc
-                  áp dụng các quy định này.
-                </Text>
-              </View>
-              <View style={{}}>
-                <Text
-                  style={{
-                    fontWeight: 600,
-                    paddingLeft: 20,
-                    paddingRight: 20,
-                    textAlign: 'justify',
-                    lineHeight:23
-                  }}>
-                  {'  '}Mặc dù đã cố gắng hạn chế những sai sót trong quá trình nhập
-                  liệu và đăng tải, các thông tin, nội dung văn bản pháp luật do
-                  Thư viện Luật cung cấp không tránh khỏi những khiếm khuyết hay
-                  sai sót do lỗi đánh máy, trình bày, hay tính đúng sai về hiệu
-                  lực pháp lý của văn bản. Việc người sử dụng chấp nhận sử dụng
-                  dịch vụ của Thư viện Luật ngay từ lần đầu tiên cũng đồng nghĩa
-                  với việc chấp nhận những khiếm khuyết này, cũng như không làm
-                  nảy sinh bất cứ trách nhiệm pháp lý nào của Thư viện Luật với
-                  người sử dụng khi xảy ra thiệt hại (nếu có) từ việc vận dụng
-                  các nội dung, thông tin mà Thư viện Luật cung cấp
-                </Text>
-              </View>
-              <View style={{}}>
-                <Text
-                  style={{
-                    fontWeight: 600,
-                    paddingLeft: 20,
-                    paddingRight: 20,
-                    textAlign: 'justify',
-                    lineHeight:23
-                  }}>
-                  {'   '}Đây là ứng dụng tra cứu Luật của tập thể Pixel Places Game xây dựng và phát triển. Ứng dụng không
-                  đại diện cho bất kỳ cơ quan nào thuộc Chính phủ. Cuối cùng, xin chân thành cảm ơn tất cả các bạn 
-                  và người dùng ứng dụng đã tin tưởng và ủng hộ chúng tôi !
-                </Text>
-              </View>
+                <View style={{}}>
+                  <Text
+                    style={{
+                      fontWeight: 600,
+                      paddingLeft: 10,
+                      paddingRight: 10,
+                      textAlign: 'justify',
+                      // lineHeight:23,
+                      fontSize: 18,
+                      textAlign: 'center',
+                    }}>
+                    Thư viện Luật đã có phiên bản mới. Bạn có thể cập nhật để sử
+                    dụng những tiện ích mới. 
+                  </Text>
+                </View>
+              </ScrollView>
+            )}
 
-            </ScrollView>
-            <TouchableOpacity
-              style={{
-                backgroundColor: 'green',
-              }}
-              
-              onPress={async() => {
-                let timeOut = setTimeout(() => {
-                  setShowPolicy(false);
-                  return () => {};
-                }, 300);
-                const addContent = await FileSystem.writeFile(
-                  Dirs.CacheDir + '/Appear.txt',
-                  JSON.stringify('abc'),
-                  'utf8',
-                );
-          
-                Animated.timing(animated, {
-                  toValue:showPolicy ? 100 : 0,
-                  // toValue:100,
-                  duration: 300,
-                  useNativeDriver: false,
-                }).start();
-              }}>
-              <Text
+            {!updateStatus ? (
+              <TouchableOpacity
                 style={{
-                  paddingBottom: 10,
-                  paddingTop: 10,
-                  textAlign: 'center',
-                  color: 'white',
-                  fontWeight: 'bold',
-                  fontSize: 16,
+                  backgroundColor: 'green',
+                }}
+                onPress={async () => {
+                  let timeOut = setTimeout(() => {
+                    setShowPolicy(false);
+                    return () => {};
+                  }, 300);
+                  const addContent = await FileSystem.writeFile(
+                    Dirs.CacheDir + '/Appear.txt',
+                    JSON.stringify('abc'),
+                    'utf8',
+                  );
+
+                  Animated.timing(animated, {
+                    toValue: showPolicy ? 100 : 0,
+                    // toValue:100,
+                    duration: 300,
+                    useNativeDriver: false,
+                  }).start();
                 }}>
-                Chấp nhận chính sách và tiếp tục
-              
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    paddingBottom: 10,
+                    paddingTop: 10,
+                    textAlign: 'center',
+                    color: 'white',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                  }}>
+                  Chấp nhận chính sách và tiếp tục
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <View style={{flexDirection: 'row', width: '100%'}}>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: 'green',
+                    width: '50%',
+                  }}
+                  onPress={async () => {
+                    let timeOut = setTimeout(() => {
+                      setShowPolicy(false);
+                      SetUpdateStatus(false);
+                      return () => {};
+                    }, 300);
+                    const addContent = await FileSystem.writeFile(
+                      Dirs.CacheDir + '/Appear.txt',
+                      JSON.stringify('abc'),
+                      'utf8',
+                    );
+
+                    Animated.timing(animated, {
+                      toValue: showPolicy ? 100 : 0,
+                      // toValue:100,
+                      duration: 300,
+                      useNativeDriver: false,
+                    }).start();
+                    Linking.openURL(
+                      'https://play.google.com/store/apps/details?id=com.lawmachine&pcampaignid=web_share',
+                    ).catch(err => console.error('Error opening URL: ', err));
+                  }}>
+                  <Text
+                    style={{
+                      paddingBottom: 10,
+                      paddingTop: 10,
+                      textAlign: 'center',
+                      color: 'white',
+                      fontWeight: 'bold',
+                      fontSize: 16,
+                    }}>
+                    Cập nhật
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: 'green',
+                    width: '50%',
+                    borderLeftColor: 'white',
+                    borderLeftWidth: 1,
+                  }}
+                  onPress={async () => {
+                    let timeOut = setTimeout(() => {
+                      setShowPolicy(false);
+                      SetUpdateStatus(false);
+                      return () => {};
+                    }, 300);
+                    const addContent = await FileSystem.writeFile(
+                      Dirs.CacheDir + '/Appear.txt',
+                      JSON.stringify('abc'),
+                      'utf8',
+                    );
+
+                    Animated.timing(animated, {
+                      toValue: showPolicy ? 100 : 0,
+                      // toValue:100,
+                      duration: 300,
+                      useNativeDriver: false,
+                    }).start();
+                  }}>
+                  <Text
+                    style={{
+                      paddingBottom: 10,
+                      paddingTop: 10,
+                      textAlign: 'center',
+                      color: 'white',
+                      fontWeight: 'bold',
+                      fontSize: 16,
+                    }}>
+                    Thoát
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </Animated.View>
         </>
       )}
@@ -610,14 +715,14 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     flexDirection: 'column',
     // backgroundColor:'yellow',
-    alignItems:'center'
+    alignItems: 'center',
   },
   itemDisplay: {
     fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
     fontSize: 17,
-    marginBottom:2
+    marginBottom: 2,
   },
   itemDescription: {
     color: '#EEEEEE',

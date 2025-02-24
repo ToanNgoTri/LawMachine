@@ -38,7 +38,7 @@ export function Detail2({}) {
 
   const [SearchResult, setSearchResult] = useState(
     // info3 ? convertResult(info3.slice(0, 10)) : [],
-    []
+    [],
   ); // đây Object là các luật, điểm, khoản có kết quả tìm kiếm
   // console.log('info3',info3);
 
@@ -89,10 +89,24 @@ export function Detail2({}) {
     // console.log('LawFilted',LawFilted);
   }
 
-  useEffect(() => {
-    if (info3) {
+async function storeLastedLaw() {
+  const addContent = await FileSystem.writeFile(
+    Dirs.CacheDir + '/lastedLaw.txt',
+    JSON.stringify({
+      currentCountLaw: result4,
+      lastedLaw: convertResult(info3.slice(0, 10)),
+    }),
+    'utf8',
+  );
+
+  }
+  useEffect( () => {
+    if (info3.length) {
       setSearchResult(convertResult(info3.slice(0, 10)));
       setLawFilted(convertResult(info3.slice(0, 10)));
+      storeLastedLaw()
+      // console.log('info3',info3);
+      
     }
   }, [info3]);
 
@@ -256,56 +270,57 @@ export function Detail2({}) {
   const netInfo = useNetInfo();
   let internetConnected = netInfo.isConnected;
 
-
-  async function checkLastedLaw(){
-    
+  async function checkLastedLaw() {
     if (await FileSystem.exists(Dirs.CacheDir + '/lastedLaw.txt', 'utf8')) {
-console.log(1);
+      // console.log(1);
 
-        const FileInfoStringContent = await FileSystem.readFile(
+      const FileInfoStringContent = await FileSystem.readFile(
         Dirs.CacheDir + '/lastedLaw.txt',
         'utf8',
       );
 
       let contentLastedLaw = JSON.parse(FileInfoStringContent);
-console.log('result4',result4);
-console.log("contentLastedLaw['currentCountLaw']",contentLastedLaw['lastedLaw']);
-      if(contentLastedLaw['currentCountLaw'] == result4){
-console.log(1.5);
+      // console.log('result4', result4);
+      // console.log(
+      //   "contentLastedLaw['currentCountLaw']",
+      //   contentLastedLaw,
+      // );
 
-setSearchResult(contentLastedLaw['lastedLaw'] )
-setLawFilted(contentLastedLaw['lastedLaw'] )
-      }else{
-        console.log(2);
-        // dispatch({type: 'getlastedlaws'});
+      if (contentLastedLaw['currentCountLaw'] == result4) {
+        // console.log(1.5);
 
-        const addContent = await FileSystem.writeFile(
-          Dirs.CacheDir + '/lastedLaw.txt',
-          JSON.stringify({"currentCountLaw":result4,
-            "lastedLaw":convertResult(info3.slice(0, 10))
-          },
-            
-          ),
-          'utf8',
-        );
-        }
-    }else{
-      console.log(3);
+        setSearchResult(contentLastedLaw['lastedLaw']);
+        setLawFilted(contentLastedLaw['lastedLaw']);
+      } else {
+        // console.log(2);
+        dispatch({type: 'getlastedlaws'});
 
-      // dispatch({type: 'getlastedlaws'});
-      const addContent = await FileSystem.writeFile(
-        Dirs.CacheDir + '/lastedLaw.txt',
-        JSON.stringify({"currentCountLaw":result4,
-          "lastedLaw":convertResult(info3.slice(0, 10))
-        },
-          
-        ),
-        'utf8',
-      );
+        // const addContent = await FileSystem.writeFile(
+        //   Dirs.CacheDir + '/lastedLaw.txt',
+        //   JSON.stringify({"currentCountLaw":result4,
+        //     "lastedLaw":convertResult(info3.slice(0, 10))
+        //   },
 
+        //   ),
+        //   'utf8',
+        // );
+      }
+    } else {
+      // console.log(3);
+
+      dispatch({type: 'getlastedlaws'});
+
+      // const addContent = await FileSystem.writeFile(
+      //   Dirs.CacheDir + '/lastedLaw.txt',
+      //   JSON.stringify({"currentCountLaw":result4,
+      //     "lastedLaw":convertResult(info3.slice(0, 10))
+      //   },
+
+      //   ),
+      //   'utf8',
+      // );
     }
   }
-
 
   useEffect(() => {
     if (internetConnected == true && !info) {
@@ -313,19 +328,42 @@ setLawFilted(contentLastedLaw['lastedLaw'] )
       // dispatch({type: 'getlastedlaws'});
       // checkLastedLaw()
     }
-    
-    
   }, [internetConnected]);
-  
+
   useEffect(() => {
-
-    if(result4){
-
-      checkLastedLaw()
+    if (result4) {
+      checkLastedLaw();
     }
-    
-    
   }, [result4]);
+
+  async function getContentExist() {
+    if (await FileSystem.exists(Dirs.CacheDir + '/lastedLaw.txt', 'utf8')) {
+      
+      const FileOrder = await FileSystem.readFile(
+        Dirs.CacheDir + '/lastedLaw.txt',
+        'utf8',
+      );
+
+      if (FileOrder) {
+        return JSON.parse(FileOrder)
+        
+      }
+    }else{
+
+    }
+  }
+
+  useEffect(() => {
+    getContentExist().then(
+      (data)=>{
+        setSearchResult(data['lastedLaw']);
+        setLawFilted(data['lastedLaw']);
+      } 
+    )
+  
+
+  }, [])
+  
 
   function chooseDisplayKindLaw() {
     // 1 là luật, 2 là nd, 3 là TT
@@ -707,7 +745,7 @@ setLawFilted(contentLastedLaw['lastedLaw'] )
         </View>
       </View>
 
-      {loading2 ||
+      {loading4 || loading2 ||
         (loading3 && (
           <View
             style={{
@@ -1151,7 +1189,8 @@ const styles = StyleSheet.create({
   descriptionText: {
     color: 'black',
     fontSize: 14,
-    // textAlign: 'auto',
+    textAlign: 'justify'
+        // textAlign: 'auto',
     // backgroundColor:'blue',
     // textAlignVertical:'bottom'
   },
