@@ -177,7 +177,6 @@ const Tab = createMaterialTopTabNavigator();
 const AppNavigators = () => {
   const insets = useSafeAreaInsets(); // lất chiều cao để manu top iphone
   
-  
   return (
     <Tab.Navigator
     

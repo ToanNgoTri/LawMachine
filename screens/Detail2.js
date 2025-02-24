@@ -670,81 +670,9 @@ export function Detail2({}) {
         ))}
 
       <View style={{marginTop: 0, flex: 1}}>
-        {/* { ( !info3 && !info )? (
-            <></>
-          ) : Object.keys(SearchResult).length || info3.length || info ? (
-            Object.keys(LawFilted || SearchResult).map((detailId, i) => {
-              console.log('detailId',detailId);
-              
-              return (
-                <TouchableOpacity
-                key={i}
-                  style={{
-                    paddingBottom: 10,
-                    paddingTop: 10,
-                    justifyContent: 'center',
-                    backgroundColor: i%2 ? 'white':'#DDDDDD', // #F9CC76
-                    // marginBottom: 6,
-                  }}
-                  onPress={() => {
-                    // navigation.navigate(`${detailInfo._id}`)
-                    navigation.push(`accessLaw`, {screen: detailId});
-                  }}>
-                  <View style={styles.item}>
-                    <Text style={styles.chapterText} key={`${i}a`}>
-                      {highlight(SearchResult[detailId]['lawNameDisplay'],valueInput,`${i}aa`)}
-                    </Text>
-                    <Text style={styles.descriptionText}>
-                    {highlight(SearchResult[detailId]['lawDescription'],valueInput,`${i}ab`)}
-                      </Text>
-                  </View>
-                </TouchableOpacity>
-              );
-            })
-          ) : (
-            <NoneOfResutl />
-          )} */}
-
         {info != null && info.length == 0 ? (
           <NoneOfResutl />
         ) : Object.keys(SearchResult).length || info3.length || info ? (
-          // Object.keys(LawFilted || SearchResult).map((detailId, i) => {
-          //   // console.log('detailId',detailId);
-
-          //   return (
-          //     <TouchableOpacity
-          //       key={i}
-          //       style={{
-          //         paddingBottom: 10,
-          //         paddingTop: 10,
-          //         justifyContent: 'center',
-          //         backgroundColor: i % 2 ? 'white' : '#DDDDDD', // #F9CC76
-          //         // marginBottom: 6,
-          //       }}
-          //       onPress={() => {
-          //         // navigation.navigate(`${detailInfo._id}`)
-          //         navigation.push(`accessLaw`, {screen: detailId});
-          //       }}>
-          //       <View style={styles.item}>
-          //         <Text style={styles.chapterText} key={`${i}a`}>
-          //           {highlight(
-          //             SearchResult[detailId]['lawNameDisplay'],
-          //             valueInput,
-          //             `${i}aa`,
-          //           )}
-          //         </Text>
-          //         <Text style={styles.descriptionText}>
-          //           {highlight(
-          //             SearchResult[detailId]['lawDescription'],
-          //             valueInput,
-          //             `${i}ab`,
-          //           )}
-          //         </Text>
-          //       </View>
-          //     </TouchableOpacity>
-          //   );
-          // })
-
           <FlatList
             ref={FlatListToScroll}
             data={Object.keys(convertResultLoading(LawFilted))}
