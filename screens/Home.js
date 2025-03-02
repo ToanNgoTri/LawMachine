@@ -9,6 +9,7 @@ import {
   Animated,
   ScrollView,
   Linking,
+  TouchableWithoutFeedback
 } from 'react-native';
 import {useState, useEffect, useRef} from 'react';
 // import dataOrg from '../data/data.json';
@@ -141,9 +142,10 @@ export default function Home({}) {
 
       // DeleteInternal()
     }
+
   }, [inputSearchLaw]);
 
-  
+
   async function getPolicyAppear() {
     if (await FileSystem.exists(Dirs.CacheDir + '/Appear.txt', 'utf8')) {
       return false;
@@ -332,8 +334,34 @@ export default function Home({}) {
     // console.log('new data',data );
   }
 
-  // console.log('data',data);
+  // console.log('Info',Info);
 
+  function NoneOfResult() {
+    
+    return(
+      <TouchableWithoutFeedback
+              style={{backgroundColor:'red'}}
+              onPress={()=>Keyboard.dismiss()}>
+        
+        <View
+          style={{
+            paddingBottom: 100,
+            height: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            backgroundColor: '#EEEFE4',
+          }}>
+          <Text style={{fontSize: 40, textAlign: 'center', color: 'gray'}}>
+            {' '}
+            {data.length?'':'Chưa có văn bản tải xuống'}
+          </Text>
+        </View>
+        </TouchableWithoutFeedback>
+    )
+  }
+
+  
   return (
     <>
       <View
@@ -371,6 +399,7 @@ export default function Home({}) {
           </View>
           <TextInput
             onChangeText={text => setInputSearchLaw(text)}
+            onSubmitEditing={()=>  Keyboard.dismiss()}
             value={inputSearchLaw}
             style={inputSearchLaw ? styles.inputSearchArea : styles.placeholder}
             placeholder="Nhập tên, Số văn bản, Trích yếu . . ."
@@ -379,6 +408,7 @@ export default function Home({}) {
             onPress={() => {
               setInputSearchLaw('');
               Keyboard.dismiss();
+              setData(Info)
             }}
             style={{
               width: '10%',
@@ -402,24 +432,13 @@ export default function Home({}) {
         </View>
       </View>
       {showBackground ? (
-        <View
-          style={{
-            paddingBottom: 100,
-            height: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100%',
-            backgroundColor: '#EEEFE4',
-          }}>
-          <Text style={{fontSize: 40, textAlign: 'center', color: 'gray'}}>
-            {' '}
-            Chưa có văn bản tải xuống{' '}
-          </Text>
-        </View>
-      ) : (
+<NoneOfResult/>
+) : !data.length ? <NoneOfResult/> : (
         <DraggableFlatList
+        onScrollBeginDrag={() => Keyboard.dismiss()}
+        // keyboardShouldPersistTaps={'always'}
           style={{backgroundColor: '#EEEFE4', marginBottom: 50}}
-          keyboardShouldPersistTaps="handled"
+          
           // data={Info && (searchLawResult || Object.keys(Info))}
           data={data}
           renderItem={Render}
@@ -455,19 +474,6 @@ export default function Home({}) {
                 display: 'flex',
                 position: 'absolute',
               }}
-              // onPress={() => {
-              //   let timeOut = setTimeout(() => {
-              //     setShowPolicy(false);
-              //     return () => {};
-              //   }, 500);
-
-              //   Animated.timing(animated, {
-              //     toValue: !showPolicy ? 100 : 0,
-              //     // toValue:100,
-              //     duration: 300,
-              //     useNativeDriver: false,
-              //   }).start();
-              // }}
             ></TouchableOpacity>
           </Animated.View>
 

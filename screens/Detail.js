@@ -46,8 +46,7 @@ export default function Detail() {
       {Platform.OS == 'ios' ? (
         <KeyboardAvoidingView
           behavior="position"
-          keyboardVerticalOffset={60 + insets.bottom / 2}
-          // style={{height:1000}}
+          keyboardVerticalOffset={-17}
         >
           <Detail5 />
         </KeyboardAvoidingView>

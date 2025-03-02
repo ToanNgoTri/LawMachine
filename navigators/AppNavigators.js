@@ -11,7 +11,7 @@ import {Detail2} from '../screens/Detail2';
 // import Detail4 from '../screens/Detail4';
 import Detail5 from '../screens/Detail';
 import {useNetInfo} from '@react-native-community/netinfo';
-import {ModalStatus} from '../App';
+// import {ModalStatus} from '../App';
 import {
   Text,
   View,
@@ -314,7 +314,7 @@ const AppNavigators = () => {
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
-  const ModalVisibleStatus = useContext(ModalStatus);
+  // const ModalVisibleStatus = useContext(ModalStatus);
 
   const netInfo = useNetInfo();
   let internetConnected = netInfo.isConnected;
@@ -367,109 +367,56 @@ const StackNavigator = () => {
             headerTitleAlign: 'center',
             animation: 'simple_push',
             animationTypeForReplace: 'push',
-            headerLeft: () => (
-              <TouchableOpacity
-              
-                // onPress={() => {
-                //   navigation.goBack();
-                //   console.log(1);
-                // }}
-                onPressIn={() => {
-                  navigation.goBack();
-                  // if(navigation.getState().routes && navigation.getState().routes.length>1){
-                  //   ModalVisibleStatus.updateModalStatus(true);
-                  // }
-                  
-                }}
-                // onPressOut={() => {
-                //   navigation.goBack();
-                //   console.log(3);
-                // }}
+            header:()=>null
 
-                >
-                <Ionicons
-                  name="chevron-back-outline"
-                  style={styles.IconInfo}></Ionicons>
-              </TouchableOpacity>
-            ), 
-            // headerStyle: { backgroundColor: 'black',alignItems:'center',justifyContent:'flex-end',display:'flex',padding:100 },
-            // headerTitle: props => (
+            // headerLeft: () => (
             //   <TouchableOpacity
-            //     style={{
-            //       backgroundColor: 'red',
-            //       // height: '60%',
-            //       alignItems: 'center',
-            //       justifyContent: 'center',
-            //       overflow: 'hidden',
-            //       borderRadius: 30,
-            //       // marginBottom:40
-            //       // paddingTop:5,
-            //       // paddingBottom:5
-            //     }}
-            //     // onPress={() => {
-            //     //   navigation.popToTop();
-            //     //   console.log(1);
-            //     // }}
             //     onPressIn={() => {
-            //       navigation.popToTop();
-            //       console.log(2);
+            //       navigation.goBack();
             //     }}
-            //     // onPressOut={() => {
-            //     //   navigation.popToTop();
-            //     //   console.log(3);
-            //     // }}
             //     >
-            //     <Image style={{alignItems:'center',justifyContent:'center',backgroundColor:'red'}} source={require('../assets/t.png')}></Image>
+            //     <Ionicons
+            //       name="chevron-back-outline"
+            //       style={styles.IconInfo}></Ionicons>
             //   </TouchableOpacity>
-            // ),
-            headerTitle:()=> (
-              <TouchableOpacity
-              style={{
-                backgroundColor: 'red',
-                height: 40,
-                alignItems: 'center',
-                justifyContent: 'center',
-                overflow: 'hidden',
-                borderRadius: 30,
-                // marginBottom:40
-                // paddingTop:5,
-                // paddingBottom:5
-              }}
-              // onPress={() => {
-              //   navigation.popToTop();
-              //   console.log(1);
-              // }}
-              onPressIn={() => {
-                navigation.popToTop();
-                console.log(2);
-              }}
-              // onPressOut={() => {
-              //   navigation.popToTop();
-              //   console.log(3);
-              // }}
-              >
-              <Image style={{alignItems:'center',justifyContent:'center',backgroundColor:'red'}} source={require('../assets/t.png')}></Image>
-            </TouchableOpacity>
+            // ), 
+            // headerTitle:()=> (
+            //   <TouchableOpacity
+            //   style={{
+            //     backgroundColor: 'red',
+            //     height: 40,
+            //     alignItems: 'center',
+            //     justifyContent: 'center',
+            //     overflow: 'hidden',
+            //     borderRadius: 30,
+            //   }}
+            //   onPressIn={() => {
+            //     navigation.popToTop();
+            //     console.log(2);
+            //   }}
+            //   >
+            //   <Image style={{alignItems:'center',justifyContent:'center',backgroundColor:'red'}} source={require('../assets/t.png')}></Image>
+            // </TouchableOpacity>
 
-            ),
-            headerRight: () => (
-              <View style={{alignItems: 'center'}}>
-                <TouchableOpacity
-                  style={styles.iconInfoContainer}
-                  // onPress={() => {
-                  //   // navigation.navigate('Search')
-                  //   ModalVisibleStatus.updateModalStatus(true);
-                  // }}
-                  onPressIn={() => {
-                    ModalVisibleStatus.updateModalStatus(true);
-                  }}
-                  >
-                  <Ionicons
-                    name="document-text-outline"
-                    style={styles.IconInfo}></Ionicons>
-                </TouchableOpacity>
-              </View>
-            ),
+            // ),
+            // headerRight: () => (
+            //   <View style={{alignItems: 'center'}}>
+            //     <TouchableOpacity
+            //       style={styles.iconInfoContainer}
+            //       // onPress={() => {
+            //       //   // navigation.navigate('Search')
+            //       //   ModalVisibleStatus.updateModalStatus(true);
+            //       // }}
+            //       onPressIn={() => {
+            //         ModalVisibleStatus.updateModalStatus(true);
+            //       }}
+            //       >
+            //       <Ionicons
+            //         name="document-text-outline"
+            //         style={styles.IconInfo}></Ionicons>
+            //     </TouchableOpacity>
+            //   </View>
+            // ),
           })}
         />
         {/* ))} */}

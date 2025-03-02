@@ -10,6 +10,7 @@ import {
   Animated,
   FlatList,
   Easing,
+  TouchableWithoutFeedback
 } from 'react-native';
 // import {handle2, searchLaw} from '../redux/fetchData';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -420,6 +421,10 @@ async function storeLastedLaw() {
 
   const NoneOfResutl = () => {
     return (
+      <TouchableWithoutFeedback
+      style={{backgroundColor:'red'}}
+      onPress={()=>Keyboard.dismiss()}>
+
       <View
         style={{
           height: '100%',
@@ -433,6 +438,7 @@ async function storeLastedLaw() {
           Không có kết quả nào được tìm thấy
         </Text>
       </View>
+      </TouchableWithoutFeedback>
     );
   };
   function pressToSearch() {
@@ -542,8 +548,12 @@ async function storeLastedLaw() {
         keyboardShouldPersistTaps="handled"
         style={{backgroundColor: '#EEEFE4'}}> */}
       <View style={{backgroundColor: 'green', paddingTop: insets.top}}>
-        <Text style={styles.titleText}>{`Tìm kiếm văn bản`}</Text>
+      <TouchableWithoutFeedback
+      style={{backgroundColor:'red'}}
+      onPress={()=>Keyboard.dismiss()}>
 
+        <Text style={styles.titleText}>{`Tìm kiếm văn bản`}</Text>
+</TouchableWithoutFeedback>
         <View style={{...styles.inputContainer, height: 52}}>
           <View style={{...styles.containerBtb, paddingTop: 5}}>
             <TouchableOpacity
@@ -608,6 +618,7 @@ async function storeLastedLaw() {
                 borderWidth: warning ? 1 : 0,
               }}>
               <TextInput
+              
                 ref={textInput}
                 style={{...styles.inputArea}}
                 onChangeText={text => {
@@ -745,6 +756,9 @@ async function storeLastedLaw() {
         </View>
       </View>
 
+
+      <View style={{marginTop: 0, flex: 1}}>
+
       {loading4 || loading2 ||
         (loading3 && (
           <View
@@ -752,7 +766,7 @@ async function storeLastedLaw() {
               position: 'absolute',
               left: 0,
               right: 0,
-              top: 127.5,
+              top: 0,
               bottom: 0,
               opacity: 0.7,
               backgroundColor: 'black',
@@ -772,11 +786,11 @@ async function storeLastedLaw() {
           </View>
         ))}
 
-      <View style={{marginTop: 0, flex: 1}}>
         {info != null && info.length == 0 ? (
-          <NoneOfResutl />
+            <NoneOfResutl style={{backgroundColor:'red'}}/>
         ) : Object.keys(SearchResult).length || info3.length || info ? (
           <FlatList
+          onScrollBeginDrag={() => Keyboard.dismiss()}
             ref={FlatListToScroll}
             data={Object.keys(convertResultLoading(LawFilted))}
             renderItem={item => <Item title={item} />}
