@@ -11,6 +11,7 @@ import {
   Dimensions,
   Modal,
   Image,
+  Platform
 } from 'react-native';
 import {Dirs, FileSystem} from 'react-native-file-access';
 import React, {useState, useEffect, useRef, useContext} from 'react';
@@ -561,8 +562,13 @@ export default function Detail() {
         // console.log(1);
       } else {
         // nếu positionYArrArtical chưa đủ số lượng điều
+        if(Platform.OS == 'ios'){
+          positionYArrArtical.push({[key3]: y + currentY -50});
 
-        positionYArrArtical.push({[key3]: y + currentY -50});
+        }else{
+          positionYArrArtical.push({[key3]: y + currentY});
+
+        }
       }
 
       // }
