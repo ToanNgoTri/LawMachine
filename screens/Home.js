@@ -21,7 +21,7 @@ import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import DraggableFlatList, {
   ScaleDecorator,
 } from 'react-native-draggable-flatlist';
-
+// import crashlytics from '@react-native-firebase/crashlytics';
 import VersionCheck from 'react-native-version-check';
 
 export default function Home({}) {
@@ -409,6 +409,7 @@ export default function Home({}) {
               setInputSearchLaw('');
               Keyboard.dismiss();
               setData(Info)
+              yt
             }}
             style={{
               width: '10%',
