@@ -22,10 +22,10 @@ const ModalStatus = createContext(); // lấy modalVisible status
 export default function App() {
 
 
-  const [modalStatus, setModalStatus] = useState(false);
-  const updateModalStatus = data => {
-    setModalStatus(data);
-  };
+  // const [modalStatus, setModalStatus] = useState(false);
+  // const updateModalStatus = data => {
+  //   setModalStatus(data);
+  // };
   
   // const [info, setInfo] = useState({});
   // const updateInfo = data => {
@@ -47,7 +47,7 @@ export default function App() {
     <GestureHandlerRootView>
     <SafeAreaProvider>
     <Provider store={store}>
-      <ModalStatus.Provider value={{modalStatus, updateModalStatus}}>
+      {/* <ModalStatus.Provider value={{modalStatus, updateModalStatus}}> */}
       {/* <RefOfSearchLaw.Provider value={{searchLawRef, updatesearchLawRef}}> */}
             {/* <InfoDownloaded.Provider value={{info,updateInfo}}> */}
       {/* <SafeAreaProvider> */}
@@ -57,7 +57,7 @@ export default function App() {
     {/* </SafeAreaProvider> */}
             {/* </InfoDownloaded.Provider> */}
             {/* </RefOfSearchLaw.Provider> */}
-      </ModalStatus.Provider>
+      {/* </ModalStatus.Provider> */}
     </Provider>
     </SafeAreaProvider>
     </GestureHandlerRootView>

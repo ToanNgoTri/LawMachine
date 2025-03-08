@@ -9,7 +9,8 @@ import {
   Animated,
   ActivityIndicator,
   FlatList,
-  Easing
+  Easing,
+  TouchableWithoutFeedback
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -182,12 +183,17 @@ export function Detail1({}) {
 
   const NoneOfResutl = () => {
     return (
+      <TouchableWithoutFeedback
+      style={{backgroundColor:'red'}}
+      onPress={()=>Keyboard.dismiss()}>
+
       <View
         style={{height: '100%', alignItems: 'center', justifyContent: 'center',paddingBottom:30,paddingLeft:30,paddingRight:30}}>
         <Text style={{fontSize: 35, textAlign: 'center', color: 'gray'}}>
-          Không có kết quả nào được tìm thấy
+          {Array.isArray(SearchResult) ?'':'Không có kết quả nào được tìm thấy'} 
         </Text>
       </View>
+      </TouchableWithoutFeedback>
     );
   };
 
@@ -300,8 +306,12 @@ export function Detail1({}) {
         style={{backgroundColor: '#EEEFE4'}}
         > */}
       <View style={{backgroundColor: 'green', paddingTop: insets.top}}>
-        <Text style={styles.titleText}>{`Tìm kiếm nội dung`}</Text>
+      <TouchableWithoutFeedback
+      style={{backgroundColor:'red'}}
+      onPress={()=>Keyboard.dismiss()}>
 
+        <Text style={styles.titleText}>{`Tìm kiếm nội dung`}</Text>
+</TouchableWithoutFeedback>
         <View style={{...styles.inputContainer,height:57}}>
           <View style={{...styles.containerBtb, paddingTop: 5}}>
             <TouchableOpacity
@@ -507,11 +517,14 @@ export function Detail1({}) {
         </View>
       </View>
       <View style={{marginTop: 0, marginBottom: 103}}>
-        {Array.isArray(SearchResult) ? null : !Object.keys(SearchResult)
+        
+        {Array.isArray(SearchResult) ? <NoneOfResutl /> : !Object.keys(SearchResult)
             .length ? (
           <NoneOfResutl />
         ) : (
           <FlatList
+          onScrollBeginDrag={() => Keyboard.dismiss()}
+
           ref={FlatListToScroll}
             data={Object.keys( convertResultLoading(LawFilted))}
             renderItem={item => <Item title={item} />}
@@ -528,12 +541,6 @@ export function Detail1({}) {
           />
         )}
 
-        {/* <FlatList
-data={Object.keys(LawFilted || convertResultLoading(SearchResult))}
-renderItem={(item) => <Item title={item} />}
-onEndReached={loadMoreData}
-ListFooterComponent={paper<Math.ceil(Object.keys(SearchResult).length/10)?<ActivityIndicator/>:<></>}
-/> */}
       </View>
       {/* </ScrollView> */}
 
