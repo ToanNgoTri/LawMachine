@@ -562,21 +562,15 @@ export default function Detail() {
         // console.log(1);
       } else {
         // nếu positionYArrArtical chưa đủ số lượng điều
-<<<<<<< HEAD
+
         
         if(Platform.OS == 'ios' ){
           
           positionYArrArtical.push({[key3]: y + currentY -50});
         }else{
           positionYArrArtical.push({[key3]: y + currentY});
-=======
-        if(Platform.OS == 'ios'){
-          positionYArrArtical.push({[key3]: y + currentY -50});
 
-        }else{
-          positionYArrArtical.push({[key3]: y + currentY});
 
->>>>>>> df5d87322f18eb12a4809c8bf0dfb530a3c09340
         }
       }
 
