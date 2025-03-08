@@ -409,10 +409,7 @@ export default function Home({}) {
               setInputSearchLaw('');
               Keyboard.dismiss();
               setData(Info)
-<<<<<<< HEAD
-              yt
-=======
->>>>>>> df5d87322f18eb12a4809c8bf0dfb530a3c09340
+yt
             }}
             style={{
               width: '10%',
