@@ -181,7 +181,7 @@ export default function Home({}) {
       if (FileOrder) {
         return {
           // content: JSON.parse(FileInfoStringDownloaded.Content),
-          order: JSON.parse(FileOrder),
+          'order': JSON.parse(FileOrder),
         };
       }
     } else {
@@ -409,7 +409,6 @@ export default function Home({}) {
               setInputSearchLaw('');
               Keyboard.dismiss();
               setData(Info)
-yt
             }}
             style={{
               width: '10%',

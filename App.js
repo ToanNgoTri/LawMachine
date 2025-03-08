@@ -14,13 +14,18 @@ import {store} from './redux/store';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import "react-native-gesture-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import * as Sentry from "@sentry/react-native";
 
 const ModalStatus = createContext(); // lấy modalVisible status
 // const InfoDownloaded = createContext(); //
 // const RefOfSearchLaw = createContext(); //
 
-export default function App() {
+function App() {
+  
 
+  Sentry.init({
+    dsn: "https://a645dd4585aedcdd48ed6ec4b15587fc@o4508942714339328.ingest.us.sentry.io/4508942715977728",
+  });
 
   // const [modalStatus, setModalStatus] = useState(false);
   // const updateModalStatus = data => {
@@ -64,5 +69,5 @@ export default function App() {
   );
 }
 
-// export default App;
+export default Sentry.wrap(App);
 export { ModalStatus};

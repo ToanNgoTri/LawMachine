@@ -95,7 +95,7 @@ async function storeLastedLaw() {
     Dirs.CacheDir + '/lastedLaw.txt',
     JSON.stringify({
       currentCountLaw: result4,
-      lastedLaw: convertResult(info3.slice(0, 10)),
+      'lastedLaw': convertResult(info3.slice(0, 10)),
     }),
     'utf8',
   );
