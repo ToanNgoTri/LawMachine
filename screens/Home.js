@@ -196,7 +196,7 @@ export default function Home({}) {
 
     const latestVersion = await VersionCheck.getLatestVersion();
 
-    if (await FileSystem.exists(Dirs.CacheDir + '/order.txt', 'utf8')) {
+    if (await FileSystem.exists(Dirs.CacheDir + '/Appear.txt', 'utf8')) {
 
     const fileAppear = await FileSystem.readFile(
       Dirs.CacheDir + '/Appear.txt',
@@ -222,7 +222,7 @@ export default function Home({}) {
 
     const latestVersion = await VersionCheck.getLatestVersion();
 
-    if (await FileSystem.exists(Dirs.CacheDir + '/order.txt', 'utf8')) {
+    if (await FileSystem.exists(Dirs.CacheDir + '/Appear.txt', 'utf8')) {
 
     const fileAppear = await FileSystem.readFile(
       Dirs.CacheDir + '/Appear.txt',
