@@ -94,8 +94,8 @@ async function storeLastedLaw() {
   const addContent = await FileSystem.writeFile(
     Dirs.CacheDir + '/lastedLaw.txt',
     JSON.stringify({
-      currentCountLaw: result4,
-      'lastedLaw': convertResult(info3.slice(0, 10)),
+      "currentCountLaw": result4,
+      "lastedLaw": convertResult(info3.slice(0, 10)),
     }),
     'utf8',
   );
@@ -273,7 +273,6 @@ async function storeLastedLaw() {
 
   async function checkLastedLaw() {
     if (await FileSystem.exists(Dirs.CacheDir + '/lastedLaw.txt', 'utf8')) {
-      // console.log(1);
 
       const FileInfoStringContent = await FileSystem.readFile(
         Dirs.CacheDir + '/lastedLaw.txt',
@@ -281,45 +280,21 @@ async function storeLastedLaw() {
       );
 
       let contentLastedLaw = JSON.parse(FileInfoStringContent);
-      // console.log('result4', result4);
-      // console.log(
-      //   "contentLastedLaw['currentCountLaw']",
-      //   contentLastedLaw,
-      // );
 
       if (contentLastedLaw['currentCountLaw'] == result4) {
-        // console.log(1.5);
+        console.log(1);
 
         setSearchResult(contentLastedLaw['lastedLaw']);
         setLawFilted(contentLastedLaw['lastedLaw']);
       } else {
-        // console.log(2);
         dispatch({type: 'getlastedlaws'});
+        console.log(2);
 
-        // const addContent = await FileSystem.writeFile(
-        //   Dirs.CacheDir + '/lastedLaw.txt',
-        //   JSON.stringify({"currentCountLaw":result4,
-        //     "lastedLaw":convertResult(info3.slice(0, 10))
-        //   },
-
-        //   ),
-        //   'utf8',
-        // );
       }
     } else {
-      // console.log(3);
+      console.log(3);
 
       dispatch({type: 'getlastedlaws'});
-
-      // const addContent = await FileSystem.writeFile(
-      //   Dirs.CacheDir + '/lastedLaw.txt',
-      //   JSON.stringify({"currentCountLaw":result4,
-      //     "lastedLaw":convertResult(info3.slice(0, 10))
-      //   },
-
-      //   ),
-      //   'utf8',
-      // );
     }
   }
 
@@ -350,12 +325,14 @@ async function storeLastedLaw() {
         
       }
     }else{
-      return JSON.parse(      {'lastedLaw': {}}
+      return JSON.parse('{"lastedLaw": {"_id":"none"}}'
     )
     }
   }
 
   useEffect(() => {
+
+    
     getContentExist().then(
       (data)=>{
         setSearchResult(data['lastedLaw']);
@@ -442,6 +419,7 @@ async function storeLastedLaw() {
       </TouchableWithoutFeedback>
     );
   };
+
   function pressToSearch() {
     Keyboard.dismiss();
     if (paper > 2) {

@@ -262,6 +262,8 @@ export default function Home({}) {
     // Kiểm tra phiên bản mới nhất trên Google Play Store
     const latestVersion = await VersionCheck.getLatestVersion();
 
+    if (await FileSystem.exists(Dirs.CacheDir + '/Appear.txt', 'utf8')) {
+
     const fileAppear = await FileSystem.readFile(
       Dirs.CacheDir + '/Appear.txt',
       'utf8',
@@ -276,7 +278,7 @@ export default function Home({}) {
   
     }
 
-
+  }
   };
 
   useEffect(() => {
