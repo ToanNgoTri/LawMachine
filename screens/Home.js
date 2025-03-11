@@ -312,7 +312,6 @@ export default function Home({}) {
     });
 
     getPolicyAppear().then(status => setShowPolicy(status));
-    SetUpdateStatus(true);
 
     checkForUpdate();
   }, []);
