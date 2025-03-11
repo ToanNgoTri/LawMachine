@@ -196,6 +196,7 @@ export default function Home({}) {
 
     const latestVersion = await VersionCheck.getLatestVersion();
 
+    if (await FileSystem.exists(Dirs.CacheDir + '/order.txt', 'utf8')) {
 
     const fileAppear = await FileSystem.readFile(
       Dirs.CacheDir + '/Appear.txt',
@@ -211,7 +212,7 @@ export default function Home({}) {
       JSON.stringify(contentAppear),
       'utf8',
     );
-
+  }
   }
 
 
@@ -221,6 +222,7 @@ export default function Home({}) {
 
     const latestVersion = await VersionCheck.getLatestVersion();
 
+    if (await FileSystem.exists(Dirs.CacheDir + '/order.txt', 'utf8')) {
 
     const fileAppear = await FileSystem.readFile(
       Dirs.CacheDir + '/Appear.txt',
@@ -236,7 +238,7 @@ export default function Home({}) {
       JSON.stringify(contentAppear),
       'utf8',
     );
-
+  }
   }
 
 
@@ -310,6 +312,7 @@ export default function Home({}) {
     });
 
     getPolicyAppear().then(status => setShowPolicy(status));
+    SetUpdateStatus(true);
 
     checkForUpdate();
   }, []);
@@ -620,6 +623,7 @@ export default function Home({}) {
 
                   const currentVersion = VersionCheck.getCurrentVersion();
 
+                  
                   const addContent = await FileSystem.writeFile(
                     Dirs.CacheDir + '/Appear.txt',
                     JSON.stringify({[currentVersion]:false}),
