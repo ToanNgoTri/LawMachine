@@ -186,6 +186,7 @@ export default function Home({}) {
       }
     } else {
       setShowBackground(true);
+      return {'order': {}}
     }
   }
 

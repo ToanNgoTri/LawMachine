@@ -350,7 +350,8 @@ async function storeLastedLaw() {
         
       }
     }else{
-
+      return JSON.parse(      {'lastedLaw': {}}
+    )
     }
   }
 
