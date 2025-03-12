@@ -9,7 +9,8 @@ import {
   Animated,
   ScrollView,
   Linking,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
 import {useState, useEffect, useRef} from 'react';
 // import dataOrg from '../data/data.json';
@@ -186,6 +187,7 @@ export default function Home({}) {
       }
     } else {
       setShowBackground(true);
+      return {'order': {}}
     }
   }
 
@@ -194,6 +196,7 @@ export default function Home({}) {
 
     const latestVersion = await VersionCheck.getLatestVersion();
 
+    if (await FileSystem.exists(Dirs.CacheDir + '/Appear.txt', 'utf8')) {
 
     const fileAppear = await FileSystem.readFile(
       Dirs.CacheDir + '/Appear.txt',
@@ -209,7 +212,7 @@ export default function Home({}) {
       JSON.stringify(contentAppear),
       'utf8',
     );
-
+  }
   }
 
 
@@ -219,6 +222,7 @@ export default function Home({}) {
 
     const latestVersion = await VersionCheck.getLatestVersion();
 
+    if (await FileSystem.exists(Dirs.CacheDir + '/Appear.txt', 'utf8')) {
 
     const fileAppear = await FileSystem.readFile(
       Dirs.CacheDir + '/Appear.txt',
@@ -234,7 +238,7 @@ export default function Home({}) {
       JSON.stringify(contentAppear),
       'utf8',
     );
-
+  }
   }
 
 
@@ -261,6 +265,8 @@ export default function Home({}) {
     // Kiểm tra phiên bản mới nhất trên Google Play Store
     const latestVersion = await VersionCheck.getLatestVersion();
 
+    if (await FileSystem.exists(Dirs.CacheDir + '/Appear.txt', 'utf8')) {
+
     const fileAppear = await FileSystem.readFile(
       Dirs.CacheDir + '/Appear.txt',
       'utf8',
@@ -275,7 +281,7 @@ export default function Home({}) {
   
     }
 
-
+  }
   };
 
   useEffect(() => {
@@ -616,6 +622,7 @@ export default function Home({}) {
 
                   const currentVersion = VersionCheck.getCurrentVersion();
 
+                  
                   const addContent = await FileSystem.writeFile(
                     Dirs.CacheDir + '/Appear.txt',
                     JSON.stringify({[currentVersion]:false}),
@@ -662,9 +669,17 @@ export default function Home({}) {
                       duration: 300,
                       useNativeDriver: false,
                     }).start();
-                    Linking.openURL(
-                      'https://play.google.com/store/apps/details?id=com.lawmachine&pcampaignid=web_share',
-                    ).catch(err => console.error('Error opening URL: ', err));
+                    
+                    if(Platform.OS == 'ios'){
+                      Linking.openURL(
+                        'https://apps.apple.com/vn/app/th%C6%B0-vi%E1%BB%87n-lu%E1%BA%ADt/id6741737005?l=vi',
+                      ).catch(err => console.error('Error opening URL: ', err));
+                    }else{
+                      Linking.openURL(
+                        'https://play.google.com/store/apps/details?id=com.lawmachine&pcampaignid=web_share',
+                      ).catch(err => console.error('Error opening URL: ', err));
+                    }
+                    
                   }}>
                   <Text
                     style={{
