@@ -282,17 +282,17 @@ async function storeLastedLaw() {
       let contentLastedLaw = JSON.parse(FileInfoStringContent);
 
       if (contentLastedLaw['currentCountLaw'] == result4) {
-        console.log(1);
+        // console.log(1);
 
         setSearchResult(contentLastedLaw['lastedLaw']);
         setLawFilted(contentLastedLaw['lastedLaw']);
       } else {
         dispatch({type: 'getlastedlaws'});
-        console.log(2);
+        // console.log(2);
 
       }
     } else {
-      console.log(3);
+      // console.log(3);
 
       dispatch({type: 'getlastedlaws'});
     }

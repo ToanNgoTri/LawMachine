@@ -441,6 +441,7 @@ export default function Home({}) {
 <NoneOfResult/>
 ) : !data.length ? <NoneOfResult/> : (
         <DraggableFlatList
+        ref={ScrollViewToScroll}
         onScrollBeginDrag={() => Keyboard.dismiss()}
         // keyboardShouldPersistTaps={'always'}
           style={{backgroundColor: '#EEEFE4', marginBottom: 50}}
