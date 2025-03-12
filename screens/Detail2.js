@@ -761,7 +761,7 @@ async function storeLastedLaw() {
 
       {loading4 || loading2 ||
         (loading3 && (
-          <View
+          <TouchableOpacity
             style={{
               position: 'absolute',
               left: 0,
@@ -773,7 +773,9 @@ async function storeLastedLaw() {
               justifyContent: 'center',
               alignItems: 'center',
               zIndex: 10,
-            }}>
+            }}
+            onPress={()=>Keyboard.dismiss()}
+            >
             <Text
               style={{
                 color: 'white',
@@ -783,7 +785,7 @@ async function storeLastedLaw() {
               Đang tải văn bản mới nhất ...
             </Text>
             <ActivityIndicator size="large" color="white"></ActivityIndicator>
-          </View>
+          </TouchableOpacity>
         ))}
 
         {info != null && info.length == 0 ? (
