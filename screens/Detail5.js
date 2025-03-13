@@ -527,7 +527,6 @@ export default function Detail() {
 
   let positionYArrArticalDemo = positionYArrArtical;
 
-  // console.log('articleCount',articleCount);
 
   function setPositionYArtical({y, key3}) {
     // console.log('positionYArrArtical',positionYArrArtical);
@@ -566,7 +565,7 @@ export default function Detail() {
         
         if(Platform.OS == 'ios' ){
           
-          positionYArrArtical.push({[key3]: y + currentY -50});
+          positionYArrArtical.push({[key3]: y + currentY - insets.top  + 10});
         }else{
           positionYArrArtical.push({[key3]: y + currentY});
 
