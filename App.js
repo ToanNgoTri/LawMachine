@@ -16,7 +16,7 @@ import "react-native-gesture-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as Sentry from "@sentry/react-native";
 
-const ModalStatus = createContext(); // lấy modalVisible status
+const BoxInHomeScreen = createContext(); 
 // const InfoDownloaded = createContext(); //
 // const RefOfSearchLaw = createContext(); //
 
@@ -27,10 +27,10 @@ function App() {
     dsn: "https://a645dd4585aedcdd48ed6ec4b15587fc@o4508942714339328.ingest.us.sentry.io/4508942715977728",
   });
 
-  // const [modalStatus, setModalStatus] = useState(false);
-  // const updateModalStatus = data => {
-  //   setModalStatus(data);
-  // };
+  const [showBoxInHomeScreen, setShowBoxInHomeScreen] = useState(false);
+  const updateShowBoxInHomeScreen = data => {
+    setShowBoxInHomeScreen(data);
+  };
   
   // const [info, setInfo] = useState({});
   // const updateInfo = data => {
@@ -52,7 +52,7 @@ function App() {
     <GestureHandlerRootView>
     <SafeAreaProvider>
     <Provider store={store}>
-      {/* <ModalStatus.Provider value={{modalStatus, updateModalStatus}}> */}
+      <BoxInHomeScreen.Provider value={{showBoxInHomeScreen, updateShowBoxInHomeScreen}}>
       {/* <RefOfSearchLaw.Provider value={{searchLawRef, updatesearchLawRef}}> */}
             {/* <InfoDownloaded.Provider value={{info,updateInfo}}> */}
       {/* <SafeAreaProvider> */}
@@ -62,7 +62,7 @@ function App() {
     {/* </SafeAreaProvider> */}
             {/* </InfoDownloaded.Provider> */}
             {/* </RefOfSearchLaw.Provider> */}
-      {/* </ModalStatus.Provider> */}
+      </BoxInHomeScreen.Provider>
     </Provider>
     </SafeAreaProvider>
     </GestureHandlerRootView>
@@ -70,4 +70,4 @@ function App() {
 }
 
 export default Sentry.wrap(App);
-export { ModalStatus};
+export { BoxInHomeScreen};
