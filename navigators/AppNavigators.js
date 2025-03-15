@@ -4,20 +4,22 @@ import {useSelector, useDispatch} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 // import database from '@react-native-firebase/database';
-import {useEffect, useContext} from 'react';
+import {useEffect, useContext,useRef} from 'react';
 import Home from '../screens/Home';
 import {Detail1} from '../screens/Detail1';
 import {Detail2} from '../screens/Detail2';
 // import Detail4 from '../screens/Detail4';
 import Detail5 from '../screens/Detail';
 import {useNetInfo} from '@react-native-community/netinfo';
-// import {ModalStatus} from '../App';
+import {BoxInHomeScreen} from '../App';
 import {
   Text,
   View,
   StyleSheet,
   TouchableOpacity,
-  Image
+  Image,
+  Animated,
+  
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -176,8 +178,33 @@ const Tab = createMaterialTopTabNavigator();
 
 const AppNavigators = () => {
   const insets = useSafeAreaInsets(); // lất chiều cao để manu top iphone
-  
+  const BoxInHomeScreenStatus = useContext(BoxInHomeScreen);
+
+  const animated = useRef(new Animated.Value(0)).current;
+
+  let translateY = animated.interpolate({
+    inputRange: [0, 100],
+    outputRange: [0, 100],
+  });
+
+  let Opacity = animated.interpolate({
+    inputRange: [0, 100],
+    outputRange: [.5, 0],
+  });
+
+
+useEffect(() => {
+  Animated.timing(animated, {
+    toValue: BoxInHomeScreenStatus.showBoxInHomeScreen ? 0 : 100,
+    // toValue:100,
+    duration: 200,
+    useNativeDriver: false,
+  }).start();
+}, [BoxInHomeScreenStatus.showBoxInHomeScreen])
+
+
   return (
+    <View style={{flex:1}}>
     <Tab.Navigator
     
       tabBarPosition="bottom"
@@ -187,7 +214,7 @@ const AppNavigators = () => {
         animation: 'shift',
         lazy: false,
         tabBarIndicatorStyle: {
-          backgroundColor: '#336600',
+          backgroundColor: '#FF3366',
           top: -2,
           margin: 0,
           padding: 0,
@@ -308,6 +335,24 @@ const AppNavigators = () => {
         }}
       />
     </Tab.Navigator>
+     <Animated.View 
+    style={{
+      backgroundColor:'black',
+      bottom:0,
+      left:0,
+      right:0,
+      height:55 + (insets.bottom)/2,
+      position:'absolute',
+      zIndex:1,
+      opacity:Opacity,
+      transform:[{translateY:translateY}]
+    }}
+    >
+
+    </Animated.View>
+
+
+    </View>
   );
 };
 
@@ -450,7 +495,7 @@ const styles = StyleSheet.create({
   },
   IconActive: {
     fontSize: 24,
-    color: 'green',
+    color: '#FF3030',
     // transform:animatedValue
   },
   IconInActive: {

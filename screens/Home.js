@@ -12,8 +12,8 @@ import {
   TouchableWithoutFeedback,
   Platform,
 } from 'react-native';
-import {useState, useEffect, useRef} from 'react';
-// import dataOrg from '../data/data.json';
+import {useState, useEffect, useRef, useContext} from 'react';
+import {BoxInHomeScreen} from '../App';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Dirs, FileSystem} from 'react-native-file-access';
 import {useScrollToTop} from '@react-navigation/native';
@@ -41,6 +41,9 @@ export default function Home({}) {
   const ScrollViewToScroll = useRef(null);
   useScrollToTop(ScrollViewToScroll);
 
+  const BoxInHomeScreenStatus = useContext(BoxInHomeScreen);
+
+  
   const Render = ({item, i, drag, isActive}) => {
     return (
       <ScaleDecorator>
@@ -281,6 +284,8 @@ export default function Home({}) {
   
     }
 
+    // SetUpdateStatus(true);
+
   }
   };
 
@@ -315,6 +320,13 @@ export default function Home({}) {
 
     checkForUpdate();
   }, []);
+
+
+  useEffect(() => {
+    BoxInHomeScreenStatus.updateShowBoxInHomeScreen(updateStatus || showPolicy)
+  
+  }, [updateStatus,showPolicy])
+  
 
   const animated = useRef(new Animated.Value(0)).current;
 
@@ -404,7 +416,7 @@ export default function Home({}) {
               }}></Ionicons>
           </View>
           <TextInput
-            onChangeText={text => setInputSearchLaw(text)}
+            onChangeText={text => {setInputSearchLaw(text)}}
             onSubmitEditing={()=>  Keyboard.dismiss()}
             value={inputSearchLaw}
             style={inputSearchLaw ? styles.inputSearchArea : styles.placeholder}
