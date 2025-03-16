@@ -119,12 +119,12 @@ async function storeLastedLaw() {
       // đôi khi Điều ... không có khoản (nội dung chính trong điều) thì điều này giúp không load ['']
       if (word.match(/(\w+|\(|\)|\.|\+|\-|\,|\&|\?|\;|\!|\/)/gim)) {
         let inputRexgex = para.match(
-          new RegExp(String(word.replace(/\s/gim, ',?\\s,?')), 'igmu'),
+          new RegExp(String(word.replace(/\s/gim, ',?\\s,?').replace(/\./img,'.')), 'igmu'),
         );
         // let inputRexgex = para[0].match(new RegExp('hội', 'igmu'));
         if (inputRexgex) {
           let searchedPara = para
-            .split(new RegExp(String(word.replace(/\s/gim, ',?\\s,?')), 'igmu'))
+            .split(new RegExp(String(word.replace(/\s/gim, ',?\\s,?').replace(/\./img,'.')), 'igmu'))
             // .split(new RegExp('hội', 'igmu'))
             .reduce((prev, current, i) => {
               if (!i) {
@@ -430,7 +430,7 @@ async function storeLastedLaw() {
     if (FlatListToScroll.current) {
       FlatListToScroll.current.scrollToOffset({offset: 0});
     }
-    if (!input || input.match(/^(\s)*$/)) {
+    if (!input  || input.match(/^(\s)*$/) || input.match(/^\W+$/)) {
       setWanring(true);
     } else {
       dispatch({type: 'searchLaw', input: input});

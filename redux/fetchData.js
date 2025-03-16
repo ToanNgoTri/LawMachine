@@ -171,7 +171,7 @@ export function* mySaga2(state,action){
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body:JSON.stringify({input:state.input})
+      body:JSON.stringify({input:state.input.replace(/\./m,'.')})
     })
 
     let b = yield info.json()

@@ -57,12 +57,13 @@ useEffect(() => {
   return (
     <View style={{flex:1}}>
     <Tab.Navigator
-    
+      
       tabBarPosition="bottom"
       screenOptions={({route}) => ({
         tabBarPressColor: '#FFCC66',
         animationEnabled: false,
         animation: 'shift',
+        swipeEnabled: false,
         lazy: false,
         tabBarIndicatorStyle: {
           backgroundColor: '#FF3366',
@@ -192,7 +193,7 @@ useEffect(() => {
       bottom:0,
       left:0,
       right:0,
-      height:55 + (insets.bottom)/2,
+      height:55 + (insets.bottom)/2 + 1,
       position:'absolute',
       zIndex:1,
       opacity:Opacity,
