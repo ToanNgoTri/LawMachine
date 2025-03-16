@@ -119,12 +119,12 @@ async function storeLastedLaw() {
       // đôi khi Điều ... không có khoản (nội dung chính trong điều) thì điều này giúp không load ['']
       if (word.match(/(\w+|\(|\)|\.|\+|\-|\,|\&|\?|\;|\!|\/)/gim)) {
         let inputRexgex = para.match(
-          new RegExp(String(word.replace(/\s/gim, ',?\\s,?').replace(/\./img,'.')), 'igmu'),
+          new RegExp(String(word.replace(/\s/gim, ',?\\s,?').replace(/\./img,'.').replace(/\\s/img,'\.')), 'igmu'),
         );
         // let inputRexgex = para[0].match(new RegExp('hội', 'igmu'));
         if (inputRexgex) {
           let searchedPara = para
-            .split(new RegExp(String(word.replace(/\s/gim, ',?\\s,?').replace(/\./img,'.')), 'igmu'))
+            .split(new RegExp(String(word.replace(/\s/gim, ',?\\s,?').replace(/\./img,'.').replace(/\\s/img,'\.')), 'igmu'))
             // .split(new RegExp('hội', 'igmu'))
             .reduce((prev, current, i) => {
               if (!i) {

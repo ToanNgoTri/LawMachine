@@ -53,8 +53,8 @@ exports.searchLaw = onRequest(async (req, res) => {
       LawContent.find({
         $or: [
           {_id: new RegExp(`${req.body.input}`, 'i')},
-          {'info.lawDescription': new RegExp(`${req.body.input.replace(/\s/img,'\\,?\\s\\,?')}`, 'i')},
-          {'info.lawNameDisplay': new RegExp(`${req.body.input.replace(/\s/img,'\\,?\\s\\,?')}`, 'i')},
+          {'info.lawDescription': new RegExp(`${req.body.input.replace(/\s/img,'\\,?\\s\\,?').replace(/\\s/img,'\.')}`, 'i')},
+          {'info.lawNameDisplay': new RegExp(`${req.body.input.replace(/\s/img,'\\,?\\s\\,?').replace(/\\s/img,'\.')}`, 'i')},
         ],
       })
         .project({info: 1})
