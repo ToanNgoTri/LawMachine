@@ -527,6 +527,8 @@ export default function Detail() {
 
   let positionYArrArticalDemo = positionYArrArtical;
 
+  console.log('insets.top',insets.bottom);
+  
 
   function setPositionYArtical({y, key3}) {
     // console.log('positionYArrArtical',positionYArrArtical);
@@ -567,7 +569,7 @@ export default function Detail() {
           
           positionYArrArtical.push({[key3]: y + currentY - insets.top  + 10});
         }else{
-          positionYArrArtical.push({[key3]: y + currentY + 10});
+          positionYArrArtical.push({[key3]: y + currentY + 10 + insets.bottom});
         }
       }
 
