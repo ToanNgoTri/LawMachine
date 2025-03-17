@@ -569,7 +569,7 @@ export default function Detail() {
           
           positionYArrArtical.push({[key3]: y + currentY - insets.top  + 10});
         }else{
-          positionYArrArtical.push({[key3]: y + currentY+ insets.bottom + 10 });
+          positionYArrArtical.push({[key3]: y + currentY+ insets.top + 10 });
         }
       }
 
