@@ -11,6 +11,7 @@ import {
   Linking,
   TouchableWithoutFeedback,
   Platform,
+
 } from 'react-native';
 import {useState, useEffect, useRef, useContext} from 'react';
 import {BoxInHomeScreen} from '../App';
@@ -22,7 +23,7 @@ import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import DraggableFlatList, {
   ScaleDecorator,
 } from 'react-native-draggable-flatlist';
-// import crashlytics from '@react-native-firebase/crashlytics';
+// import {} from '../App'
 import VersionCheck from 'react-native-version-check';
 
 export default function Home({}) {
@@ -35,15 +36,26 @@ export default function Home({}) {
   // const [searchLawResult, setSearchLawResult] = useState([]);
   const [showPolicy, setShowPolicy] = useState(false);
   const [showBackground, setShowBackground] = useState(false);
+  const [textInputFocus, setTextInputFocus] = useState(false);
 
   const insets = useSafeAreaInsets(); // lất chiều cao để menu top iphone
 
+  const textInput = useRef(null);
+
   const ScrollViewToScroll = useRef(null);
-  useScrollToTop(ScrollViewToScroll);
+
+  // useEffect(() => {
+  //   console.log(ScrollViewToScroll.current);
+    
+    // HomeScreen.updateHomeRef(ScrollViewToScroll.current);
+  // }, [])
+  
 
   const BoxInHomeScreenStatus = useContext(BoxInHomeScreen);
 
-  
+  // const HomeScreen = useContext(RefOfHome);
+
+
   const Render = ({item, i, drag, isActive}) => {
     return (
       <ScaleDecorator>
@@ -97,7 +109,6 @@ export default function Home({}) {
   };
 
   useEffect(() => {
-
     if (inputSearchLaw) {
       setData(
         Info &&
@@ -146,9 +157,7 @@ export default function Home({}) {
 
       // DeleteInternal()
     }
-
   }, [inputSearchLaw]);
-
 
   async function getPolicyAppear() {
     if (await FileSystem.exists(Dirs.CacheDir + '/Appear.txt', 'utf8')) {
@@ -167,7 +176,6 @@ export default function Home({}) {
 
   // }
 
-
   async function getContentExist() {
     if (await FileSystem.exists(Dirs.CacheDir + '/order.txt', 'utf8')) {
       setShowBackground(false);
@@ -185,81 +193,70 @@ export default function Home({}) {
       if (FileOrder) {
         return {
           // content: JSON.parse(FileInfoStringDownloaded.Content),
-          'order': JSON.parse(FileOrder),
+          order: JSON.parse(FileOrder),
         };
       }
     } else {
       setShowBackground(true);
-      return {'order': {}}
+      return {order: {}};
     }
   }
 
-  async function exitUpdate(){
-
-
+  async function exitUpdate() {
     const latestVersion = await VersionCheck.getLatestVersion();
 
     if (await FileSystem.exists(Dirs.CacheDir + '/Appear.txt', 'utf8')) {
+      const fileAppear = await FileSystem.readFile(
+        Dirs.CacheDir + '/Appear.txt',
+        'utf8',
+      );
 
-    const fileAppear = await FileSystem.readFile(
-      Dirs.CacheDir + '/Appear.txt',
-      'utf8',
-    );
+      let contentAppear = JSON.parse(fileAppear);
 
-    let contentAppear = JSON.parse(fileAppear);
+      contentAppear[latestVersion] = false;
 
-    contentAppear[latestVersion] = false
-
-    const addInfo = await FileSystem.writeFile(
-      Dirs.CacheDir + '/Appear.txt',
-      JSON.stringify(contentAppear),
-      'utf8',
-    );
+      const addInfo = await FileSystem.writeFile(
+        Dirs.CacheDir + '/Appear.txt',
+        JSON.stringify(contentAppear),
+        'utf8',
+      );
+    }
   }
-  }
 
-
-
-  async function acceptUpdate(){
-
-
+  async function acceptUpdate() {
     const latestVersion = await VersionCheck.getLatestVersion();
 
     if (await FileSystem.exists(Dirs.CacheDir + '/Appear.txt', 'utf8')) {
+      const fileAppear = await FileSystem.readFile(
+        Dirs.CacheDir + '/Appear.txt',
+        'utf8',
+      );
 
-    const fileAppear = await FileSystem.readFile(
-      Dirs.CacheDir + '/Appear.txt',
-      'utf8',
-    );
+      let contentAppear = JSON.parse(fileAppear);
 
-    let contentAppear = JSON.parse(fileAppear);
+      contentAppear[latestVersion] = true;
 
-    contentAppear[latestVersion] = true
-
-    const addInfo = await FileSystem.writeFile(
-      Dirs.CacheDir + '/Appear.txt',
-      JSON.stringify(contentAppear),
-      'utf8',
-    );
+      const addInfo = await FileSystem.writeFile(
+        Dirs.CacheDir + '/Appear.txt',
+        JSON.stringify(contentAppear),
+        'utf8',
+      );
+    }
   }
-  }
 
+  //   async function log(){
 
-//   async function log(){
+  //     const fileAppear = await FileSystem.readFile(
+  //       Dirs.CacheDir + '/Appear.txt',
+  //       'utf8',
+  //     );
 
-//     const fileAppear = await FileSystem.readFile(
-//       Dirs.CacheDir + '/Appear.txt',
-//       'utf8',
-//     );
+  //     let contentAppear = JSON.parse(fileAppear);
 
-//     let contentAppear = JSON.parse(fileAppear);
+  // console.log('contentAppear',contentAppear);
+  //   }
 
-
-// console.log('contentAppear',contentAppear);
-//   }
-
-//   log()
-
+  //   log()
 
   const checkForUpdate = async () => {
     // Lấy phiên bản hiện tại của ứng dụng
@@ -269,24 +266,21 @@ export default function Home({}) {
     const latestVersion = await VersionCheck.getLatestVersion();
 
     if (await FileSystem.exists(Dirs.CacheDir + '/Appear.txt', 'utf8')) {
+      const fileAppear = await FileSystem.readFile(
+        Dirs.CacheDir + '/Appear.txt',
+        'utf8',
+      );
 
-    const fileAppear = await FileSystem.readFile(
-      Dirs.CacheDir + '/Appear.txt',
-      'utf8',
-    );
+      let contentAppear = JSON.parse(fileAppear);
 
-    let contentAppear = JSON.parse(fileAppear);
-
-    if(Number(latestVersion)> Number(currentVersion)){
-      if(!contentAppear[latestVersion]){
-        SetUpdateStatus(true);
+      if (Number(latestVersion) > Number(currentVersion)) {
+        if (!contentAppear[latestVersion]) {
+          SetUpdateStatus(true);
+        }
       }
-  
+
+      // SetUpdateStatus(true);
     }
-
-    // SetUpdateStatus(true);
-
-  }
   };
 
   useEffect(() => {
@@ -321,12 +315,9 @@ export default function Home({}) {
     checkForUpdate();
   }, []);
 
-
   useEffect(() => {
-    BoxInHomeScreenStatus.updateShowBoxInHomeScreen(updateStatus || showPolicy)
-  
-  }, [updateStatus,showPolicy])
-  
+    BoxInHomeScreenStatus.updateShowBoxInHomeScreen(updateStatus || showPolicy);
+  }, [updateStatus, showPolicy]);
 
   const animated = useRef(new Animated.Value(0)).current;
 
@@ -355,12 +346,10 @@ export default function Home({}) {
   // console.log('Info',Info);
 
   function NoneOfResult() {
-    
-    return(
+    return (
       <TouchableWithoutFeedback
-              style={{backgroundColor:'red'}}
-              onPress={()=>Keyboard.dismiss()}>
-        
+        style={{backgroundColor: 'red'}}
+        onPress={() => Keyboard.dismiss()}>
         <View
           style={{
             paddingBottom: 100,
@@ -372,14 +361,13 @@ export default function Home({}) {
           }}>
           <Text style={{fontSize: 40, textAlign: 'center', color: 'gray'}}>
             {' '}
-            {data.length?'':'Chưa có văn bản tải xuống'}
+            {data.length ? '' : 'Chưa có văn bản tải xuống'}
           </Text>
         </View>
-        </TouchableWithoutFeedback>
-    )
+      </TouchableWithoutFeedback>
+    );
   }
 
-  
   return (
     <>
       <View
@@ -402,31 +390,50 @@ export default function Home({}) {
             width: '150%',
           }}></View>
         <View style={{flexDirection: 'row'}}>
-          <View
+          <TouchableOpacity
             style={{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-            }}>
+            }}
+            onPress={()=>ScrollViewToScroll.current.scrollToOffset({
+              offset: 0, // The scroll position (in pixels)
+              animated: true, // If true, scroll will be animated
+            })}
+            >
             <Ionicons
               name="logo-buffer"
               style={{
                 color: 'green',
                 fontSize: 25,
               }}></Ionicons>
-          </View>
+          </TouchableOpacity>
           <TextInput
-            onChangeText={text => {setInputSearchLaw(text)}}
-            onSubmitEditing={()=>  Keyboard.dismiss()}
+            onChangeText={text => {
+              setInputSearchLaw(text);
+            }}
+            ref={textInput}
+            onSubmitEditing={() => Keyboard.dismiss()}
             value={inputSearchLaw}
             style={inputSearchLaw ? styles.inputSearchArea : styles.placeholder}
             placeholder="Nhập tên, Số văn bản, Trích yếu . . ."
-            placeholderTextColor={'gray'}></TextInput>
+            placeholderTextColor={'gray'}
+            onTouchEnd={() => {
+              if (textInputFocus) {
+                textInput.current.blur();
+                setTextInputFocus(false);
+              } else {
+                setTextInputFocus(true);
+                textInput.current.focus();
+              }
+            }}
+            onFocus={() => setTextInputFocus(true)}
+            onBlur={() => setTextInputFocus(false)}></TextInput>
           <TouchableOpacity
             onPress={() => {
               setInputSearchLaw('');
               Keyboard.dismiss();
-              setData(Info)
+              setData(Info);
             }}
             style={{
               width: '10%',
@@ -450,23 +457,32 @@ export default function Home({}) {
         </View>
       </View>
       {showBackground ? (
-<NoneOfResult/>
-) : !data.length ? <NoneOfResult/> : (
-        <DraggableFlatList
-        ref={ScrollViewToScroll}
-        onScrollBeginDrag={() => Keyboard.dismiss()}
-        // keyboardShouldPersistTaps={'always'}
-          style={{backgroundColor: '#EEEFE4', marginBottom: 50}}
-          
-          // data={Info && (searchLawResult || Object.keys(Info))}
-          data={data}
-          renderItem={Render}
-          keyExtractor={item => Object.keys(item)[0]}
-          onDragEnd={({data}) => {
-            setData(data);
-            sortedData(data);
-          }}
-        />
+        <NoneOfResult />
+      ) : !data.length ? (
+        <NoneOfResult />
+      ) : (
+        <>
+          <DraggableFlatList
+            ref={ScrollViewToScroll}
+            onScrollBeginDrag={() => Keyboard.dismiss()}
+            // keyboardShouldPersistTaps={'always'}
+            style={{backgroundColor: '#EEEFE4'}}
+            // data={Info && (searchLawResult || Object.keys(Info))}
+            data={data}
+            renderItem={Render}
+            keyExtractor={item => Object.keys(item)[0]}
+            onDragEnd={({data}) => {
+              setData(data);
+              sortedData(data);
+            }}
+            ListFooterComponent={()=>(
+              <View style={{height: 94, width: '100%'}}>
+
+              </View>
+        
+            )}
+          />
+        </>
       )}
 
       {(showPolicy || updateStatus) && (
@@ -492,8 +508,7 @@ export default function Home({}) {
                 bottom: 0,
                 display: 'flex',
                 position: 'absolute',
-              }}
-            ></TouchableOpacity>
+              }}></TouchableOpacity>
           </Animated.View>
 
           <Animated.View
@@ -616,7 +631,7 @@ export default function Home({}) {
                       textAlign: 'center',
                     }}>
                     Thư viện Luật đã có phiên bản mới. Bạn có thể cập nhật để sử
-                    dụng những tiện ích mới. 
+                    dụng những tiện ích mới.
                   </Text>
                 </View>
               </ScrollView>
@@ -635,15 +650,14 @@ export default function Home({}) {
 
                   const currentVersion = VersionCheck.getCurrentVersion();
 
-                  
                   const addContent = await FileSystem.writeFile(
                     Dirs.CacheDir + '/Appear.txt',
-                    JSON.stringify({[currentVersion]:false}),
+                    JSON.stringify({[currentVersion]: false}),
                     'utf8',
                   );
 
                   Animated.timing(animated, {
-                    toValue: (showPolicy||updateStatus) ? 100 : 0,
+                    toValue: showPolicy || updateStatus ? 100 : 0,
                     // toValue:100,
                     duration: 300,
                     useNativeDriver: false,
@@ -674,25 +688,24 @@ export default function Home({}) {
                       SetUpdateStatus(false);
                       return () => {};
                     }, 300);
-                    exitUpdate()
+                    exitUpdate();
 
                     Animated.timing(animated, {
-                      toValue: (showPolicy||updateStatus) ? 100 : 0,
+                      toValue: showPolicy || updateStatus ? 100 : 0,
                       // toValue:100,
                       duration: 300,
                       useNativeDriver: false,
                     }).start();
-                    
-                    if(Platform.OS == 'ios'){
+
+                    if (Platform.OS == 'ios') {
                       Linking.openURL(
                         'https://apps.apple.com/vn/app/th%C6%B0-vi%E1%BB%87n-lu%E1%BA%ADt/id6741737005?l=vi',
                       ).catch(err => console.error('Error opening URL: ', err));
-                    }else{
+                    } else {
                       Linking.openURL(
                         'https://play.google.com/store/apps/details?id=com.lawmachine&pcampaignid=web_share',
                       ).catch(err => console.error('Error opening URL: ', err));
                     }
-                    
                   }}>
                   <Text
                     style={{
@@ -720,9 +733,9 @@ export default function Home({}) {
                       return () => {};
                     }, 300);
 
-                        acceptUpdate()
+                    acceptUpdate();
                     Animated.timing(animated, {
-                      toValue: (showPolicy||updateStatus) ? 100 : 0,
+                      toValue: showPolicy || updateStatus ? 100 : 0,
                       duration: 300,
                       useNativeDriver: false,
                     }).start();

@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
   FlatList,
   Easing,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -26,11 +26,10 @@ export function Detail1({}) {
 
   const [input, setInput] = useState(undefined);
 
-  const [inputForNavi, setInputForNavi] = useState('')
+  const [inputForNavi, setInputForNavi] = useState('');
 
   const [paper, setPaper] = useState(0);
   // console.log('paper',paper);
-  
 
   const [inputFilter, setInputFilter] = useState('');
   const [showFilter, setShowFilter] = useState(false);
@@ -87,7 +86,6 @@ export function Detail1({}) {
     setLawFilted(contentFilted);
   }
 
-
   useEffect(() => {
     if (result) {
       let lawObject = {};
@@ -100,8 +98,7 @@ export function Detail1({}) {
       setSearchResult(lawObject);
 
       // setSearchResult((result.slice(0, 10)));
-      setLawFilted(((lawObject)));
-
+      setLawFilted(lawObject);
     }
   }, [result]);
 
@@ -157,8 +154,6 @@ export function Detail1({}) {
   //   }
   // }
 
-  
-
   useEffect(() => {
     collapse(name);
   }, [name]);
@@ -184,15 +179,23 @@ export function Detail1({}) {
   const NoneOfResutl = () => {
     return (
       <TouchableWithoutFeedback
-      style={{backgroundColor:'red'}}
-      onPress={()=>Keyboard.dismiss()}>
-
-      <View
-        style={{height: '100%', alignItems: 'center', justifyContent: 'center',paddingBottom:30,paddingLeft:30,paddingRight:30}}>
-        <Text style={{fontSize: 35, textAlign: 'center', color: 'gray'}}>
-          {Array.isArray(SearchResult) ?'':'Không có kết quả nào được tìm thấy'} 
-        </Text>
-      </View>
+        style={{backgroundColor: 'red'}}
+        onPress={() => Keyboard.dismiss()}>
+        <View
+          style={{
+            height: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingBottom: 30,
+            paddingLeft: 30,
+            paddingRight: 30,
+          }}>
+          <Text style={{fontSize: 35, textAlign: 'center', color: 'gray'}}>
+            {Array.isArray(SearchResult)
+              ? ''
+              : 'Không có kết quả nào được tìm thấy'}
+          </Text>
+        </View>
       </TouchableWithoutFeedback>
     );
   };
@@ -233,17 +236,19 @@ export function Detail1({}) {
             {nameLaw}
           </Text>
           {!nameLaw.match(/^(luật|bộ luật|Hiến)/gim) && (
-            <Text style={styles.descriptionText}>{'   '}{descriptionLaw}</Text>
+            <Text style={styles.descriptionText}>
+              {'   '}
+              {descriptionLaw}
+            </Text>
           )}
         </View>
       </TouchableOpacity>
     );
   };
 
-  
   function convertResultLoading(obj) {
     const first10Entries = Object.entries(obj).slice(0, paper * 10);
-// console.log(first10Entries.length);
+    // console.log(first10Entries.length);
 
     // Chuyển lại array thành object
     const first10Obj = Object.fromEntries(first10Entries);
@@ -252,9 +257,7 @@ export function Detail1({}) {
   }
 
   function loadMoreData() {
-    
-    if(paper < Math.ceil(Object.keys(SearchResult).length / 10) ){
-
+    if (paper < Math.ceil(Object.keys(SearchResult).length / 10)) {
       setPaper(paper + 1);
     }
   }
@@ -305,14 +308,18 @@ export function Detail1({}) {
         keyboardShouldPersistTaps="handled"
         style={{backgroundColor: '#EEEFE4'}}
         > */}
-      <View style={{backgroundColor: 'green', paddingTop: insets.top}}>
-      <TouchableWithoutFeedback
-      style={{backgroundColor:'red'}}
-      onPress={()=>Keyboard.dismiss()}>
+      <View style={{backgroundColor: 'green', paddingTop: insets.top,borderBottomWidth:1,borderBottomColor:'black'}}>
+        <TouchableWithoutFeedback
+          style={{backgroundColor: 'red'}}
+          onPress={() => {Keyboard.dismiss();
+            if(FlatListToScroll.current){
+              FlatListToScroll.current.scrollToOffset({offset: 0})
 
-        <Text style={styles.titleText}>{`Tìm kiếm nội dung`}</Text>
-</TouchableWithoutFeedback>
-        <View style={{...styles.inputContainer,height:57}}>
+            }
+          }}>
+          <Text style={styles.titleText}>{`Tìm kiếm nội dung`}</Text>
+        </TouchableWithoutFeedback>
+        <View style={{...styles.inputContainer, height: 57}}>
           <View style={{...styles.containerBtb, paddingTop: 5}}>
             <TouchableOpacity
               style={{
@@ -373,7 +380,6 @@ export function Detail1({}) {
                 borderRadius: 15,
                 borderColor: warning ? '#FF4500' : 'none',
                 borderWidth: warning ? 1 : 0,
-
               }}>
               <TextInput
                 ref={textInput}
@@ -390,18 +396,18 @@ export function Detail1({}) {
                   // if(paper>2){
                   //   setPaper(0);
                   // }else{
-                    setPaper(1);
+                  setPaper(1);
                   // }
-                  if(FlatListToScroll.current){
-                    FlatListToScroll.current.scrollToOffset({ offset: 0})
+                  if (FlatListToScroll.current) {
+                    FlatListToScroll.current.scrollToOffset({offset: 0});
                   }
-                    Keyboard.dismiss();
-                  if (!input || input.match(/^(\s)*$/) ) {
+                  Keyboard.dismiss();
+                  if (!input || input.match(/^(\s)*$/)) {
                     setWanring(true);
                   } else {
                     dispatch({type: 'searchContent', input: input});
                   }
-                  setInputForNavi(input)
+                  setInputForNavi(input);
                 }}></TextInput>
               <TouchableOpacity
                 onPress={() => {
@@ -438,8 +444,7 @@ export function Detail1({}) {
                 fontSize: 12,
                 textAlign: 'center',
                 fontWeight: 'bold',
-                lineHeight:14,
-
+                lineHeight: 14,
               }}>
               {warning ? 'Vui lòng nhập từ khóa hợp lệ' : ' '}
             </Text>
@@ -492,22 +497,22 @@ export function Detail1({}) {
                 //   }
                 //   setValueInputForNav(input);
 
-                  // if(paper>2){
-                  //   setPaper(0);
+                // if(paper>2){
+                //   setPaper(0);
 
-                  // }else{
-                    setPaper(1);
-                  // }
-                if(FlatListToScroll.current){
-                  FlatListToScroll.current.scrollToOffset({ offset: 0})
+                // }else{
+                setPaper(1);
+                // }
+                if (FlatListToScroll.current) {
+                  FlatListToScroll.current.scrollToOffset({offset: 0});
                 }
                 Keyboard.dismiss();
-                if (!input || input.match(/^(\s)*$/) ) {
+                if (!input || input.match(/^(\s)*$/)) {
                   setWanring(true);
                 } else {
                   dispatch({type: 'searchContent', input: input});
                 }
-                setInputForNavi(input)
+                setInputForNavi(input);
               }}>
               <Ionicons
                 name="search-outline"
@@ -517,30 +522,34 @@ export function Detail1({}) {
         </View>
       </View>
       <View style={{marginTop: 0, marginBottom: 103}}>
-        
-        {Array.isArray(SearchResult) ? <NoneOfResutl /> : !Object.keys(SearchResult)
-            .length ? (
+        {Array.isArray(SearchResult) ? (
+          <NoneOfResutl />
+        ) : !Object.keys(SearchResult).length ? (
           <NoneOfResutl />
         ) : (
           <FlatList
-          onScrollBeginDrag={() => Keyboard.dismiss()}
-
-          ref={FlatListToScroll}
-            data={Object.keys( convertResultLoading(LawFilted))}
+            onScrollBeginDrag={() => Keyboard.dismiss()}
+            ref={FlatListToScroll}
+            data={Object.keys(convertResultLoading(LawFilted))}
             renderItem={item => <Item title={item} />}
-            onEndReached={(distanceFromEnd)=>{if(!distanceFromEnd.distanceFromEnd){loadMoreData()}
+            onEndReached={distanceFromEnd => {
+              if (!distanceFromEnd.distanceFromEnd) {
+                loadMoreData();
+              }
             }}
-            onEndReachedThreshold={0} 
+            onEndReachedThreshold={0}
             ListFooterComponent={
-              (paper < Math.ceil(Object.keys(SearchResult).length / 10))&& checkedAllFilter ? (
-                <ActivityIndicator color="black"/>
+              paper < Math.ceil(Object.keys(LawFilted).length / 10) ? (
+                <>
+                  <ActivityIndicator color="black" />
+                  <View style={{height: 50, width: 10}}></View>
+                </>
               ) : (
-                <></>
+                <View style={{height: 50, width: 10}}></View>
               )
             }
           />
         )}
-
       </View>
       {/* </ScrollView> */}
 
@@ -571,10 +580,10 @@ export function Detail1({}) {
                   setShowFilter(false);
                   return () => {};
                 }, 500);
-                setChoosenLaw(Object.keys(LawFilted))
+                setChoosenLaw(Object.keys(LawFilted));
                 Animated.timing(animated, {
                   toValue: !showFilter ? 100 : 0,
-                  easing:Easing.in,
+                  easing: Easing.in,
                   duration: 300,
                   useNativeDriver: false,
                 }).start();
@@ -822,14 +831,14 @@ export function Detail1({}) {
                 // setChoosenLaw(Object.keys(LawFilted))
                 Animated.timing(animated, {
                   toValue: !showFilter ? 100 : 0,
-                  easing:Easing.in,
+                  easing: Easing.in,
                   duration: 300,
                   useNativeDriver: false,
                 }).start();
                 // if(checkedAllFilter){
                 //   setLawFilted(false)
                 // }
-                setPaper(1)
+                setPaper(1);
                 if (FlatListToScroll.current) {
                   FlatListToScroll.current.scrollToOffset({offset: 0});
                 }
@@ -917,8 +926,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom:2
-
+    marginBottom: 2,
   },
   descriptionText: {
     textAlign: 'center',

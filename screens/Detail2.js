@@ -10,7 +10,7 @@ import {
   Animated,
   FlatList,
   Easing,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from 'react-native';
 // import {handle2, searchLaw} from '../redux/fetchData';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -90,24 +90,22 @@ export function Detail2({}) {
     // console.log('LawFilted',LawFilted);
   }
 
-async function storeLastedLaw() {
-  const addContent = await FileSystem.writeFile(
-    Dirs.CacheDir + '/lastedLaw.txt',
-    JSON.stringify({
-      "currentCountLaw": result4,
-      "lastedLaw": convertResult(info3.slice(0, 10)),
-    }),
-    'utf8',
-  );
-
+  async function storeLastedLaw() {
+    const addContent = await FileSystem.writeFile(
+      Dirs.CacheDir + '/lastedLaw.txt',
+      JSON.stringify({
+        currentCountLaw: result4,
+        lastedLaw: convertResult(info3.slice(0, 10)),
+      }),
+      'utf8',
+    );
   }
-  useEffect( () => {
+  useEffect(() => {
     if (info3.length) {
       setSearchResult(convertResult(info3.slice(0, 10)));
       setLawFilted(convertResult(info3.slice(0, 10)));
-      storeLastedLaw()
+      storeLastedLaw();
       // console.log('info3',info3);
-      
     }
   }, [info3]);
 
@@ -119,12 +117,30 @@ async function storeLastedLaw() {
       // đôi khi Điều ... không có khoản (nội dung chính trong điều) thì điều này giúp không load ['']
       if (word.match(/(\w+|\(|\)|\.|\+|\-|\,|\&|\?|\;|\!|\/)/gim)) {
         let inputRexgex = para.match(
-          new RegExp(String(word.replace(/\s/gim, ',?\\s,?').replace(/\./img,'.').replace(/\\s/img,'\.')), 'igmu'),
+          new RegExp(
+            String(
+              word
+                .replace(/\s/gim, ',?\\s,?')
+                .replace(/\./gim, '.')
+                .replace(/\\s/gim, '.'),
+            ),
+            'igmu',
+          ),
         );
         // let inputRexgex = para[0].match(new RegExp('hội', 'igmu'));
         if (inputRexgex) {
           let searchedPara = para
-            .split(new RegExp(String(word.replace(/\s/gim, ',?\\s,?').replace(/\./img,'.').replace(/\\s/img,'\.')), 'igmu'))
+            .split(
+              new RegExp(
+                String(
+                  word
+                    .replace(/\s/gim, ',?\\s,?')
+                    .replace(/\./gim, '.')
+                    .replace(/\\s/gim, '.'),
+                ),
+                'igmu',
+              ),
+            )
             // .split(new RegExp('hội', 'igmu'))
             .reduce((prev, current, i) => {
               if (!i) {
@@ -273,7 +289,6 @@ async function storeLastedLaw() {
 
   async function checkLastedLaw() {
     if (await FileSystem.exists(Dirs.CacheDir + '/lastedLaw.txt', 'utf8')) {
-
       const FileInfoStringContent = await FileSystem.readFile(
         Dirs.CacheDir + '/lastedLaw.txt',
         'utf8',
@@ -289,7 +304,6 @@ async function storeLastedLaw() {
       } else {
         dispatch({type: 'getlastedlaws'});
         // console.log(2);
-
       }
     } else {
       // console.log(3);
@@ -314,35 +328,25 @@ async function storeLastedLaw() {
 
   async function getContentExist() {
     if (await FileSystem.exists(Dirs.CacheDir + '/lastedLaw.txt', 'utf8')) {
-      
       const FileOrder = await FileSystem.readFile(
         Dirs.CacheDir + '/lastedLaw.txt',
         'utf8',
       );
 
       if (FileOrder) {
-        return JSON.parse(FileOrder)
-        
+        return JSON.parse(FileOrder);
       }
-    }else{
-      return JSON.parse('{"lastedLaw": {"_id":"none"}}'
-    )
+    } else {
+      return JSON.parse('{"lastedLaw": {"_id":"none"}}');
     }
   }
 
   useEffect(() => {
-
-    
-    getContentExist().then(
-      (data)=>{
-        setSearchResult(data['lastedLaw']);
-        setLawFilted(data['lastedLaw']);
-      } 
-    )
-  
-
-  }, [])
-  
+    getContentExist().then(data => {
+      setSearchResult(data['lastedLaw']);
+      setLawFilted(data['lastedLaw']);
+    });
+  }, []);
 
   function chooseDisplayKindLaw() {
     // 1 là luật, 2 là nd, 3 là TT
@@ -400,22 +404,21 @@ async function storeLastedLaw() {
   const NoneOfResutl = () => {
     return (
       <TouchableWithoutFeedback
-      style={{backgroundColor:'red'}}
-      onPress={()=>Keyboard.dismiss()}>
-
-      <View
-        style={{
-          height: '100%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingBottom: 30,
-          paddingLeft: 30,
-          paddingRight: 30,
-        }}>
-        <Text style={{fontSize: 35, textAlign: 'center', color: 'gray'}}>
-          Không có kết quả nào được tìm thấy
-        </Text>
-      </View>
+        style={{backgroundColor: 'red'}}
+        onPress={() => Keyboard.dismiss()}>
+        <View
+          style={{
+            height: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingBottom: 30,
+            paddingLeft: 30,
+            paddingRight: 30,
+          }}>
+          <Text style={{fontSize: 35, textAlign: 'center', color: 'gray'}}>
+            Không có kết quả nào được tìm thấy
+          </Text>
+        </View>
       </TouchableWithoutFeedback>
     );
   };
@@ -430,7 +433,7 @@ async function storeLastedLaw() {
     if (FlatListToScroll.current) {
       FlatListToScroll.current.scrollToOffset({offset: 0});
     }
-    if (!input  || input.match(/^(\s)*$/) || input.match(/^\W+$/)) {
+    if (!input || input.match(/^(\s)*$/) || input.match(/^\W+$/)) {
       setWanring(true);
     } else {
       dispatch({type: 'searchLaw', input: input});
@@ -526,13 +529,17 @@ async function storeLastedLaw() {
         ref={ScrollViewToScroll}
         keyboardShouldPersistTaps="handled"
         style={{backgroundColor: '#EEEFE4'}}> */}
-      <View style={{backgroundColor: 'green', paddingTop: insets.top}}>
-      <TouchableWithoutFeedback
-      style={{backgroundColor:'red'}}
-      onPress={()=>Keyboard.dismiss()}>
+      <View style={{backgroundColor: 'green', paddingTop: insets.top,borderBottomWidth:1,borderBottomColor:'black'}}>
+        <TouchableWithoutFeedback
+          style={{backgroundColor: 'red'}}
+          onPress={() => {Keyboard.dismiss();
+          if(FlatListToScroll.current){
+            FlatListToScroll.current.scrollToOffset({offset: 0})
 
-        <Text style={styles.titleText}>{`Tìm kiếm văn bản`}</Text>
-</TouchableWithoutFeedback>
+          }
+          }}>
+          <Text style={styles.titleText}>{`Tìm kiếm văn bản`}</Text>
+        </TouchableWithoutFeedback>
         <View style={{...styles.inputContainer, height: 52}}>
           <View style={{...styles.containerBtb, paddingTop: 5}}>
             <TouchableOpacity
@@ -597,7 +604,6 @@ async function storeLastedLaw() {
                 borderWidth: warning ? 1 : 0,
               }}>
               <TextInput
-              
                 ref={textInput}
                 style={{...styles.inputArea}}
                 onChangeText={text => {
@@ -735,43 +741,41 @@ async function storeLastedLaw() {
         </View>
       </View>
 
-
       <View style={{marginTop: 0, flex: 1}}>
-
-      {loading4 || loading2 ||
-        (loading3 && (
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-              opacity: 0.7,
-              backgroundColor: 'black',
-              justifyContent: 'center',
-              alignItems: 'center',
-              zIndex: 10,
-            }}
-            onPress={()=>Keyboard.dismiss()}
-            >
-            <Text
+        {loading4 ||
+          loading2 ||
+          (loading3 && (
+            <TouchableOpacity
               style={{
-                color: 'white',
-                marginBottom: 15,
-                fontWeight: 'bold',
-              }}>
-              Đang tải văn bản mới nhất ...
-            </Text>
-            <ActivityIndicator size="large" color="white"></ActivityIndicator>
-          </TouchableOpacity>
-        ))}
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+                opacity: 0.7,
+                backgroundColor: 'black',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 10,
+              }}
+              onPress={() => Keyboard.dismiss()}>
+              <Text
+                style={{
+                  color: 'white',
+                  marginBottom: 15,
+                  fontWeight: 'bold',
+                }}>
+                Đang tải văn bản mới nhất ...
+              </Text>
+              <ActivityIndicator size="large" color="white"></ActivityIndicator>
+            </TouchableOpacity>
+          ))}
 
         {info != null && info.length == 0 ? (
-            <NoneOfResutl style={{backgroundColor:'red'}}/>
+          <NoneOfResutl style={{backgroundColor: 'red'}} />
         ) : Object.keys(SearchResult).length || info3.length || info ? (
           <FlatList
-          onScrollBeginDrag={() => Keyboard.dismiss()}
+            onScrollBeginDrag={() => Keyboard.dismiss()}
             ref={FlatListToScroll}
             data={Object.keys(convertResultLoading(LawFilted))}
             renderItem={item => <Item title={item} />}
@@ -783,9 +787,12 @@ async function storeLastedLaw() {
             onEndReachedThreshold={0}
             ListFooterComponent={
               paper < Math.ceil(Object.keys(LawFilted).length / 10) ? (
-                <ActivityIndicator color="black" />
+                <>
+                  <ActivityIndicator color="black" />
+                  <View style={{height: 50, width: 10}}></View>
+                </>
               ) : (
-                <></>
+                <View style={{height: 50, width: 10}}></View>
               )
             }
           />
@@ -1184,8 +1191,8 @@ const styles = StyleSheet.create({
   descriptionText: {
     color: 'black',
     fontSize: 14,
-    textAlign: 'justify'
-        // textAlign: 'auto',
+    textAlign: 'justify',
+    // textAlign: 'auto',
     // backgroundColor:'blue',
     // textAlignVertical:'bottom'
   },

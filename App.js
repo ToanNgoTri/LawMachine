@@ -18,7 +18,10 @@ import * as Sentry from "@sentry/react-native";
 
 const BoxInHomeScreen = createContext(); 
 // const InfoDownloaded = createContext(); //
+// const RefOfHome = createContext(); //
 // const RefOfSearchLaw = createContext(); //
+// const RefOfSearchContent = createContext(); //
+
 
 function App() {
   
@@ -37,10 +40,22 @@ function App() {
   //   setInfo(data);
   // };
 
+  // const [homeRef, setHomeRef] = useState('');
+  // const updateHomeRef = data => {
+  //   setHomeRef(data);
+  // };
+
+
   // const [searchLawRef, setSearchLawRef] = useState('');
   // const updatesearchLawRef = data => {
   //   setSearchLawRef(data);
   // };
+
+  // const [searchContentRef, setSearchContentRef] = useState('');
+  // const updateSearchContentRef = data => {
+  //   setSearchContentRef(data);
+  // };
+
 
   // const [linkLawRelated, setLinkLawRelated] = useState('');
   // const updateLinkLawRelated = data => {
@@ -53,7 +68,9 @@ function App() {
     <SafeAreaProvider>
     <Provider store={store}>
       <BoxInHomeScreen.Provider value={{showBoxInHomeScreen, updateShowBoxInHomeScreen}}>
-      {/* <RefOfSearchLaw.Provider value={{searchLawRef, updatesearchLawRef}}> */}
+      {/* <RefOfSearchLaw.Provider value={{searchLawRef, updatesearchLawRef}}>
+      <RefOfHome.Provider value={{homeRef, updateHomeRef}}>
+      <RefOfSearchContent.Provider value={{searchContentRef, updateSearchContentRef}}> */}
             {/* <InfoDownloaded.Provider value={{info,updateInfo}}> */}
       {/* <SafeAreaProvider> */}
       {/* <SafeAreaView> */}
@@ -61,7 +78,9 @@ function App() {
     {/* </SafeAreaView> */}
     {/* </SafeAreaProvider> */}
             {/* </InfoDownloaded.Provider> */}
-            {/* </RefOfSearchLaw.Provider> */}
+{/* </RefOfSearchContent.Provider>
+            </RefOfHome.Provider>
+            </RefOfSearchLaw.Provider> */}
       </BoxInHomeScreen.Provider>
     </Provider>
     </SafeAreaProvider>

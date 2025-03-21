@@ -527,9 +527,6 @@ export default function Detail() {
 
   let positionYArrArticalDemo = positionYArrArtical;
 
-  console.log('insets.top',insets.bottom);
-  
-
   function setPositionYArtical({y, key3}) {
     // console.log('positionYArrArtical',positionYArrArtical);
     if (positionYArrArtical && positionYArrArticalDemo) {
@@ -670,11 +667,11 @@ export default function Detail() {
   let MagginBottom = animatedForNavi.interpolate({
     inputRange: [-100, 0, 80, 90, 100],
     outputRange: [
-      40 + insets.bottom / 2,
-      40 + insets.bottom / 2,
-      78 + insets.bottom / 2,
-      0,
-      0,
+      50 + insets.bottom / 2,
+      50 + insets.bottom / 2,
+      90 + insets.bottom / 2,
+      10,
+      10,
     ],
   });
 
@@ -1206,11 +1203,13 @@ export default function Detail() {
         <TouchableOpacity
           style={styles.tab}
           onPress={() => {
-            list.current.scrollTo({y: 0});
-            let timeOut = setTimeout(() => {
-              setShowArticle(false);
-              return () => {};
-            }, 600);
+            if(list.current){
+              list.current.scrollTo({y: 0});
+              let timeOut = setTimeout(() => {
+                setShowArticle(false);
+                return () => {};
+              }, 600);
+              }
           }}>
           <Ionicons name="arrow-up-outline" style={styles.innerTab}></Ionicons>
         </TouchableOpacity>
