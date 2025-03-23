@@ -46,7 +46,7 @@ const AppNavigators = () => {
     setWidthDevice(width);
   });
 
-  const animatedForHomeTab = useRef(new Animated.Value(0)).current;
+  const animatedForHomeTab = useRef(new Animated.Value(60)).current;
 
   let homeTabRibbon = animatedForHomeTab.interpolate({
     inputRange: [0, 60],
@@ -63,7 +63,7 @@ const AppNavigators = () => {
     outputRange: [1, 1.2],
   });
 
-  const animatedForSearchLaw = useRef(new Animated.Value(60)).current;
+  const animatedForSearchLaw = useRef(new Animated.Value(0)).current;
 
   let searchLawRibbon = animatedForSearchLaw.interpolate({
     inputRange: [0, 60],
@@ -143,6 +143,99 @@ const AppNavigators = () => {
                 overflow: 'hidden',
               }}>
 
+<Animated.View
+                style={{
+                  // backgroundColor:'red',
+                  alignItems: 'center',
+                  minWidth: 100,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  overflow: 'hidden',
+                  justifyContent: 'center',
+                  position: 'relative',
+                  height: 44,
+                  bottom: 5+insets.bottom/7,
+                  transform: [{scale: homeTabIconSize},{translateX:-7}],
+                }}>
+                <TouchableOpacity
+                  style={{
+                    width: widthDevice / 3,
+                    height: 100,
+                    // backgroundColor: 'red',
+                    justifyContent: 'center',
+                    display: 'flex',
+                  }}
+                  onPress={() => {
+                    navigation.navigate('Home');
+                    Animated.timing(animatedForHomeTab, {
+                      toValue: 60,
+                      // toValue:100,
+                      duration: 300,
+                      useNativeDriver: false,
+                    }).start();
+
+                    Animated.timing(animatedForSearchLaw, {
+                      toValue: 0,
+                      // toValue:100,
+                      duration: 300,
+                      useNativeDriver: false,
+                    }).start();
+
+                    Animated.timing(animatedForSearchContent, {
+                      toValue: 0,
+                      // toValue:100,
+                      duration: 300,
+                      useNativeDriver: false,
+                    }).start();
+                  }}>
+                  {state.index == 0 ? (
+                    <View style={{alignItems: 'center',
+                      transform:[{translateY:-2}]
+                    }}>
+                      <Animated.View
+                        style={{
+                          width: homeTabRibbon,
+                          height: 29,
+                          borderRadius: 10,
+                          backgroundColor: '#996600', //rgba(39,64,139,.7)
+                          position: 'absolute',
+                        }}></Animated.View>
+                      <Ionicons
+                        name="home"
+                        style={styles.IconActive}></Ionicons>
+                    </View>
+                  ) : (
+                    <View
+                      style={{justifyContent: 'center', alignItems: 'center'}}>
+                      <Ionicons
+                        name="home-outline"
+                        style={styles.IconInActive}></Ionicons>
+                    </View>
+                  )}
+                  <Animated.View
+                    style={{
+                      // height:homeTabTitleHeight,
+                      transform: [{scale: homeTabTitleHeight}],
+                      justifyContent: 'center',
+                      // backgroundColor:'yellow',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        ...(state.index == 0
+                          ? styles.TextActive
+                          : styles.TextInActive),
+                        fontSize: 12,
+                        fontWeight: 'bold',
+                        display: state.index == 0 ? 'none' : 'flex',
+                        lineHeight: 15,
+                      }}>
+                      Đã tải xuống
+                    </Text>
+                  </Animated.View>
+                </TouchableOpacity>
+              </Animated.View>
+
               <Animated.View
                 style={{
                   alignItems: 'center',
@@ -189,7 +282,7 @@ const AppNavigators = () => {
                       useNativeDriver: false,
                     }).start();
                   }}>
-                  {state.index == 0 ? (
+                  {state.index == 1 ? (
                     <View style={{alignItems: 'center',
                       transform:[{translateY:-2}]
                     }}>
@@ -224,12 +317,12 @@ const AppNavigators = () => {
                     }}>
                     <Text
                       style={{
-                        ...(state.index == 0
+                        ...(state.index == 1
                           ? styles.TextActive
                           : styles.TextInActive),
                         fontSize: 12,
                         fontWeight: 'bold',
-                        display: state.index == 0 ? 'none' : 'flex',
+                        display: state.index == 1 ? 'none' : 'flex',
                         lineHeight: 15,
                       }}>
                       Tìm văn bản
@@ -282,7 +375,7 @@ const AppNavigators = () => {
                       useNativeDriver: false,
                     }).start();
                   }}>
-                  {state.index == 1 ? (
+                  {state.index == 2 ? (
                     <View style={{alignItems: 'center',
                       transform:[{translateY:-2}]
                     }}>
@@ -317,99 +410,6 @@ const AppNavigators = () => {
                     }}>
                     <Text
                       style={{
-                        ...(state.index == 1
-                          ? styles.TextActive
-                          : styles.TextInActive),
-                        fontSize: 12,
-                        fontWeight: 'bold',
-                        display: state.index == 1 ? 'none' : 'flex',
-                        lineHeight: 15,
-                      }}>
-                      Tìm nội dung
-                    </Text>
-                  </Animated.View>
-                </TouchableOpacity>
-              </Animated.View>
-
-              <Animated.View
-                style={{
-                  // backgroundColor:'red',
-                  alignItems: 'center',
-                  minWidth: 100,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  overflow: 'hidden',
-                  justifyContent: 'center',
-                  position: 'relative',
-                  height: 44,
-                  bottom: 5+insets.bottom/7,
-                  transform: [{scale: homeTabIconSize},{translateX:-7}],
-                }}>
-                <TouchableOpacity
-                  style={{
-                    width: widthDevice / 3,
-                    height: 100,
-                    // backgroundColor: 'red',
-                    justifyContent: 'center',
-                    display: 'flex',
-                  }}
-                  onPress={() => {
-                    navigation.navigate('Home');
-                    Animated.timing(animatedForHomeTab, {
-                      toValue: 60,
-                      // toValue:100,
-                      duration: 300,
-                      useNativeDriver: false,
-                    }).start();
-
-                    Animated.timing(animatedForSearchLaw, {
-                      toValue: 0,
-                      // toValue:100,
-                      duration: 300,
-                      useNativeDriver: false,
-                    }).start();
-
-                    Animated.timing(animatedForSearchContent, {
-                      toValue: 0,
-                      // toValue:100,
-                      duration: 300,
-                      useNativeDriver: false,
-                    }).start();
-                  }}>
-                  {state.index == 2 ? (
-                    <View style={{alignItems: 'center',
-                      transform:[{translateY:-2}]
-                    }}>
-                      <Animated.View
-                        style={{
-                          width: homeTabRibbon,
-                          height: 29,
-                          borderRadius: 10,
-                          backgroundColor: '#996600', //rgba(39,64,139,.7)
-                          position: 'absolute',
-                        }}></Animated.View>
-                      <Ionicons
-                        name="home"
-                        style={styles.IconActive}></Ionicons>
-                    </View>
-                  ) : (
-                    <View
-                      style={{justifyContent: 'center', alignItems: 'center'}}>
-                      <Ionicons
-                        name="home-outline"
-                        style={styles.IconInActive}></Ionicons>
-                    </View>
-                  )}
-                  <Animated.View
-                    style={{
-                      // height:homeTabTitleHeight,
-                      transform: [{scale: homeTabTitleHeight}],
-                      justifyContent: 'center',
-                      // backgroundColor:'yellow',
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={{
                         ...(state.index == 2
                           ? styles.TextActive
                           : styles.TextInActive),
@@ -418,11 +418,12 @@ const AppNavigators = () => {
                         display: state.index == 2 ? 'none' : 'flex',
                         lineHeight: 15,
                       }}>
-                      Đã tải xuống
+                      Tìm nội dung
                     </Text>
                   </Animated.View>
                 </TouchableOpacity>
               </Animated.View>
+
 
             </View>
           );
@@ -460,6 +461,98 @@ const AppNavigators = () => {
           //   display:'none'
           // },
         })}>
+
+<Tab.Screen
+          name="Home"
+          component={Home}
+          options={{
+            header: () => null,
+            // tabBarIcon: ({focused, color, size}) => {
+            //   return (
+            //     <Animated.View
+            //       style={{
+            //         alignItems: 'center',
+            //         minWidth: 100,
+            //         // backgroundColor: 'red',
+            //         display: 'flex',
+            //         flexDirection: 'column',
+            //         overflow: 'hidden',
+            //         justifyContent: 'center',
+            //         position: 'relative',
+            //         height: 44,
+            //         top: -8,
+            //         transform: [{scale: homeTabIconSize}],
+            //       }}>
+            //       {true ? (
+            //         <View>
+            //           <Animated.View
+            //             style={{
+            //               width: homeTabRibbon,
+            //               height: 29,
+            //               borderRadius: 10,
+            //               backgroundColor: 'rgba(39,64,139,.6)',
+            //               position: 'absolute',
+            //               transform: [{translateX: -16}],
+            //             }}></Animated.View>
+            //           <Ionicons
+            //             name="home"
+            //             style={styles.IconActive}></Ionicons>
+            //         </View>
+            //       ) : (
+            //         <Ionicons
+            //           name="home-outline"
+            //           style={styles.IconInActive}></Ionicons>
+            //       )}
+            //       <Animated.View
+            //         style={{
+            //           // height:homeTabTitleHeight,
+            //           // backgroundColor:'yellow',
+            //           padding: 0,
+            //           transform: [{scale: homeTabTitleHeight}],
+            //         }}>
+            //         <Text
+            //           style={{
+            //             ...(true ? styles.TextActive : styles.TextInActive),
+            //             fontSize: 13,
+            //             fontWeight: 'bold',
+            //             display: true ? 'none' : 'flex',
+            //           }}>
+            //           Đã tải xuống
+            //         </Text>
+            //       </Animated.View>
+            //     </Animated.View>
+            //   );
+            // },
+
+            tabBarLabel: () => {
+              return null;
+            },
+          }}
+          listeners={{
+            tabPress: props => {
+              Animated.timing(animatedForHomeTab, {
+                toValue: 60,
+                // toValue:100,
+                duration: 300,
+                useNativeDriver: false,
+              }).start();
+
+              Animated.timing(animatedForSearchLaw, {
+                toValue: 0,
+                // toValue:100,
+                duration: 300,
+                useNativeDriver: false,
+              }).start();
+
+              Animated.timing(animatedForSearchContent, {
+                toValue: 0,
+                // toValue:100,
+                duration: 300,
+                useNativeDriver: false,
+              }).start();
+            },
+          }}
+        />
 
         <Tab.Screen
           name="SearchLaw"
@@ -696,97 +789,6 @@ const AppNavigators = () => {
           }}
         />
 
-<Tab.Screen
-          name="Home"
-          component={Home}
-          options={{
-            header: () => null,
-            // tabBarIcon: ({focused, color, size}) => {
-            //   return (
-            //     <Animated.View
-            //       style={{
-            //         alignItems: 'center',
-            //         minWidth: 100,
-            //         // backgroundColor: 'red',
-            //         display: 'flex',
-            //         flexDirection: 'column',
-            //         overflow: 'hidden',
-            //         justifyContent: 'center',
-            //         position: 'relative',
-            //         height: 44,
-            //         top: -8,
-            //         transform: [{scale: homeTabIconSize}],
-            //       }}>
-            //       {true ? (
-            //         <View>
-            //           <Animated.View
-            //             style={{
-            //               width: homeTabRibbon,
-            //               height: 29,
-            //               borderRadius: 10,
-            //               backgroundColor: 'rgba(39,64,139,.6)',
-            //               position: 'absolute',
-            //               transform: [{translateX: -16}],
-            //             }}></Animated.View>
-            //           <Ionicons
-            //             name="home"
-            //             style={styles.IconActive}></Ionicons>
-            //         </View>
-            //       ) : (
-            //         <Ionicons
-            //           name="home-outline"
-            //           style={styles.IconInActive}></Ionicons>
-            //       )}
-            //       <Animated.View
-            //         style={{
-            //           // height:homeTabTitleHeight,
-            //           // backgroundColor:'yellow',
-            //           padding: 0,
-            //           transform: [{scale: homeTabTitleHeight}],
-            //         }}>
-            //         <Text
-            //           style={{
-            //             ...(true ? styles.TextActive : styles.TextInActive),
-            //             fontSize: 13,
-            //             fontWeight: 'bold',
-            //             display: true ? 'none' : 'flex',
-            //           }}>
-            //           Đã tải xuống
-            //         </Text>
-            //       </Animated.View>
-            //     </Animated.View>
-            //   );
-            // },
-
-            tabBarLabel: () => {
-              return null;
-            },
-          }}
-          listeners={{
-            tabPress: props => {
-              Animated.timing(animatedForHomeTab, {
-                toValue: 60,
-                // toValue:100,
-                duration: 300,
-                useNativeDriver: false,
-              }).start();
-
-              Animated.timing(animatedForSearchLaw, {
-                toValue: 0,
-                // toValue:100,
-                duration: 300,
-                useNativeDriver: false,
-              }).start();
-
-              Animated.timing(animatedForSearchContent, {
-                toValue: 0,
-                // toValue:100,
-                duration: 300,
-                useNativeDriver: false,
-              }).start();
-            },
-          }}
-        />
 
       </Tab.Navigator>
       <Animated.View
