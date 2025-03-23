@@ -542,10 +542,10 @@ export function Detail1({}) {
               paper < Math.ceil(Object.keys(LawFilted).length / 10) ? (
                 <>
                   <ActivityIndicator color="black" />
-                  <View style={{height: 50, width: 10}}></View>
+                  <View style={{height: 54 + insets.bottom/3.5 + insets.top, width: 10}}></View>
                 </>
               ) : (
-                <View style={{height: 50, width: 10}}></View>
+                <View style={{height: 54 + insets.bottom/3.5 + insets.top, width: 10}}></View>
               )
             }
           />

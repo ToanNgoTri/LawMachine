@@ -1243,25 +1243,27 @@ export default function Detail() {
           // style={showArticle && !find ? styles.ActiveTab : styles.tab}
           style={styles.tab}
           onPress={() => {
-            if (showArticle) {
-              let timeOut = setTimeout(() => {
-                setShowArticle(false);
-                return () => {};
-              }, 600);
-            } else {
-              setShowArticle(true);
-            }
-            setFind(false);
-            Keyboard.dismiss();
-            Animated.timing(animatedForNavi, {
-              toValue: !showArticle ? -100 : 0,
-              duration: 600,
-              useNativeDriver: false,
-            }).start();
 
-            setTittleArray([]);
-            setTittleArray2([]);
-            // Shrink();
+            if(list.current){
+              if (showArticle) {
+                let timeOut = setTimeout(() => {
+                  setShowArticle(false);
+                  return () => {};
+                }, 600);
+              } else {
+                setShowArticle(true);
+              }
+              setFind(false);
+              Keyboard.dismiss();
+              Animated.timing(animatedForNavi, {
+                toValue: !showArticle ? -100 : 0,
+                duration: 600,
+                useNativeDriver: false,
+              }).start();
+  
+              setTittleArray([]);
+              setTittleArray2([]);
+              }
           }}>
           <Ionicons
             name="menu-outline"

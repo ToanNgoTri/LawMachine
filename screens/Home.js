@@ -466,7 +466,7 @@ export default function Home({}) {
             ref={ScrollViewToScroll}
             onScrollBeginDrag={() => Keyboard.dismiss()}
             // keyboardShouldPersistTaps={'always'}
-            style={{backgroundColor: '#EEEFE4'}}
+            // style={{backgroundColor: '#EEEFE4',}}
             // data={Info && (searchLawResult || Object.keys(Info))}
             data={data}
             renderItem={Render}
@@ -476,7 +476,7 @@ export default function Home({}) {
               sortedData(data);
             }}
             ListFooterComponent={()=>(
-              <View style={{height: 94, width: '100%'}}>
+              <View style={{height: 94 + insets.bottom/2 + insets.top, width: '100%'}}>
 
               </View>
         

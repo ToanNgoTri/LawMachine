@@ -495,6 +495,10 @@ export function Detail2({}) {
     return first10Obj;
   }
 
+
+  console.log('insets.bottom',insets.bottom);
+  console.log('insets.top',insets.top);
+
   return (
     <>
       {(loading2 || !internetConnected) && (
@@ -789,10 +793,10 @@ export function Detail2({}) {
               paper < Math.ceil(Object.keys(LawFilted).length / 10) ? (
                 <>
                   <ActivityIndicator color="black" />
-                  <View style={{height: 50, width: 10}}></View>
+                  <View style={{height: 50 + insets.bottom/2 , width: 10}}></View>
                 </>
               ) : (
-                <View style={{height: 50, width: 10}}></View>
+                <View style={{height: 50 + insets.bottom/2 , width: 10}}></View>
               )
             }
           />
