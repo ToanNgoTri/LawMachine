@@ -122,7 +122,7 @@ const AppNavigators = () => {
     <View style={{flex: 1}}>
       <Tab.Navigator
         tabBar={({navigation, state, descriptors, position}) => {
-          console.log('state', insets.bottom);
+          // console.log('state', insets.bottom);
 
           return (
             <View

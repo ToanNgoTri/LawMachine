@@ -496,8 +496,6 @@ export function Detail2({}) {
   }
 
 
-  console.log('insets.bottom',insets.bottom);
-  console.log('insets.top',insets.top);
 
   return (
     <>
