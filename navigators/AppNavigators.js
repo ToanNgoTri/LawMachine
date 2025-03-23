@@ -155,7 +155,7 @@ const AppNavigators = () => {
                   position: 'relative',
                   height: 44,
                   bottom: 5+insets.bottom/7,
-                  transform: [{scale: homeTabIconSize},{translateX:-7}],
+                  transform: [{scale: homeTabIconSize},{translateX:7}],
                 }}>
                 <TouchableOpacity
                   style={{
@@ -248,7 +248,7 @@ const AppNavigators = () => {
                   position: 'relative',
                   height: 44,
                   bottom: 5+insets.bottom/7,
-                  transform: [{scale: searchLawTabIconSize},{translateX:7}],
+                  transform: [{scale: searchLawTabIconSize}],
                   
                 }}>
                 <TouchableOpacity
@@ -342,7 +342,7 @@ const AppNavigators = () => {
                   justifyContent: 'center',
                   position: 'relative',
                   height: 44,
-                  transform: [{scale: searchContentTabIconSize}],
+                  transform: [{scale: searchContentTabIconSize},{translateX:-7}],
                 }}>
                 <TouchableOpacity
                   style={{
