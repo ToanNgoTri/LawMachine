@@ -109,7 +109,12 @@ export default function Home({}) {
   };
 
   useEffect(() => {
-    if (inputSearchLaw) {
+    console.log('Object.keys(Info)',Object.keys(Info).length);
+    console.log('inputSearchLaw',inputSearchLaw);
+    
+    if (inputSearchLaw && Object.keys(Info).length) {
+      console.log(1);
+      
       setData(
         Info &&
           Info.filter(item => {
