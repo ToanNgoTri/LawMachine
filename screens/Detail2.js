@@ -586,7 +586,12 @@ export function Detail2({}) {
                   style={{
                     color: 'white',
                     textAlign: 'center',
-                    fontSize:choosenLaw.length>1000?6:choosenLaw.length>100?8:10,
+                    fontSize:
+                      choosenLaw.length > 1000
+                        ? 6
+                        : choosenLaw.length > 100
+                        ? 8
+                        : 10,
                     fontWeight: 'bold',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -635,7 +640,7 @@ export function Detail2({}) {
                 //     textInput.current.focus();
                 //   }
                 // }}
-                ></TextInput>
+              ></TextInput>
               <TouchableOpacity
                 onPress={() => {
                   setInput('');
@@ -894,7 +899,7 @@ export function Detail2({}) {
               }}>
               <TextInput
                 onChangeText={text => setInputFilter(text)}
-                ref={textInputForFilter}
+                // ref={textInputForFilter}
                 value={inputFilter}
                 style={{
                   paddingLeft: 10,
@@ -905,16 +910,16 @@ export function Detail2({}) {
                 }}
                 placeholder=" Input to Search ..."
                 placeholderTextColor={'gray'}
-                onTouchEnd={() => {
-                  if (textInputFocusForFilter) {
-                    textInputForFilter.current.blur();
-                    setTextInputFocusForFilter(false);
-                  } else {
-                    setTextInputFocusForFilter(true);
-                    textInputForFilter.current.focus();
-                  }
-                }}
-></TextInput>
+                // onTouchEnd={() => {
+                //   if (textInputFocusForFilter) {
+                //     textInputForFilter.current.blur();
+                //     setTextInputFocusForFilter(false);
+                //   } else {
+                //     setTextInputFocusForFilter(true);
+                //     textInputForFilter.current.focus();
+                //   }
+                // }}
+              ></TextInput>
               <TouchableOpacity
                 onPress={() => setInputFilter('')}
                 style={{
@@ -992,7 +997,7 @@ export function Detail2({}) {
               </Text>
             </TouchableOpacity>
 
-            <ScrollView keyboardShouldPersistTaps="handled">
+            <ScrollView keyboardShouldPersistTaps='never'>
               <View
                 style={{
                   paddingTop: 10,

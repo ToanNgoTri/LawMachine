@@ -837,7 +837,7 @@ export function Detail1({}) {
               </Text>
             </TouchableOpacity>
 
-            <ScrollView keyboardShouldPersistTaps="handled">
+            <ScrollView keyboardShouldPersistTaps='never'>
               <View
                 style={{
                   paddingTop: 10,
