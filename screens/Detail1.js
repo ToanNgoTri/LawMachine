@@ -436,7 +436,7 @@ export function Detail1({}) {
                   style={{
                     color: 'white',
                     textAlign: 'center',
-                    fontSize: 10,
+                    fontSize:choosenLaw.length>1000?6:choosenLaw.length>100?8:10,
                     fontWeight: 'bold',
                     justifyContent: 'center',
                     alignItems: 'center',
