@@ -27,7 +27,6 @@ import {
   Dimensions,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Tab = createMaterialTopTabNavigator();
@@ -45,6 +44,8 @@ const AppNavigators = () => {
     heightDevice = height;
     setWidthDevice(width);
   });
+
+  const [lastedScreenIndex, setLastedScreenIndex] = useState(0);
 
   const animatedForHomeTab = useRef(new Animated.Value(60)).current;
 
@@ -122,7 +123,16 @@ const AppNavigators = () => {
     <View style={{flex: 1}}>
       <Tab.Navigator
         tabBar={({navigation, state, descriptors, position}) => {
-          // console.log('state', insets.bottom);
+          // console.log('state.index', state.index);
+          // console.log('position', position._a._value);
+
+          if (state.index == position._a._value && state.index == 0 && global.HomeRef) {
+            global.HomeRef.scrollToOffset({offset: 0});
+          }else if(state.index == position._a._value && state.index == 1 && global.SearchLawRef){
+            global.SearchLawRef.scrollToOffset({offset: 0});
+          }else if(state.index == position._a._value && state.index == 2 && global.SearchContentRef){
+            global.SearchContentRef.scrollToOffset({offset: 0});
+          }
 
           return (
             <View
@@ -142,8 +152,7 @@ const AppNavigators = () => {
                 alignContent: 'center',
                 overflow: 'hidden',
               }}>
-
-<Animated.View
+              <Animated.View
                 style={{
                   // backgroundColor:'red',
                   alignItems: 'center',
@@ -154,8 +163,8 @@ const AppNavigators = () => {
                   justifyContent: 'center',
                   position: 'relative',
                   height: 44,
-                  bottom: 5+insets.bottom/7,
-                  transform: [{scale: homeTabIconSize},{translateX:7}],
+                  bottom: 5 + insets.bottom / 7,
+                  transform: [{scale: homeTabIconSize}, {translateX: 7}],
                 }}>
                 <TouchableOpacity
                   style={{
@@ -167,6 +176,7 @@ const AppNavigators = () => {
                   }}
                   onPress={() => {
                     navigation.navigate('Home');
+
                     Animated.timing(animatedForHomeTab, {
                       toValue: 60,
                       // toValue:100,
@@ -189,9 +199,11 @@ const AppNavigators = () => {
                     }).start();
                   }}>
                   {state.index == 0 ? (
-                    <View style={{alignItems: 'center',
-                      transform:[{translateY:-2}]
-                    }}>
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        transform: [{translateY: -2}],
+                      }}>
                       <Animated.View
                         style={{
                           width: homeTabRibbon,
@@ -247,9 +259,8 @@ const AppNavigators = () => {
                   justifyContent: 'center',
                   position: 'relative',
                   height: 44,
-                  bottom: 5+insets.bottom/7,
+                  bottom: 5 + insets.bottom / 7,
                   transform: [{scale: searchLawTabIconSize}],
-                  
                 }}>
                 <TouchableOpacity
                   style={{
@@ -283,9 +294,11 @@ const AppNavigators = () => {
                     }).start();
                   }}>
                   {state.index == 1 ? (
-                    <View style={{alignItems: 'center',
-                      transform:[{translateY:-2}]
-                    }}>
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        transform: [{translateY: -2}],
+                      }}>
                       <Animated.View
                         style={{
                           width: searchLawRibbon,
@@ -335,14 +348,17 @@ const AppNavigators = () => {
                 style={{
                   alignItems: 'center',
                   minWidth: 100,
-                  bottom: 5+insets.bottom/7,
+                  bottom: 5 + insets.bottom / 7,
                   display: 'flex',
                   flexDirection: 'column',
                   overflow: 'hidden',
                   justifyContent: 'center',
                   position: 'relative',
                   height: 44,
-                  transform: [{scale: searchContentTabIconSize},{translateX:-7}],
+                  transform: [
+                    {scale: searchContentTabIconSize},
+                    {translateX: -7},
+                  ],
                 }}>
                 <TouchableOpacity
                   style={{
@@ -376,9 +392,11 @@ const AppNavigators = () => {
                     }).start();
                   }}>
                   {state.index == 2 ? (
-                    <View style={{alignItems: 'center',
-                      transform:[{translateY:-2}]
-                    }}>
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        transform: [{translateY: -2}],
+                      }}>
                       <Animated.View
                         style={{
                           width: searchContentRibbon,
@@ -423,8 +441,6 @@ const AppNavigators = () => {
                   </Animated.View>
                 </TouchableOpacity>
               </Animated.View>
-
-
             </View>
           );
         }}
@@ -461,8 +477,7 @@ const AppNavigators = () => {
           //   display:'none'
           // },
         })}>
-
-<Tab.Screen
+        <Tab.Screen
           name="Home"
           component={Home}
           options={{
@@ -788,8 +803,6 @@ const AppNavigators = () => {
             },
           }}
         />
-
-
       </Tab.Navigator>
       <Animated.View
         style={{
@@ -802,8 +815,8 @@ const AppNavigators = () => {
           zIndex: 1,
           opacity: Opacity,
           transform: [{translateY: translateY}],
-          borderTopLeftRadius:15,
-          borderTopRightRadius:15
+          borderTopLeftRadius: 15,
+          borderTopRightRadius: 15,
         }}></Animated.View>
     </View>
   );

@@ -54,6 +54,8 @@ export default function Detail() {
 
   const [modalStatus, setModalStatus] = useState(false); 
 
+  const [textInputFocus, setTextInputFocus] = useState(false);
+
   const [exists, setExists] = useState(false);
 
   const dispatch = useDispatch();
@@ -1072,7 +1074,16 @@ export default function Detail() {
                     alignItems: 'center',
                   }}
                   placeholder=" Nhập từ điều luật ..."
-                  placeholderTextColor={'gray'}></TextInput>
+                  placeholderTextColor={'gray'}
+                  onTouchEnd={() => {
+                    if (textInputFocus) {
+                      textInputArticle.current.blur();
+                      setTextInputFocus(false);
+                    } else {
+                      setTextInputFocus(true);
+                      textInputArticle.current.focus();
+                    }}}>
+                    </TextInput>
                 <TouchableOpacity
                   onPress={() => {
                     setInputSearchArtical('');

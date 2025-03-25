@@ -17,7 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNetInfo} from '@react-native-community/netinfo';
 import React, {useEffect, useState, useRef} from 'react';
-import {useNavigation, useScrollToTop} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export function Detail1({}) {
@@ -50,18 +50,21 @@ export function Detail1({}) {
   const [warning, setWanring] = useState(false);
 
   const textInput = useRef(null);
+  const textInputForFilter = useRef(null);
 
   const FlatListToScroll = useRef(null);
 
-  useScrollToTop(FlatListToScroll);
+  // useScrollToTop(FlatListToScroll);
 
   const insets = useSafeAreaInsets(); // lất chiều cao để manu top iphone
 
   const dispatch = useDispatch();
 
   const {loading1, result} = useSelector(state => state['searchContent']);
-  // console.log('result',result);
-  // console.log('input',input);
+
+  const [textInputFocus, setTextInputFocus] = useState(false);
+  const [textInputFocusForFilter, setTextInputFocusForFilter] = useState(false);
+
 
   const navigation = useNavigation();
 
@@ -308,14 +311,20 @@ export function Detail1({}) {
         keyboardShouldPersistTaps="handled"
         style={{backgroundColor: '#EEEFE4'}}
         > */}
-      <View style={{backgroundColor: 'green', paddingTop: insets.top,borderBottomWidth:1,borderBottomColor:'black'}}>
+      <View
+        style={{
+          backgroundColor: 'green',
+          paddingTop: insets.top,
+          borderBottomWidth: 1,
+          borderBottomColor: 'black',
+        }}>
         <TouchableWithoutFeedback
           style={{backgroundColor: 'red'}}
-          onPress={() => {Keyboard.dismiss();
-            if(FlatListToScroll.current){
-              FlatListToScroll.current.scrollToOffset({offset: 0})
-
-            }
+          onPress={() => {
+            Keyboard.dismiss();
+            // if (FlatListToScroll.current) {
+            //   FlatListToScroll.current.scrollToOffset({offset: 0});
+            // }
           }}>
           <Text style={styles.titleText}>{`Tìm kiếm nội dung`}</Text>
         </TouchableWithoutFeedback>
@@ -393,11 +402,7 @@ export function Detail1({}) {
                 placeholder="Nhập từ khóa..."
                 placeholderTextColor={'gray'}
                 onSubmitEditing={() => {
-                  // if(paper>2){
-                  //   setPaper(0);
-                  // }else{
                   setPaper(1);
-                  // }
                   if (FlatListToScroll.current) {
                     FlatListToScroll.current.scrollToOffset({offset: 0});
                   }
@@ -408,6 +413,15 @@ export function Detail1({}) {
                     dispatch({type: 'searchContent', input: input});
                   }
                   setInputForNavi(input);
+                }}
+                onTouchEnd={() => {
+                  if (textInputFocus) {
+                    textInput.current.blur();
+                    setTextInputFocus(false);
+                  } else {
+                    setTextInputFocus(true);
+                    textInput.current.focus();
+                  }
                 }}></TextInput>
               <TouchableOpacity
                 onPress={() => {
@@ -529,7 +543,9 @@ export function Detail1({}) {
         ) : (
           <FlatList
             onScrollBeginDrag={() => Keyboard.dismiss()}
-            ref={FlatListToScroll}
+            ref={ref => {
+              (global.SearchContentRef = ref), FlatListToScroll;
+            }}
             data={Object.keys(convertResultLoading(LawFilted))}
             renderItem={item => <Item title={item} />}
             onEndReached={distanceFromEnd => {
@@ -542,10 +558,18 @@ export function Detail1({}) {
               paper < Math.ceil(Object.keys(LawFilted).length / 10) ? (
                 <>
                   <ActivityIndicator color="black" />
-                  <View style={{height: 54 + insets.bottom/3.5 + insets.top, width: 10}}></View>
+                  <View
+                    style={{
+                      height: 54 + insets.bottom / 3.5 + insets.top,
+                      width: 10,
+                    }}></View>
                 </>
               ) : (
-                <View style={{height: 54 + insets.bottom/3.5 + insets.top, width: 10}}></View>
+                <View
+                  style={{
+                    height: 54 + insets.bottom / 3.5 + insets.top,
+                    width: 10,
+                  }}></View>
               )
             }
           />
@@ -621,6 +645,7 @@ export function Detail1({}) {
                 height: 50,
               }}>
               <TextInput
+              ref={textInputForFilter}
                 onChangeText={text => setInputFilter(text)}
                 value={inputFilter}
                 style={{
@@ -631,7 +656,17 @@ export function Detail1({}) {
                   alignItems: 'center',
                 }}
                 placeholder=" Input to Search ..."
-                placeholderTextColor={'gray'}></TextInput>
+                placeholderTextColor={'gray'}
+                onTouchEnd={() => {
+                  if (textInputFocusForFilter) {
+                    textInputForFilter.current.blur();
+                    setTextInputFocusForFilter(false);
+                  } else {
+                    setTextInputFocusForFilter(true);
+                    textInputForFilter.current.focus();
+                  }
+                }}
+                ></TextInput>
               <TouchableOpacity
                 onPress={() => setInputFilter('')}
                 style={{

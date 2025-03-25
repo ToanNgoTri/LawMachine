@@ -11,15 +11,14 @@ import {
   Linking,
   TouchableWithoutFeedback,
   Platform,
-
 } from 'react-native';
 import {useState, useEffect, useRef, useContext} from 'react';
 import {BoxInHomeScreen} from '../App';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Dirs, FileSystem} from 'react-native-file-access';
-import {useScrollToTop} from '@react-navigation/native';
+// import {useScrollToTop} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import DraggableFlatList, {
   ScaleDecorator,
 } from 'react-native-draggable-flatlist';
@@ -42,19 +41,17 @@ export default function Home({}) {
 
   const textInput = useRef(null);
 
-  const ScrollViewToScroll = useRef(null);
+  // const ScrollViewToScroll = useRef(null);
 
   // useEffect(() => {
   //   console.log(ScrollViewToScroll.current);
-    
-    // HomeScreen.updateHomeRef(ScrollViewToScroll.current);
+
+  // HomeScreen.updateHomeRef(ScrollViewToScroll.current);
   // }, [])
-  
 
   const BoxInHomeScreenStatus = useContext(BoxInHomeScreen);
 
   // const HomeScreen = useContext(RefOfHome);
-
 
   const Render = ({item, i, drag, isActive}) => {
     return (
@@ -109,12 +106,12 @@ export default function Home({}) {
   };
 
   useEffect(() => {
-    console.log('Object.keys(Info)',Object.keys(Info).length);
-    console.log('inputSearchLaw',inputSearchLaw);
-    
+    // console.log('Object.keys(Info)', Object.keys(Info).length);
+    // console.log('inputSearchLaw', inputSearchLaw);
+
     if (inputSearchLaw && Object.keys(Info).length) {
-      console.log(1);
-      
+      // console.log(1);
+
       setData(
         Info &&
           Info.filter(item => {
@@ -366,13 +363,15 @@ export default function Home({}) {
           }}>
           <Text style={{fontSize: 40, textAlign: 'center', color: 'gray'}}>
             {' '}
-            {data.length ? '' : 'Chưa có văn bản tải xuống'}
+            {Info.length ? '' : 'Chưa có văn bản tải xuống'}
           </Text>
         </View>
       </TouchableWithoutFeedback>
     );
   }
 
+  // console.log('Info.length',Info.length);
+  
   return (
     <>
       <View
@@ -395,16 +394,18 @@ export default function Home({}) {
             width: '150%',
           }}></View>
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity
+          <View
             style={{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
             }}
-            onPress={()=>ScrollViewToScroll.current.scrollToOffset({
-              offset: 0, // The scroll position (in pixels)
-              animated: true, // If true, scroll will be animated
-            })}
+            // onPress={() =>
+            //   ScrollViewToScroll.current.scrollToOffset({
+            //     offset: 0, // The scroll position (in pixels)
+            //     animated: true, // If true, scroll will be animated
+            //   })
+            // }
             >
             <Ionicons
               name="logo-buffer"
@@ -412,7 +413,7 @@ export default function Home({}) {
                 color: 'green',
                 fontSize: 25,
               }}></Ionicons>
-          </TouchableOpacity>
+          </View>
           <TextInput
             onChangeText={text => {
               setInputSearchLaw(text);
@@ -468,7 +469,10 @@ export default function Home({}) {
       ) : (
         <>
           <DraggableFlatList
-            ref={ScrollViewToScroll}
+            ref={ref => {
+              (global.HomeRef = ref);
+            }}
+            // ref={ScrollViewToScroll}
             onScrollBeginDrag={() => Keyboard.dismiss()}
             // keyboardShouldPersistTaps={'always'}
             // style={{backgroundColor: '#EEEFE4',}}
@@ -480,11 +484,12 @@ export default function Home({}) {
               setData(data);
               sortedData(data);
             }}
-            ListFooterComponent={()=>(
-              <View style={{height: 94 + insets.bottom/2 + insets.top, width: '100%'}}>
-
-              </View>
-        
+            ListFooterComponent={() => (
+              <View
+                style={{
+                  height: 94 + insets.bottom / 2 + insets.top,
+                  width: '100%',
+                }}></View>
             )}
           />
         </>
