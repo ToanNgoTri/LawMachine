@@ -545,26 +545,26 @@ const AppNavigators = () => {
           }}
           listeners={{
             tabPress: props => {
-              Animated.timing(animatedForHomeTab, {
-                toValue: 60,
-                // toValue:100,
-                duration: 300,
-                useNativeDriver: false,
-              }).start();
+              // Animated.timing(animatedForHomeTab, {
+              //   toValue: 60,
+              //   // toValue:100,
+              //   duration: 300,
+              //   useNativeDriver: false,
+              // }).start();
 
-              Animated.timing(animatedForSearchLaw, {
-                toValue: 0,
-                // toValue:100,
-                duration: 300,
-                useNativeDriver: false,
-              }).start();
+              // Animated.timing(animatedForSearchLaw, {
+              //   toValue: 0,
+              //   // toValue:100,
+              //   duration: 300,
+              //   useNativeDriver: false,
+              // }).start();
 
-              Animated.timing(animatedForSearchContent, {
-                toValue: 0,
-                // toValue:100,
-                duration: 300,
-                useNativeDriver: false,
-              }).start();
+              // Animated.timing(animatedForSearchContent, {
+              //   toValue: 0,
+              //   // toValue:100,
+              //   duration: 300,
+              //   useNativeDriver: false,
+              // }).start();
             },
           }}
         />
@@ -661,26 +661,26 @@ const AppNavigators = () => {
           }}
           listeners={{
             tabPress: props => {
-              Animated.timing(animatedForHomeTab, {
-                toValue: 0,
-                // toValue:100,
-                duration: 300,
-                useNativeDriver: false,
-              }).start();
+              // Animated.timing(animatedForHomeTab, {
+              //   toValue: 0,
+              //   // toValue:100,
+              //   duration: 300,
+              //   useNativeDriver: false,
+              // }).start();
 
-              Animated.timing(animatedForSearchLaw, {
-                toValue: 60,
-                // toValue:100,
-                duration: 300,
-                useNativeDriver: false,
-              }).start();
+              // Animated.timing(animatedForSearchLaw, {
+              //   toValue: 60,
+              //   // toValue:100,
+              //   duration: 300,
+              //   useNativeDriver: false,
+              // }).start();
 
-              Animated.timing(animatedForSearchContent, {
-                toValue: 0,
-                // toValue:100,
-                duration: 300,
-                useNativeDriver: false,
-              }).start();
+              // Animated.timing(animatedForSearchContent, {
+              //   toValue: 0,
+              //   // toValue:100,
+              //   duration: 300,
+              //   useNativeDriver: false,
+              // }).start();
             },
           }}
         />
@@ -780,26 +780,26 @@ const AppNavigators = () => {
           }}
           listeners={{
             tabPress: props => {
-              Animated.timing(animatedForHomeTab, {
-                toValue: 0,
-                // toValue:100,
-                duration: 300,
-                useNativeDriver: false,
-              }).start();
+              // Animated.timing(animatedForHomeTab, {
+              //   toValue: 0,
+              //   // toValue:100,
+              //   duration: 300,
+              //   useNativeDriver: false,
+              // }).start();
 
-              Animated.timing(animatedForSearchLaw, {
-                toValue: 0,
-                // toValue:100,
-                duration: 300,
-                useNativeDriver: false,
-              }).start();
+              // Animated.timing(animatedForSearchLaw, {
+              //   toValue: 0,
+              //   // toValue:100,
+              //   duration: 300,
+              //   useNativeDriver: false,
+              // }).start();
 
-              Animated.timing(animatedForSearchContent, {
-                toValue: 60,
-                // toValue:100,
-                duration: 300,
-                useNativeDriver: false,
-              }).start();
+              // Animated.timing(animatedForSearchContent, {
+              //   toValue: 60,
+              //   // toValue:100,
+              //   duration: 300,
+              //   useNativeDriver: false,
+              // }).start();
             },
           }}
         />

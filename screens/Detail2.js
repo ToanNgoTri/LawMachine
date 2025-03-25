@@ -43,8 +43,8 @@ export function Detail2({}) {
   ); // đây Object là các luật, điểm, khoản có kết quả tìm kiếm
   // console.log('info3',info3);
 
-  const [textInputFocus, setTextInputFocus] = useState(false);
-  const [textInputFocusForFilter, setTextInputFocusForFilter] = useState(false);
+  // const [textInputFocus, setTextInputFocus] = useState(false);
+  // const [textInputFocusForFilter, setTextInputFocusForFilter] = useState(false);
 
   const [inputFilter, setInputFilter] = useState('');
   const [showFilter, setShowFilter] = useState(false);
@@ -63,7 +63,7 @@ export function Detail2({}) {
   const insets = useSafeAreaInsets(); // lất chiều cao để manu top iphone
 
   const textInput = useRef(null);
-  const textInputForFilter = useRef(null);
+  // const textInputForFilter = useRef(null);
 
   const FlatListToScroll = useRef(null);
 
@@ -542,7 +542,6 @@ export function Detail2({}) {
           borderBottomColor: 'black',
         }}>
         <TouchableWithoutFeedback
-          style={{backgroundColor: 'red'}}
           onPress={() => {
             Keyboard.dismiss();
             // if (FlatListToScroll.current) {
@@ -627,15 +626,16 @@ export function Detail2({}) {
                 onSubmitEditing={() => {
                   pressToSearch();
                 }}
-                onTouchEnd={() => {
-                  if (textInputFocus) {
-                    textInput.current.blur();
-                    setTextInputFocus(false);
-                  } else {
-                    setTextInputFocus(true);
-                    textInput.current.focus();
-                  }
-                }}></TextInput>
+                // onTouchEnd={() => {
+                //   if (textInputFocus) {
+                //     textInput.current.blur();
+                //     setTextInputFocus(false);
+                //   } else {
+                //     setTextInputFocus(true);
+                //     textInput.current.focus();
+                //   }
+                // }}
+                ></TextInput>
               <TouchableOpacity
                 onPress={() => {
                   setInput('');

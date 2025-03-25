@@ -36,36 +36,29 @@ export function Detail1({}) {
 
   const [checkedAllFilter, setCheckedAllFilter] = useState(true);
 
-  const [name, setName] = useState(); // dùng để collapse (thu thập key của các law)
-  const [nameArray, setNameArray] = useState([]); // arrray của các law đã expand
+  // const [name, setName] = useState(); // dùng để collapse (thu thập key của các law)
+  // const [nameArray, setNameArray] = useState([]); // arrray của các law đã expand
 
-  const [article, setArticle] = useState(); // dùng để collapse (thu thập key của các 'điều')
-  const [articleArray, setArticleArray] = useState([]); // arrray của các 'điều' đã expand
+  // const [article, setArticle] = useState(); // dùng để collapse (thu thập key của các 'điều')
+  // const [articleArray, setArticleArray] = useState([]); // arrray của các 'điều' đã expand
 
   const [choosenLaw, setChoosenLaw] = useState([]);
   const [LawFilted, setLawFilted] = useState(false);
 
-  // const inf = useContext(InfoDownloaded);
+  const [choosenKindLaw, setChoosenKindLaw] = useState([0, 1, 2]);
 
   const [warning, setWanring] = useState(false);
 
   const textInput = useRef(null);
-  const textInputForFilter = useRef(null);
 
   const FlatListToScroll = useRef(null);
-
-  // useScrollToTop(FlatListToScroll);
 
   const insets = useSafeAreaInsets(); // lất chiều cao để manu top iphone
 
   const dispatch = useDispatch();
 
   const {loading1, result} = useSelector(state => state['searchContent']);
-
-  const [textInputFocus, setTextInputFocus] = useState(false);
-  const [textInputFocusForFilter, setTextInputFocusForFilter] = useState(false);
-
-
+  
   const navigation = useNavigation();
 
   const netInfo = useNetInfo();
@@ -77,31 +70,23 @@ export function Detail1({}) {
     );
   }, [SearchResult]);
 
-  function LawFilterContent(choosenLaw, SearchResult) {
-    let contentFilted = {};
-
-    Object.keys(SearchResult).filter(key => {
-      if (choosenLaw.includes(key)) {
-        contentFilted[key] = SearchResult[key];
-      }
-    });
-
-    setLawFilted(contentFilted);
-  }
-
   useEffect(() => {
-    if (result) {
-      let lawObject = {};
-      result.map(law => {
-        lawObject[law._id] = {
-          lawNameDisplay: law.info['lawNameDisplay'],
-          lawDescription: law.info['lawDescription'],
-        };
-      });
-      setSearchResult(lawObject);
+    // if (result) {
+    //   let lawObject = {};
+    //   result.map(law => {
+    //     lawObject[law._id] = {
+    //       lawNameDisplay: law.info['lawNameDisplay'],
+    //       lawDescription: law.info['lawDescription'],
+    //     };
+    //   });
+    //   setSearchResult(lawObject);
 
-      // setSearchResult((result.slice(0, 10)));
-      setLawFilted(lawObject);
+    //   setLawFilted(lawObject);
+    // }
+
+    if (result) {
+      setSearchResult(convertResult(result));
+      setLawFilted(convertResult(result));
     }
   }, [result]);
 
@@ -117,25 +102,103 @@ export function Detail1({}) {
     outputRange: [0, 1],
   });
 
-  function collapse(a) {
-    if (a == undefined) {
-    } else if (nameArray.includes(a)) {
-      setNameArray(nameArray.filter(a1 => a1 !== a));
-    } else {
-      setNameArray([...nameArray, a]);
-    }
-    setName(null);
+  function LawFilterContent(choosenLaw, SearchResult) {
+    let contentFilted = {};
+    Object.keys(SearchResult).filter(key => {
+      if (choosenLaw.includes(key)) {
+        contentFilted[key] = SearchResult[key];
+      }
+    });
+    setLawFilted(contentFilted);
+    // console.log('LawFilted',LawFilted);
   }
 
-  function collapseArticle(a) {
-    if (a == undefined) {
-    } else if (articleArray.includes(a)) {
-      setArticleArray(articleArray.filter(a1 => a1 !== a));
-    } else {
-      setArticleArray([...articleArray, a]);
-    }
-    setArticle(null);
+  function convertResult(info) {
+    let lawObject = {};
+    info.map((law, i) => {
+      // lawObject[i] = {[law._id]:{'lawNameDisplay':law.info['lawNameDisplay'],'lawDescription':law.info['lawDescription'],'lawDaySign':law.info['lawDaySign']}}
+      lawObject[law._id] = {
+        lawNameDisplay: law.info['lawNameDisplay'],
+        lawDescription: law.info['lawDescription'],
+        lawDaySign: law.info['lawDaySign'],
+      };
+    });
+    return lawObject;
   }
+
+  function chooseDisplayKindLaw() {
+    // 1 là luật, 2 là nd, 3 là TT
+
+    let newResult = {};
+
+    if (choosenKindLaw.length) {
+      Object.keys(SearchResult).map((law, i) => {
+        let kindSample =
+          (choosenKindLaw.includes(0) ? 'Luật|Bộ luật' : '') +
+          (choosenKindLaw.includes(1) ? '|Nghị định' : '') +
+          (choosenKindLaw.includes(2) ? '|Thông tư' : '');
+        kindSample = kindSample.replace(/^\|/, '');
+
+        if (
+          SearchResult[law]['lawNameDisplay'].match(
+            new RegExp(`^(${kindSample})`, 'img'),
+          )
+        ) {
+          newResult[law] = SearchResult[law];
+        }
+      });
+      setLawFilted(newResult);
+      setChoosenLaw(Object.keys(newResult));
+    } else {
+      setLawFilted({});
+      setChoosenLaw([]);
+    }
+  }
+
+  function OrderDaySign() {
+    let data = LawFilted;
+    let ArrayResult = [];
+
+    if (Object.keys(LawFilted).length) {
+      Object.keys(data).map((law, i) => {
+        ArrayResult[i] = {
+          [Object.keys(data)[Object.keys(data).length - i - 1]]:
+            data[Object.keys(data)[Object.keys(data).length - i - 1]],
+        };
+      });
+      let newArraySearch = [];
+      ArrayResult.map((key, i) => {
+        newArraySearch[i] = JSON.stringify(key);
+      });
+      newArraySearch = newArraySearch.join(',');
+      newArraySearch = newArraySearch.replace(/\}\}\,\{/gim, '},');
+      newArraySearch = newArraySearch.replace(/^\[\{/, '');
+      newArraySearch = newArraySearch.replace(/\}\}\]$/, '}');
+      // newArraySearch = newArraySearch.replace(/\\/g,'')
+      let newObjectSearch = JSON.parse(newArraySearch);
+      setLawFilted(newObjectSearch);
+    }
+  }
+
+  // function collapse(a) {
+  //   if (a == undefined) {
+  //   } else if (nameArray.includes(a)) {
+  //     setNameArray(nameArray.filter(a1 => a1 !== a));
+  //   } else {
+  //     setNameArray([...nameArray, a]);
+  //   }
+  //   setName(null);
+  // }
+
+  // function collapseArticle(a) {
+  //   if (a == undefined) {
+  //   } else if (articleArray.includes(a)) {
+  //     setArticleArray(articleArray.filter(a1 => a1 !== a));
+  //   } else {
+  //     setArticleArray([...articleArray, a]);
+  //   }
+  //   setArticle(null);
+  // }
 
   // function highlight(para, word) {
   //   if (typeof para == 'string') {
@@ -157,13 +220,13 @@ export function Detail1({}) {
   //   }
   // }
 
-  useEffect(() => {
-    collapse(name);
-  }, [name]);
+  // useEffect(() => {
+  //   collapse(name);
+  // }, [name]);
 
-  useEffect(() => {
-    collapseArticle(article);
-  }, [article]);
+  // useEffect(() => {
+  //   collapseArticle(article);
+  // }, [article]);
 
   useEffect(() => {
     setWanring(false);
@@ -178,6 +241,16 @@ export function Detail1({}) {
       setCheckedAllFilter(false);
     }
   }, [showFilter]);
+
+  useEffect(() => {
+    setChoosenLaw(
+      Object.keys(SearchResult).length ? Object.keys(SearchResult) : [],
+    );
+  }, [SearchResult]);
+
+  useEffect(() => {
+    chooseDisplayKindLaw();
+  }, [choosenKindLaw]);
 
   const NoneOfResutl = () => {
     return (
@@ -232,7 +305,7 @@ export function Detail1({}) {
         }}
         onPress={() => {
           navigation.push(`accessLaw`, {screen: key, input: inputForNavi});
-          setName(i);
+          // setName(i);
         }}>
         <View style={styles.item}>
           <Text style={styles.chapterText} key={`${i}a`}>
@@ -313,13 +386,12 @@ export function Detail1({}) {
         > */}
       <View
         style={{
-          backgroundColor: 'green',
+          backgroundColor: '#222222',
           paddingTop: insets.top,
           borderBottomWidth: 1,
           borderBottomColor: 'black',
         }}>
         <TouchableWithoutFeedback
-          style={{backgroundColor: 'red'}}
           onPress={() => {
             Keyboard.dismiss();
             // if (FlatListToScroll.current) {
@@ -328,7 +400,7 @@ export function Detail1({}) {
           }}>
           <Text style={styles.titleText}>{`Tìm kiếm nội dung`}</Text>
         </TouchableWithoutFeedback>
-        <View style={{...styles.inputContainer, height: 57}}>
+        <View style={{...styles.inputContainer, height: 52}}>
           <View style={{...styles.containerBtb, paddingTop: 5}}>
             <TouchableOpacity
               style={{
@@ -414,15 +486,16 @@ export function Detail1({}) {
                   }
                   setInputForNavi(input);
                 }}
-                onTouchEnd={() => {
-                  if (textInputFocus) {
-                    textInput.current.blur();
-                    setTextInputFocus(false);
-                  } else {
-                    setTextInputFocus(true);
-                    textInput.current.focus();
-                  }
-                }}></TextInput>
+                // onTouchEnd={() => {
+                //   if (textInputFocus) {
+                //     textInput.current.blur();
+                //     setTextInputFocus(false);
+                //   } else {
+                //     setTextInputFocus(true);
+                //     textInput.current.focus();
+                //   }
+                // }}
+              ></TextInput>
               <TouchableOpacity
                 onPress={() => {
                   setInput('');
@@ -470,53 +543,11 @@ export function Detail1({}) {
                 borderRadius: 100,
                 height: 40,
                 borderWidth: 2,
-                borderColor: '#f67c1a',
+                borderColor: 'green',
                 minWidth: 40,
               }}
               onPress={() => {
-                // let inputSearchLawReg = input;
-                // if (input) {
-
-                //   inputSearchLawReg = input.replace(/\(/gim, '\\(');
-
-                //   inputSearchLawReg = inputSearchLawReg.replace(
-                //       /\)/gim,
-                //       '\\)',
-                //     );
-
-                //     inputSearchLawReg = inputSearchLawReg.replace(
-                //       /\./gim,
-                //       '\\.',
-                //     );
-
-                //     inputSearchLawReg = inputSearchLawReg.replace(
-                //       /\+/gim,
-                //       '\\+',
-                //     );
-
-                //     inputSearchLawReg = inputSearchLawReg.replace(
-                //       /\?/gim,
-                //       '\\?',
-                //     );
-
-                //     // if (input.match(/\//gim)) {
-                //   //   inputSearchLawReg = inputSearchLawReg.replace(/\//gim, '.');
-                //   // }
-
-                //   inputSearchLawReg = inputSearchLawReg.replace(
-                //       /\\/gim,
-                //       '.',
-                //     );
-
-                //   }
-                //   setValueInputForNav(input);
-
-                // if(paper>2){
-                //   setPaper(0);
-
-                // }else{
                 setPaper(1);
-                // }
                 if (FlatListToScroll.current) {
                   FlatListToScroll.current.scrollToOffset({offset: 0});
                 }
@@ -534,8 +565,76 @@ export function Detail1({}) {
             </TouchableOpacity>
           </View>
         </View>
+        <View
+          style={{
+            justifyContent: 'space-evenly',
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            paddingBottom: 5,
+          }}>
+          {['Luật/Bộ Luật', 'Nghị định', 'Thông tư'].map((option, i) => {
+            return (
+              <TouchableOpacity
+                key={`${i}a`}
+                onPress={() => {
+                  if (choosenKindLaw.includes(i)) {
+                    setChoosenKindLaw(choosenKindLaw.filter(a => a !== i));
+                  } else {
+                    setChoosenKindLaw([...choosenKindLaw, i]);
+                  }
+                }}
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  // width:75
+                }}>
+                <CheckBox
+                  onClick={() => {
+                    if (choosenKindLaw.includes(i)) {
+                      setChoosenKindLaw(choosenKindLaw.filter(a => a !== i));
+                    } else {
+                      setChoosenKindLaw([...choosenKindLaw, i]);
+                    }
+
+                    // chooseDisplayKindLaw()
+                  }}
+                  isChecked={choosenKindLaw.includes(i)}
+                  style={{}}
+                  uncheckedCheckBoxColor={'white'}
+                  checkedCheckBoxColor={'white'}
+                />
+                <Text style={{fontSize: 13, color: 'white'}}>{option}</Text>
+              </TouchableOpacity>
+            );
+          })}
+
+          <TouchableOpacity
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 100,
+              height: 25,
+              backgroundColor: 'white',
+              width: 50,
+              padding: 0,
+            }}
+            onPress={async () => {
+              Keyboard.dismiss();
+              OrderDaySign();
+            }}>
+            <Ionicons
+              name="swap-vertical-outline"
+              style={{
+                ...styles.inputBtbText,
+                fontSize: 19,
+                color: 'black',
+              }}></Ionicons>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={{marginTop: 0, marginBottom: 103}}>
+      <View style={{marginTop: 0, flex: 1}}>
         {Array.isArray(SearchResult) ? (
           <NoneOfResutl />
         ) : !Object.keys(SearchResult).length ? (
@@ -559,17 +658,11 @@ export function Detail1({}) {
                 <>
                   <ActivityIndicator color="black" />
                   <View
-                    style={{
-                      height: 54 + insets.bottom / 3.5 + insets.top,
-                      width: 10,
-                    }}></View>
+                    style={{height: 50 + insets.bottom / 2 , width: 10}}></View>
                 </>
               ) : (
                 <View
-                  style={{
-                    height: 54 + insets.bottom / 3.5 + insets.top,
-                    width: 10,
-                  }}></View>
+                  style={{height: 50 + insets.bottom / 2 , width: 10}}></View>
               )
             }
           />
@@ -645,7 +738,7 @@ export function Detail1({}) {
                 height: 50,
               }}>
               <TextInput
-              ref={textInputForFilter}
+                // ref={textInputForFilter}
                 onChangeText={text => setInputFilter(text)}
                 value={inputFilter}
                 style={{
@@ -657,16 +750,16 @@ export function Detail1({}) {
                 }}
                 placeholder=" Input to Search ..."
                 placeholderTextColor={'gray'}
-                onTouchEnd={() => {
-                  if (textInputFocusForFilter) {
-                    textInputForFilter.current.blur();
-                    setTextInputFocusForFilter(false);
-                  } else {
-                    setTextInputFocusForFilter(true);
-                    textInputForFilter.current.focus();
-                  }
-                }}
-                ></TextInput>
+                // onTouchEnd={() => {
+                //   if (textInputFocusForFilter) {
+                //     textInputForFilter.current.blur();
+                //     setTextInputFocusForFilter(false);
+                //   } else {
+                //     setTextInputFocusForFilter(true);
+                //     textInputForFilter.current.focus();
+                //   }
+                // }}
+              ></TextInput>
               <TouchableOpacity
                 onPress={() => setInputFilter('')}
                 style={{
@@ -936,7 +1029,7 @@ const styles = StyleSheet.create({
     // right: 5,
   },
   inputBtbText: {
-    color: 'white',
+    color: '#f67c1a',
     fontWeight: 'bold',
     fontSize: 20,
   },

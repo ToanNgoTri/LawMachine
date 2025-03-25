@@ -1075,14 +1075,15 @@ export default function Detail() {
                   }}
                   placeholder=" Nhập từ điều luật ..."
                   placeholderTextColor={'gray'}
-                  onTouchEnd={() => {
-                    if (textInputFocus) {
-                      textInputArticle.current.blur();
-                      setTextInputFocus(false);
-                    } else {
-                      setTextInputFocus(true);
-                      textInputArticle.current.focus();
-                    }}}>
+                  // onTouchEnd={() => {
+                  //   if (textInputFocus) {
+                  //     textInputArticle.current.blur();
+                  //     setTextInputFocus(false);
+                  //   } else {
+                  //     setTextInputFocus(true);
+                  //     textInputArticle.current.focus();
+                  //   }}}
+                    >
                     </TextInput>
                 <TouchableOpacity
                   onPress={() => {

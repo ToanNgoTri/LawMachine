@@ -98,6 +98,7 @@ exports.searchContent = onRequest(async (req, res) => {
       const LawSearch = database.collection('LawSearch');
       LawSearch.find({fullText: new RegExp(`${req.body.input}`, 'i')})
         .project({info: 1})
+        .sort({'info.lawDaySign': -1})
         .toArray()
         .then(o => res.json(o));
     } finally {
