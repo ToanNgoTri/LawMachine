@@ -12,9 +12,6 @@ import {Detail2} from '../screens/Detail2';
 import Detail5 from '../screens/Detail';
 import {useNetInfo} from '@react-native-community/netinfo';
 import {
-  // RefOfSearchLaw,
-  // RefOfHome,
-  // RefOfSearchContent,
   BoxInHomeScreen,
 } from '../App';
 import {
@@ -22,12 +19,13 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Image,
   Animated,
   Dimensions,
+  BackHandler
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useRoute, useNavigation} from '@react-navigation/native';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -45,7 +43,7 @@ const AppNavigators = () => {
     setWidthDevice(width);
   });
 
-  const [lastedScreenIndex, setLastedScreenIndex] = useState(0);
+  // const [lastedScreenIndex, setLastedScreenIndex] = useState(0);
 
   const animatedForHomeTab = useRef(new Animated.Value(60)).current;
 
@@ -119,20 +117,22 @@ const AppNavigators = () => {
     }).start();
   }, [BoxInHomeScreenStatus.showBoxInHomeScreen]);
 
+  
   return (
     <View style={{flex: 1}}>
       <Tab.Navigator
+      backBehavior='none'
         tabBar={({navigation, state, descriptors, position}) => {
           // console.log('state.index', state.index);
           // console.log('position', position._a._value);
 
-          if (state.index == position._a._value && state.index == 0 && global.HomeRef) {
-            global.HomeRef.scrollToOffset({offset: 0});
-          }else if(state.index == position._a._value && state.index == 1 && global.SearchLawRef){
-            global.SearchLawRef.scrollToOffset({offset: 0});
-          }else if(state.index == position._a._value && state.index == 2 && global.SearchContentRef){
-            global.SearchContentRef.scrollToOffset({offset: 0});
-          }
+          // if (state.index == position._a._value && state.index == 0 && global.HomeRef) {
+          //   global.HomeRef.scrollToOffset({offset: 0});
+          // }else if(state.index == position._a._value && state.index == 1 && global.SearchLawRef){
+          //   global.SearchLawRef.scrollToOffset({offset: 0});
+          // }else if(state.index == position._a._value && state.index == 2 && global.SearchContentRef){
+          //   global.SearchContentRef.scrollToOffset({offset: 0});
+          // }
 
           return (
             <View

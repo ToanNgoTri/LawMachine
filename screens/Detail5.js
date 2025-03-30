@@ -14,7 +14,7 @@ import {
   Platform
 } from 'react-native';
 import {Dirs, FileSystem} from 'react-native-file-access';
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -24,7 +24,6 @@ import {useNetInfo} from '@react-native-community/netinfo';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 let TopUnitCount; // là đơn vị lớn nhất vd là 'phần thứ' hoặc chươn
 
-let articleCount = 0;
 let sumChapterArray = []; // array mà mỗi phần tử là 'phần thứ...' có tổng bn chương
 sumChapterArray[0] = 0;
 let sumChapterPrevious; // sum cộng dồn các phần trư của các chương trong luật có phần thứ
@@ -54,7 +53,7 @@ export default function Detail() {
 
   const [modalStatus, setModalStatus] = useState(false); 
 
-  const [textInputFocus, setTextInputFocus] = useState(false);
+  // const [textInputFocus, setTextInputFocus] = useState(false);
 
   const [exists, setExists] = useState(false);
 
@@ -1516,16 +1515,16 @@ export default function Detail() {
                   flex: 1,
                   justifyContent: 'flex-end',
                 }}>
-                {/* {exists && !dataOrg['info'][route.params.screen] && ( */}
                 {exists && (
                   <TouchableOpacity
                     onPress={() => {
-                      StoreInternal();
-                      setExists(false);
+                      if(!loading){
+                        StoreInternal();
+                        setExists(false);
+
+                      }
                     }}
                     style={{
-                      // backgroundColor: '#00CC33',
-                      // padding: 20,
                       alignItems: 'center',
                       width: 70,
                       height: 60,
@@ -1557,8 +1556,11 @@ export default function Detail() {
                           {
                             text: 'OK',
                             onPress: () => {
-                              DeleteInternal();
-                              setExists(true);
+                              if(!loading){
+                                DeleteInternal();
+                                setExists(true);
+
+                              }
                             },
                           },
                         ],
