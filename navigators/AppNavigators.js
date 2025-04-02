@@ -126,13 +126,13 @@ const AppNavigators = () => {
           // console.log('state.index', state.index);
           // console.log('position', position._a._value);
 
-          // if (state.index == position._a._value && state.index == 0 && global.HomeRef) {
-          //   global.HomeRef.scrollToOffset({offset: 0});
-          // }else if(state.index == position._a._value && state.index == 1 && global.SearchLawRef){
-          //   global.SearchLawRef.scrollToOffset({offset: 0});
-          // }else if(state.index == position._a._value && state.index == 2 && global.SearchContentRef){
-          //   global.SearchContentRef.scrollToOffset({offset: 0});
-          // }
+          if (state.index == position._a._value && state.index == 0 && global.HomeRef) {
+            global.HomeRef.scrollToOffset({offset: 0});
+          }else if(state.index == position._a._value && state.index == 1 && global.SearchLawRef){
+            global.SearchLawRef.scrollToOffset({offset: 0});
+          }else if(state.index == position._a._value && state.index == 2 && global.SearchContentRef){
+            global.SearchContentRef.scrollToOffset({offset: 0});
+          }
 
           return (
             <View
