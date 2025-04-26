@@ -52,24 +52,26 @@ export const searchContent = createSlice({
 }
 })
 
-export const searchLaw = createSlice({
-  name: 'searchLaw',     
-  initialState: {
-    loading2: false,
-    input2:'',
-    info:null,
-  },
-  reducers: {
-    loader2: (state,action) => {
-      state.loading2= true;
-    },
+// export const searchLaw = createSlice({
+//   name: 'searchLaw',     
+//   initialState: {
+//     loading2: false,
+//     input2:'',
+//     info:null,
+//   },
+//   reducers: {
+//     loader2: (state,action) => {
+//       state.loading2= true;
+//     },
 
-    handle2: (state,action) => {
-      state.info=action.payload.b;
-      state.loading2= false;
-    },
-}
-})
+//     handle2: (state,action) => {
+//       state.info=action.payload.b;
+//       state.loading2= false;
+//     },
+// }
+// })
+
+
 
 export const getlastedlaws = createSlice({
   name: 'getlastedlaws',     
@@ -107,6 +109,25 @@ export const getCountLaw = createSlice({
 }
 })
 
+
+export const searchLawDescription = createSlice({
+  name: 'searchLawDescription',     
+  initialState: {
+    loading5: false,
+    input5:'',
+    info5:null,
+  },
+  reducers: {
+    loader5: (state,action) => {
+      state.loading5= true;
+    },
+
+    handle5: (state,action) => {
+      state.info5=action.payload.b;
+      state.loading5= false;
+    },
+}
+})
 
 
 export function* mySaga(state,action){
@@ -158,29 +179,29 @@ yield put(handle1(b))
   }
 }
 
-export function* mySaga2(state,action){
-  try{
+// export function* mySaga2(state,action){
+//   try{
         
-    yield put(loader2())
+//     yield put(loader2())
     
 
-    let info = yield  fetch(`https://us-central1-project2-197c0.cloudfunctions.net/searchLaw`,{
-    // let info = yield  fetch(`http://192.168.1.10:5001/project2-197c0/us-central1/searchLaw`,{
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body:JSON.stringify({input:state.input})
-    })
+//     let info = yield  fetch(`https://us-central1-project2-197c0.cloudfunctions.net/searchLaw`,{
+//     // let info = yield  fetch(`http://192.168.1.10:5001/project2-197c0/us-central1/searchLaw`,{
+//       method: 'POST',
+//       headers: {
+//         Accept: 'application/json',
+//         'Content-Type': 'application/json',
+//       },
+//       body:JSON.stringify({input:state.input})
+//     })
 
-    let b = yield info.json()
+//     let b = yield info.json()
 
 
-    yield put(handle2({b}))
-  }catch(e){
-  }
-}
+//     yield put(handle2({b}))
+//   }catch(e){
+//   }
+// }
 
 
   export function* mySaga3(state,action){
@@ -223,7 +244,31 @@ export function* mySaga2(state,action){
       }
   
   
+      export function* mySaga5(state,action){
+        try{
+              
+          yield put(loader5())
+          
+      
+          let info = yield  fetch(`https://us-central1-project2-197c0.cloudfunctions.net/searchLawDescription`,{
+          // let info = yield  fetch(`http://192.168.1.10:5001/project2-197c0/us-central1/searchLaw`,{
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body:JSON.stringify({input:state.input})
+          })
+      
+          let b = yield info.json()
+      
+      
+          yield put(handle5({b}))
+        }catch(e){
+        }
+      }
 
+      
 export function* saga(){
   yield takeEvery('read',mySaga) 
   // yield takeEvery(handle.type,mySaga)    //xài cái này cũng được
@@ -252,9 +297,14 @@ export function* saga4(){
 
 }
 
-  
+export function* saga5(){
+  yield takeEvery('searchLawDescription',mySaga5)
+
+}
+
 export const {loader,handle,noLoading} = read.actions;
 export const {loader1,handle1} = searchContent.actions;
-export const {loader2,handle2} = searchLaw.actions;
+// export const {loader2,handle2} = searchLaw.actions;
 export const {loader3,handle3} = getlastedlaws.actions;
 export const {loader4,handle4} = getCountLaw.actions;
+export const {loader5,handle5} = searchLawDescription.actions;

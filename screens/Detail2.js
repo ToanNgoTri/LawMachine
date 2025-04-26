@@ -23,7 +23,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Dirs, FileSystem} from 'react-native-file-access';
 
 export function Detail2({}) {
-  const {loading2, info} = useSelector(state => state['searchLaw']);
+  const {loading5, info5} = useSelector(state => state['searchLawDescription']);
   // console.log('info',info);
 
   const {loading3, info3} = useSelector(state => state['getlastedlaws']);
@@ -234,11 +234,11 @@ export function Detail2({}) {
   }
 
   useEffect(() => {
-    if (info) {
-      setSearchResult(convertResult(info));
-      setLawFilted(convertResult(info));
+    if (info5) {
+      setSearchResult(convertResult(info5));
+      setLawFilted(convertResult(info5));
     }
-  }, [info]);
+  }, [info5]);
 
   useEffect(() => {
     setInputFilter('');
@@ -318,7 +318,7 @@ export function Detail2({}) {
   }
 
   useEffect(() => {
-    if (internetConnected == true && !info) {
+    if (internetConnected == true && !info5) {
       dispatch({type: 'getCountLaw'});
       // dispatch({type: 'getlastedlaws'});
       // checkLastedLaw()
@@ -429,6 +429,8 @@ export function Detail2({}) {
   };
 
   function pressToSearch() {
+    console.log(123);
+    
     Keyboard.dismiss();
     if (paper > 2) {
       setPaper(0);
@@ -441,7 +443,7 @@ export function Detail2({}) {
     if (!input || input.match(/^(\s)*$/) || input.match(/^\W+$/)) {
       setWanring(true);
     } else {
-      dispatch({type: 'searchLaw', input: input});
+      dispatch({type: 'searchLawDescription', input: input});
       setValueInput(input);
     }
     setChoosenKindLaw([0, 1, 2]);
@@ -502,7 +504,7 @@ export function Detail2({}) {
 
   return (
     <>
-      {(loading2 || !internetConnected) && (
+      {(loading5 || !internetConnected) && (
         <View
           style={{
             position: 'absolute',
@@ -768,7 +770,7 @@ export function Detail2({}) {
 
       <View style={{marginTop: 0, flex: 1}}>
         {loading4 ||
-          loading2 ||
+          loading5 ||
           (loading3 && (
             <TouchableOpacity
               style={{
@@ -796,9 +798,9 @@ export function Detail2({}) {
             </TouchableOpacity>
           ))}
 
-        {info != null && info.length == 0 ? (
+        {info5 != null && info5.length == 0 ? (
           <NoneOfResutl style={{backgroundColor: 'red'}} />
-        ) : Object.keys(SearchResult).length || info3.length || info ? (
+        ) : Object.keys(SearchResult).length || info3.length || info5 ? (
           <FlatList
             onScrollBeginDrag={() => Keyboard.dismiss()}
             ref={ref => {

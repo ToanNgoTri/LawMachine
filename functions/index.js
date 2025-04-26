@@ -66,6 +66,47 @@ exports.searchLaw = onRequest(async (req, res) => {
   }
 });
 
+exports.searchLawDescription = onRequest(async (req, res) => {
+  if (req.method === 'POST') {
+    // try {
+    //     const database = client.db("LawMachine");
+    //     const LawContent = database.collection("LawContent");
+
+    //     LawContent.find({
+    //       $or: [
+    //         { _id: new RegExp(`${req.query.input}`, "i") },
+    //         { "info.lawDescription": new RegExp(`${req.query.input}`, "i") },
+    //         { "info.lawNameDisplay": new RegExp(`${req.query.input}`, "i") },
+    //       ],
+    //     })
+    //       .project({ info: 1 })
+    //       .sort({ "info.lawDaySign": -1 })
+    //       .toArray()
+    //       .then((o) => res.json(o));
+    //   } finally {
+    //   }
+
+    try {
+      const database = client.db('LawMachine');
+      const LawContent = database.collection('LawDescription');
+
+      LawContent.find({
+        $or: [
+          {_id: new RegExp(`${req.body.input}`, 'i')},
+          {'info.lawDescription': new RegExp(`${req.body.input.replace(/\s/img,'\\,?\\s\\,?').replace(/\\s/img,'\.')}`, 'i')},
+          {'info.lawNameDisplay': new RegExp(`${req.body.input.replace(/\s/img,'\\,?\\s\\,?').replace(/\\s/img,'\.')}`, 'i')},
+        ],
+      })
+        .project({info: 1})
+        .sort({'info.lawDaySign': -1})
+        .toArray()
+        .then(o => res.json(o));
+    } finally {
+    }
+  }
+});
+
+
 exports.countAllLaw = onRequest(async (req, res) => {
   if (req.method === 'POST') {
     try {
