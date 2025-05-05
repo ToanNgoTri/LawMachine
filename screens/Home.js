@@ -265,7 +265,7 @@ export default function Home({}) {
     const currentVersion = VersionCheck.getCurrentVersion();
 
     // Kiểm tra phiên bản mới nhất trên Google Play Store
-    const latestVersion = await VersionCheck.getLatestVersion();
+    const latestVersion = await VersionCheck.getLatestVersion({packageName: 'com.lawMachine'})
 
     if (await FileSystem.exists(Dirs.CacheDir + '/Appear.txt', 'utf8')) {
       const fileAppear = await FileSystem.readFile(
@@ -274,7 +274,10 @@ export default function Home({}) {
       );
 
       let contentAppear = JSON.parse(fileAppear);
-
+      console.log('Number(latestVersion)',(latestVersion));
+      console.log('Number(currentVersion)',Number(currentVersion));
+      
+      
       if (Number(latestVersion) > Number(currentVersion)) {
         if (!contentAppear[latestVersion]) {
           SetUpdateStatus(true);
