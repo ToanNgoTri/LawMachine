@@ -748,7 +748,7 @@ export function Detail1({}) {
                   width: '85%',
                   alignItems: 'center',
                 }}
-                placeholder=" Input to Search ..."
+                placeholder=" Nhập để tìm kiếm ..."
                 placeholderTextColor={'gray'}
                 // onTouchEnd={() => {
                 //   if (textInputFocusForFilter) {
