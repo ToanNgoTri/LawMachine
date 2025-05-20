@@ -43,9 +43,6 @@ export function Detail2({}) {
   ); // đây Object là các luật, điểm, khoản có kết quả tìm kiếm
   // console.log('info3',info3);
 
-  // const [textInputFocus, setTextInputFocus] = useState(false);
-  // const [textInputFocusForFilter, setTextInputFocusForFilter] = useState(false);
-
   const [inputFilter, setInputFilter] = useState('');
   const [showFilter, setShowFilter] = useState(false);
 
@@ -320,8 +317,6 @@ export function Detail2({}) {
   useEffect(() => {
     if (internetConnected == true && !info5) {
       dispatch({type: 'getCountLaw'});
-      // dispatch({type: 'getlastedlaws'});
-      // checkLastedLaw()
     }
   }, [internetConnected]);
 
@@ -358,7 +353,7 @@ export function Detail2({}) {
 
     let newResult = {};
 
-    if (choosenKindLaw.length) {
+    if (choosenKindLaw.length && SearchResult.length) {
       Object.keys(SearchResult).map((law, i) => {
         let kindSample =
           (choosenKindLaw.includes(0) ? 'Luật|Bộ luật' : '') +

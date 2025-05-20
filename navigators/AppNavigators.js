@@ -21,11 +21,9 @@ import {
   TouchableOpacity,
   Animated,
   Dimensions,
-  BackHandler
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useRoute, useNavigation} from '@react-navigation/native';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -148,13 +146,12 @@ const AppNavigators = () => {
                 borderTopRightRadius: 15,
                 borderTopLeftRadius: 15,
                 display: 'flex',
-                backgroundColor: '#F8BD2D', // #FFCC00
+                backgroundColor: '#F8BD2D', 
                 alignContent: 'center',
                 overflow: 'hidden',
               }}>
               <Animated.View
                 style={{
-                  // backgroundColor:'red',
                   alignItems: 'center',
                   minWidth: 100,
                   display: 'flex',
