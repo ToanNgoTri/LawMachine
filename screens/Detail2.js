@@ -352,8 +352,9 @@ export function Detail2({}) {
     // 1 là luật, 2 là nd, 3 là TT
 
     let newResult = {};
+    // console.log('SearchResult',SearchResult)
 
-    if (choosenKindLaw.length && SearchResult.length) {
+    if (choosenKindLaw.length && Object.keys(SearchResult).length && SearchResult['_id']!=='none' ) {
       Object.keys(SearchResult).map((law, i) => {
         let kindSample =
           (choosenKindLaw.includes(0) ? 'Luật|Bộ luật' : '') +
@@ -366,6 +367,7 @@ export function Detail2({}) {
             new RegExp(`^(${kindSample})`, 'img'),
           )
         ) {
+
           newResult[law] = SearchResult[law];
         }
       });
@@ -375,30 +377,6 @@ export function Detail2({}) {
       setLawFilted({});
       setChoosenLaw([]);
     }
-    //     if(choosenKindLaw.includes(0)){
-    //   console.log(1);
-    //   Object.keys(SearchResult).map( (law,i)=>{
-    //     if(SearchResult[law]['lawNameDisplay'].match(/^(Luật|Bộ Luật)/img)){
-    //       newResult[law] = SearchResult[law]
-    //       console.log('1a');
-
-    //     }
-    //   })
-    // }
-    // if(choosenKindLaw.includes(1)){
-    //   Object.keys(SearchResult).map( (law,i)=>{
-    //     if(SearchResult[law]['lawNameDisplay'].match(/^Nghị định/img)){
-    //       newResult[law] = SearchResult[law]
-    //     }
-    //   })
-    // }
-    // if(choosenKindLaw.includes(2)){
-    //   Object.keys(SearchResult).map( (law,i)=>{
-    //     if(SearchResult[law]['lawNameDisplay'].match(/^Thông tư/img)){
-    //       newResult[law] = SearchResult[law]
-    //     }
-    //   })
-    // }
   }
 
   const NoneOfResutl = () => {
@@ -424,7 +402,6 @@ export function Detail2({}) {
   };
 
   function pressToSearch() {
-    console.log(123);
     
     Keyboard.dismiss();
     if (paper > 2) {
