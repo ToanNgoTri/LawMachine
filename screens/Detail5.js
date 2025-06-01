@@ -1546,15 +1546,15 @@ export default function Detail() {
                   <TouchableOpacity
                     onPress={async () => {
                       Alert.alert(
-                        'thông báo',
+                        'Thông báo',
                         'Bạn có muốn xóa văn bản ra khỏi bộ nhớ không?',
                         [
                           {
-                            text: 'Cancel',
+                            text: 'Thoát',
                             style: 'cancel',
                           },
                           {
-                            text: 'OK',
+                            text: 'Xoá',
                             onPress: () => {
                               if(!loading){
                                 DeleteInternal();

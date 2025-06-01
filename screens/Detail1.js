@@ -87,6 +87,7 @@ export function Detail1({}) {
     if (result) {
       setSearchResult(convertResult(result));
       setLawFilted(convertResult(result));
+      setChoosenKindLaw([0, 1, 2])
     }
   }, [result]);
 
@@ -180,53 +181,6 @@ export function Detail1({}) {
     }
   }
 
-  // function collapse(a) {
-  //   if (a == undefined) {
-  //   } else if (nameArray.includes(a)) {
-  //     setNameArray(nameArray.filter(a1 => a1 !== a));
-  //   } else {
-  //     setNameArray([...nameArray, a]);
-  //   }
-  //   setName(null);
-  // }
-
-  // function collapseArticle(a) {
-  //   if (a == undefined) {
-  //   } else if (articleArray.includes(a)) {
-  //     setArticleArray(articleArray.filter(a1 => a1 !== a));
-  //   } else {
-  //     setArticleArray([...articleArray, a]);
-  //   }
-  //   setArticle(null);
-  // }
-
-  // function highlight(para, word) {
-  //   if (typeof para == 'string') {
-  //     let inputRexgex = para.match(new RegExp(word, 'igm'));
-  //     return (
-  //       <Text>
-  //         {para.split(new RegExp(word, 'igm')).reduce((prev, current, i) => {
-  //           if (!i) {
-  //             return [current];
-  //           }
-  //           // bị lỗi khi viết hoa và thường khi input
-  //           return prev.concat(
-  //             <Text style={styles.highlight}>{inputRexgex[i - 1]}</Text>,
-  //             current,
-  //           );
-  //         }, [])}
-  //       </Text>
-  //     );
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   collapse(name);
-  // }, [name]);
-
-  // useEffect(() => {
-  //   collapseArticle(article);
-  // }, [article]);
 
   useEffect(() => {
     setWanring(false);
@@ -340,7 +294,7 @@ export function Detail1({}) {
 
   return (
     <>
-      {(loading1 || !internetConnected) && (
+      {(!internetConnected) && (
         <View
           style={{
             position: 'absolute',
@@ -360,30 +314,12 @@ export function Detail1({}) {
               marginBottom: 15,
               fontWeight: 'bold',
             }}>
-            {internetConnected ? (
-              <View>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                  }}>
-                  Xin vui lòng đợi trong giây lát ...
-                </Text>
-              </View>
-            ) : (
-              'Vui lòng kiểm tra kết nối mạng ...'
-            )}
+          Vui lòng kiểm tra kết nối mạng ...
           </Text>
           <ActivityIndicator size="large" color="white"></ActivityIndicator>
         </View>
       )}
 
-      {/* <ScrollView
-        ref={ScrollViewToScroll}
-        keyboardShouldPersistTaps="handled"
-        style={{backgroundColor: '#EEEFE4'}}
-        > */}
       <View
         style={{
           backgroundColor: '#222222',
@@ -635,6 +571,34 @@ export function Detail1({}) {
         </View>
       </View>
       <View style={{marginTop: 0, flex: 1}}>
+
+                {(loading1 ) && (
+                    <TouchableOpacity
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        opacity: 0.7,
+                        backgroundColor: 'black',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 10,
+                      }}
+                      onPress={() => Keyboard.dismiss()}>
+                      <Text
+                        style={{
+                          color: 'white',
+                          marginBottom: 15,
+                          fontWeight: 'bold',
+                        }}>
+                        Xin vui lòng đợi trong giây lát ...
+                      </Text>
+                      <ActivityIndicator size="large" color="white"></ActivityIndicator>
+                    </TouchableOpacity>
+                  )}
+        
         {Array.isArray(SearchResult) ? (
           <NoneOfResutl />
         ) : !Object.keys(SearchResult).length ? (

@@ -234,6 +234,7 @@ export function Detail2({}) {
     if (info5) {
       setSearchResult(convertResult(info5));
       setLawFilted(convertResult(info5));
+      setChoosenKindLaw([0, 1, 2])
     }
   }, [info5]);
 
@@ -476,7 +477,7 @@ export function Detail2({}) {
 
   return (
     <>
-      {(loading5 || !internetConnected) && (
+      {(!internetConnected) && (
         <View
           style={{
             position: 'absolute',
@@ -496,18 +497,12 @@ export function Detail2({}) {
               marginBottom: 15,
               fontWeight: 'bold',
             }}>
-            {internetConnected
-              ? 'Xin vui lòng đợi trong giây lát ...'
-              : 'Vui lòng kiểm tra kết nối mạng ...'}
+              Vui lòng kiểm tra kết nối mạng ...
           </Text>
           <ActivityIndicator size="large" color="white"></ActivityIndicator>
         </View>
       )}
 
-      {/* <ScrollView
-        ref={ScrollViewToScroll}
-        keyboardShouldPersistTaps="handled"
-        style={{backgroundColor: '#EEEFE4'}}> */}
       <View
         style={{
           backgroundColor: 'green',
@@ -742,8 +737,7 @@ export function Detail2({}) {
 
       <View style={{marginTop: 0, flex: 1}}>
         {loading4 ||
-          loading5 ||
-          (loading3 && (
+          ((loading5 || loading3) && (
             <TouchableOpacity
               style={{
                 position: 'absolute',
@@ -764,7 +758,10 @@ export function Detail2({}) {
                   marginBottom: 15,
                   fontWeight: 'bold',
                 }}>
-                Đang tải văn bản mới nhất ...
+                  {
+                    loading3?"Đang tải văn bản mới nhất ...":"Xin vui lòng đợi trong giây lát ..."
+                  }
+                
               </Text>
               <ActivityIndicator size="large" color="white"></ActivityIndicator>
             </TouchableOpacity>
