@@ -451,7 +451,7 @@ export function Detail2({}) {
             )}
           </Text>
           <Text style={styles.descriptionText}>
-            {highlight(
+          {'   '}{highlight(
               SearchResult[detailId]['lawDescription'],
               valueInput,
               `${i}ab`,
