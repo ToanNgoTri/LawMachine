@@ -12,7 +12,7 @@ import {Detail2} from '../screens/Detail2';
 import Detail5 from '../screens/Detail';
 import {useNetInfo} from '@react-native-community/netinfo';
 import {
-  BoxInHomeScreen,
+  BoxInHomeScreen,RefOfHome
 } from '../App';
 import {
   Text,
@@ -31,7 +31,7 @@ const AppNavigators = () => {
   const insets = useSafeAreaInsets(); // lất chiều cao để manu top iphone
   const BoxInHomeScreenStatus = useContext(BoxInHomeScreen);
   // const SearchLawScreen = useContext(RefOfSearchLaw);
-  // const HomeScreen = useContext(RefOfHome);
+  const HomeScreen = useContext(RefOfHome);
   // const SearchContentScreen = useContext(RefOfSearchContent);
 
   const {width, height} = Dimensions.get('window');
@@ -124,8 +124,8 @@ const AppNavigators = () => {
           // console.log('state.index', state.index);
           // console.log('position', position._a._value);
 
-          if (state.index == position._a._value && state.index == 0 && global.HomeRef) {
-            global.HomeRef.scrollToOffset({offset: 0});
+          if (state.index == position._a._value && state.index == 0 && HomeScreen.homeRef) {
+            HomeScreen.homeRef.scrollToOffset({offset: 0});
           }else if(state.index == position._a._value && state.index == 1 && global.SearchLawRef){
             global.SearchLawRef.scrollToOffset({offset: 0});
           }else if(state.index == position._a._value && state.index == 2 && global.SearchContentRef){

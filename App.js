@@ -14,11 +14,11 @@ import {store} from './redux/store';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import "react-native-gesture-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import * as Sentry from "@sentry/react-native";
+// import * as Sentry from "@sentry/react-native";
 
 const BoxInHomeScreen = createContext(); 
 // const InfoDownloaded = createContext(); //
-// const RefOfHome = createContext(); //
+const RefOfHome = createContext(); //
 // const RefOfSearchLaw = createContext(); //
 // const RefOfSearchContent = createContext(); //
 
@@ -26,9 +26,9 @@ const BoxInHomeScreen = createContext();
 function App() {
   
 
-  Sentry.init({
-    dsn: "https://a645dd4585aedcdd48ed6ec4b15587fc@o4508942714339328.ingest.us.sentry.io/4508942715977728",
-  });
+  // Sentry.init({
+  //   dsn: "https://a645dd4585aedcdd48ed6ec4b15587fc@o4508942714339328.ingest.us.sentry.io/4508942715977728",
+  // });
 
   const [showBoxInHomeScreen, setShowBoxInHomeScreen] = useState(false);
   const updateShowBoxInHomeScreen = data => {
@@ -40,10 +40,10 @@ function App() {
   //   setInfo(data);
   // };
 
-  // const [homeRef, setHomeRef] = useState('');
-  // const updateHomeRef = data => {
-  //   setHomeRef(data);
-  // };
+  const [homeRef, setHomeRef] = useState('');
+  const updateHomeRef = data => {
+    setHomeRef(data);
+  };
 
 
   // const [searchLawRef, setSearchLawRef] = useState('');
@@ -64,12 +64,12 @@ function App() {
 
   
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <SafeAreaProvider>
     <Provider store={store}>
       <BoxInHomeScreen.Provider value={{showBoxInHomeScreen, updateShowBoxInHomeScreen}}>
+        <RefOfHome.Provider value={{homeRef, updateHomeRef}}>
       {/* <RefOfSearchLaw.Provider value={{searchLawRef, updatesearchLawRef}}>
-      <RefOfHome.Provider value={{homeRef, updateHomeRef}}>
       <RefOfSearchContent.Provider value={{searchContentRef, updateSearchContentRef}}> */}
             {/* <InfoDownloaded.Provider value={{info,updateInfo}}> */}
       {/* <SafeAreaProvider> */}
@@ -79,8 +79,8 @@ function App() {
     {/* </SafeAreaProvider> */}
             {/* </InfoDownloaded.Provider> */}
 {/* </RefOfSearchContent.Provider>
-            </RefOfHome.Provider>
             </RefOfSearchLaw.Provider> */}
+            </RefOfHome.Provider>
       </BoxInHomeScreen.Provider>
     </Provider>
     </SafeAreaProvider>
@@ -88,5 +88,5 @@ function App() {
   );
 }
 
-export default Sentry.wrap(App);
-export { BoxInHomeScreen};
+export default (App);
+export { BoxInHomeScreen,RefOfHome};

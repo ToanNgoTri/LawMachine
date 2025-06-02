@@ -58,7 +58,7 @@ export function Detail1({}) {
   const dispatch = useDispatch();
 
   const {loading1, result} = useSelector(state => state['searchContent']);
-  
+
   const navigation = useNavigation();
 
   const netInfo = useNetInfo();
@@ -87,7 +87,7 @@ export function Detail1({}) {
     if (result) {
       setSearchResult(convertResult(result));
       setLawFilted(convertResult(result));
-      setChoosenKindLaw([0, 1, 2])
+      setChoosenKindLaw([0, 1, 2]);
     }
   }, [result]);
 
@@ -180,7 +180,6 @@ export function Detail1({}) {
       setLawFilted(newObjectSearch);
     }
   }
-
 
   useEffect(() => {
     setWanring(false);
@@ -294,7 +293,7 @@ export function Detail1({}) {
 
   return (
     <>
-      {(!internetConnected) && (
+      {!internetConnected && (
         <View
           style={{
             position: 'absolute',
@@ -314,7 +313,7 @@ export function Detail1({}) {
               marginBottom: 15,
               fontWeight: 'bold',
             }}>
-          Vui lòng kiểm tra kết nối mạng ...
+            Vui lòng kiểm tra kết nối mạng ...
           </Text>
           <ActivityIndicator size="large" color="white"></ActivityIndicator>
         </View>
@@ -325,7 +324,7 @@ export function Detail1({}) {
           backgroundColor: '#222222',
           paddingTop: insets.top,
           borderBottomWidth: 1,
-          borderBottomColor: 'black',
+          borderBottomColor: 'white',
         }}>
         <TouchableWithoutFeedback
           onPress={() => {
@@ -372,7 +371,12 @@ export function Detail1({}) {
                   style={{
                     color: 'white',
                     textAlign: 'center',
-                    fontSize:choosenLaw.length>1000?6:choosenLaw.length>100?8:10,
+                    fontSize:
+                      choosenLaw.length > 1000
+                        ? 6
+                        : choosenLaw.length > 100
+                        ? 8
+                        : 10,
                     fontWeight: 'bold',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -570,35 +574,39 @@ export function Detail1({}) {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{marginTop: 0, flex: 1}}>
+      <View style={{marginTop: 0, flex: 1, backgroundColor: 'white'}}>
+        {loading1 && (
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              opacity: 0.8,
+              backgroundColor: 'black',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 10,
+            }}
+            onPress={() => Keyboard.dismiss()}>
+            <View
+              style={{
+                top: '-9%',
+              }}>
+              <Text
+                style={{
+                  color: 'white',
+                  marginBottom: 15,
+                  fontWeight: 'bold',
+                }}>
+                Xin vui lòng đợi trong giây lát ...
+              </Text>
+              <ActivityIndicator size="large" color="white"></ActivityIndicator>
+            </View>
+          </TouchableOpacity>
+        )}
 
-                {(loading1 ) && (
-                    <TouchableOpacity
-                      style={{
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        top: 0,
-                        bottom: 0,
-                        opacity: 0.7,
-                        backgroundColor: 'black',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        zIndex: 10,
-                      }}
-                      onPress={() => Keyboard.dismiss()}>
-                      <Text
-                        style={{
-                          color: 'white',
-                          marginBottom: 15,
-                          fontWeight: 'bold',
-                        }}>
-                        Xin vui lòng đợi trong giây lát ...
-                      </Text>
-                      <ActivityIndicator size="large" color="white"></ActivityIndicator>
-                    </TouchableOpacity>
-                  )}
-        
         {Array.isArray(SearchResult) ? (
           <NoneOfResutl />
         ) : !Object.keys(SearchResult).length ? (
@@ -622,11 +630,11 @@ export function Detail1({}) {
                 <>
                   <ActivityIndicator color="black" />
                   <View
-                    style={{height: 50 + insets.bottom / 2 , width: 10}}></View>
+                    style={{height: 50 + insets.bottom / 2, width: 10}}></View>
                 </>
               ) : (
                 <View
-                  style={{height: 50 + insets.bottom / 2 , width: 10}}></View>
+                  style={{height: 50 + insets.bottom / 2, width: 10}}></View>
               )
             }
           />
@@ -801,7 +809,7 @@ export function Detail1({}) {
               </Text>
             </TouchableOpacity>
 
-            <ScrollView keyboardShouldPersistTaps='never'>
+            <ScrollView keyboardShouldPersistTaps="never">
               <View
                 style={{
                   paddingTop: 10,

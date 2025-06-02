@@ -234,7 +234,7 @@ export function Detail2({}) {
     if (info5) {
       setSearchResult(convertResult(info5));
       setLawFilted(convertResult(info5));
-      setChoosenKindLaw([0, 1, 2])
+      setChoosenKindLaw([0, 1, 2]);
     }
   }, [info5]);
 
@@ -355,7 +355,11 @@ export function Detail2({}) {
     let newResult = {};
     // console.log('SearchResult',SearchResult)
 
-    if (choosenKindLaw.length && Object.keys(SearchResult).length && SearchResult['_id']!=='none' ) {
+    if (
+      choosenKindLaw.length &&
+      Object.keys(SearchResult).length &&
+      SearchResult['_id'] !== 'none'
+    ) {
       Object.keys(SearchResult).map((law, i) => {
         let kindSample =
           (choosenKindLaw.includes(0) ? 'Luật|Bộ luật' : '') +
@@ -368,7 +372,6 @@ export function Detail2({}) {
             new RegExp(`^(${kindSample})`, 'img'),
           )
         ) {
-
           newResult[law] = SearchResult[law];
         }
       });
@@ -403,7 +406,6 @@ export function Detail2({}) {
   };
 
   function pressToSearch() {
-    
     Keyboard.dismiss();
     if (paper > 2) {
       setPaper(0);
@@ -477,7 +479,7 @@ export function Detail2({}) {
 
   return (
     <>
-      {(!internetConnected) && (
+      {!internetConnected && (
         <View
           style={{
             position: 'absolute',
@@ -497,7 +499,7 @@ export function Detail2({}) {
               marginBottom: 15,
               fontWeight: 'bold',
             }}>
-              Vui lòng kiểm tra kết nối mạng ...
+            Vui lòng kiểm tra kết nối mạng ...
           </Text>
           <ActivityIndicator size="large" color="white"></ActivityIndicator>
         </View>
@@ -735,7 +737,7 @@ export function Detail2({}) {
         </View>
       </View>
 
-      <View style={{marginTop: 0, flex: 1}}>
+      <View style={{marginTop: 0, flex: 1, backgroundColor: 'white'}}>
         {loading4 ||
           ((loading5 || loading3) && (
             <TouchableOpacity
@@ -745,25 +747,31 @@ export function Detail2({}) {
                 right: 0,
                 top: 0,
                 bottom: 0,
-                opacity: 0.7,
+                opacity: 0.8,
                 backgroundColor: 'black',
                 justifyContent: 'center',
                 alignItems: 'center',
                 zIndex: 10,
               }}
               onPress={() => Keyboard.dismiss()}>
-              <Text
+              <View
                 style={{
-                  color: 'white',
-                  marginBottom: 15,
-                  fontWeight: 'bold',
+                  top: '-9%',
                 }}>
-                  {
-                    loading3?"Đang tải văn bản mới nhất ...":"Xin vui lòng đợi trong giây lát ..."
-                  }
-                
-              </Text>
-              <ActivityIndicator size="large" color="white"></ActivityIndicator>
+                <Text
+                  style={{
+                    color: 'white',
+                    marginBottom: 15,
+                    fontWeight: 'bold',
+                  }}>
+                  {loading3
+                    ? 'Đang tải văn bản mới nhất ...'
+                    : 'Xin vui lòng đợi trong giây lát ...'}
+                </Text>
+                <ActivityIndicator
+                  size="large"
+                  color="white"></ActivityIndicator>
+              </View>
             </TouchableOpacity>
           ))}
 
@@ -968,7 +976,7 @@ export function Detail2({}) {
               </Text>
             </TouchableOpacity>
 
-            <ScrollView keyboardShouldPersistTaps='never'>
+            <ScrollView keyboardShouldPersistTaps="never">
               <View
                 style={{
                   paddingTop: 10,

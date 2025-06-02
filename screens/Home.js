@@ -13,16 +13,16 @@ import {
   Platform,
 } from 'react-native';
 import {useState, useEffect, useRef, useContext} from 'react';
-import {BoxInHomeScreen} from '../App';
+import {BoxInHomeScreen,RefOfHome} from '../App';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Dirs, FileSystem} from 'react-native-file-access';
 // import {useScrollToTop} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import DraggableFlatList, {
-  ScaleDecorator,
+  ScaleDecorator
 } from 'react-native-draggable-flatlist';
-// import {} from '../App'
+// import {RefOfHome} from '../App'
 import VersionCheck from 'react-native-version-check';
 
 export default function Home({}) {
@@ -39,20 +39,25 @@ export default function Home({}) {
 
   const insets = useSafeAreaInsets(); // lất chiều cao để menu top iphone
 
+  const ScrollViewToScroll = useRef(null);
   const textInput = useRef(null);
 
   // const ScrollViewToScroll = useRef(null);
 
-  // useEffect(() => {
-  //   console.log(ScrollViewToScroll.current);
-
-  // HomeScreen.updateHomeRef(ScrollViewToScroll.current);
-  // }, [])
 
   const BoxInHomeScreenStatus = useContext(BoxInHomeScreen);
 
-  // const HomeScreen = useContext(RefOfHome);
+  const HomeScreen = useContext(RefOfHome);
 
+  useEffect(() => {
+    if(ScrollViewToScroll.current){
+
+      HomeScreen.updateHomeRef(ScrollViewToScroll.current);
+    
+    }
+  })
+
+  
   const Render = ({item, i, drag, isActive}) => {
     return (
       <ScaleDecorator>
@@ -274,7 +279,7 @@ export default function Home({}) {
       );
 
       let contentAppear = JSON.parse(fileAppear);
-      console.log('Number(latestVersion)',(latestVersion));
+      console.log('Number(latestVersion)',Number(latestVersion));
       console.log('Number(currentVersion)',Number(currentVersion));
       
       
@@ -470,12 +475,12 @@ export default function Home({}) {
       ) : !data.length ? (
         <NoneOfResult />
       ) : (
-        <>
+        <View>
           <DraggableFlatList
-            ref={ref => {
-              (global.HomeRef = ref);
-            }}
-            // ref={ScrollViewToScroll}
+            // ref={ref => {
+            //   (global.HomeRef = ref);
+            // }}
+            ref={ScrollViewToScroll}
             onScrollBeginDrag={() => Keyboard.dismiss()}
             // keyboardShouldPersistTaps={'always'}
             // style={{backgroundColor: '#EEEFE4',}}
@@ -495,7 +500,7 @@ export default function Home({}) {
                 }}></View>
             )}
           />
-        </>
+          </View>
       )}
 
       {(showPolicy || updateStatus) && (

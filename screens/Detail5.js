@@ -917,7 +917,7 @@ export default function Detail() {
         </TouchableOpacity>
         <TouchableOpacity
           style={{
-            backgroundColor: 'red',
+            backgroundColor: 'yellow',
             height: 40,
             alignItems: 'center',
             justifyContent: 'center',
