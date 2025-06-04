@@ -132,7 +132,11 @@ export function Detail1({}) {
 
     let newResult = {};
 
-    if (choosenKindLaw.length) {
+    if (
+      // choosenKindLaw.length &&
+      Object.keys(SearchResult).length &&
+      SearchResult['_id'] !== 'none'
+    ) {
       Object.keys(SearchResult).map((law, i) => {
         let kindSample =
           (choosenKindLaw.includes(0) ? 'Luật|Bộ luật' : '') +
@@ -140,19 +144,37 @@ export function Detail1({}) {
           (choosenKindLaw.includes(2) ? '|Thông tư' : '');
         kindSample = kindSample.replace(/^\|/, '');
 
-        if (
-          SearchResult[law]['lawNameDisplay'].match(
-            new RegExp(`^(${kindSample})`, 'img'),
-          )
-        ) {
-          newResult[law] = SearchResult[law];
+        if (choosenKindLaw.length) {
+          // console.log(1);
+          // console.log( SearchResult[law]);
+
+          if (
+            SearchResult[law]['lawNameDisplay'].match(
+              new RegExp(`^(${kindSample})`, 'img'),
+            )
+          ) {
+            newResult[law] = SearchResult[law];
+          } else{ if (
+            !SearchResult[law]['lawNameDisplay'].match(
+              new RegExp(`^(Luật|Bộ luật|Nghị định|Thông tư)`, 'img'),
+            )
+          ) {
+            newResult[law] = SearchResult[law];
+          }
         }
+        } else {
+          if (
+            !SearchResult[law]['lawNameDisplay'].match(
+              new RegExp(`^(Luật|Bộ luật|Nghị định|Thông tư)`, 'img'),
+            )
+          ) {
+            newResult[law] = SearchResult[law];
+          }
+        }
+
+        setLawFilted(newResult);
+        setChoosenLaw(Object.keys(newResult));
       });
-      setLawFilted(newResult);
-      setChoosenLaw(Object.keys(newResult));
-    } else {
-      setLawFilted({});
-      setChoosenLaw([]);
     }
   }
 
@@ -215,7 +237,7 @@ export function Detail1({}) {
             height: '100%',
             alignItems: 'center',
             justifyContent: 'center',
-            paddingBottom: 30,
+            paddingBottom: 90,
             paddingLeft: 30,
             paddingRight: 30,
           }}>

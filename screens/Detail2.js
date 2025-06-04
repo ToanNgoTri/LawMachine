@@ -356,7 +356,7 @@ export function Detail2({}) {
     // console.log('SearchResult',SearchResult)
 
     if (
-      choosenKindLaw.length &&
+      // choosenKindLaw.length &&
       Object.keys(SearchResult).length &&
       SearchResult['_id'] !== 'none'
     ) {
@@ -367,20 +367,39 @@ export function Detail2({}) {
           (choosenKindLaw.includes(2) ? '|Thông tư' : '');
         kindSample = kindSample.replace(/^\|/, '');
 
-        if (
-          SearchResult[law]['lawNameDisplay'].match(
-            new RegExp(`^(${kindSample})`, 'img'),
-          )
-        ) {
-          newResult[law] = SearchResult[law];
+        if (choosenKindLaw.length) {
+          if (
+            SearchResult[law]['lawNameDisplay'].match(
+              new RegExp(`^(${kindSample})`, 'img'),
+            )
+          ) {
+            newResult[law] = SearchResult[law];
+          } else {
+            if (
+              !SearchResult[law]['lawNameDisplay'].match(
+                new RegExp(`^(Luật|Bộ luật|Nghị định|Thông tư)`, 'img'),
+              )
+            ) {
+              newResult[law] = SearchResult[law];
+            }
+          }
+        } else {
+          if (
+            !SearchResult[law]['lawNameDisplay'].match(
+              new RegExp(`^(Luật|Bộ luật|Nghị định|Thông tư)`, 'img'),
+            )
+          ) {
+            newResult[law] = SearchResult[law];
+          }
         }
       });
       setLawFilted(newResult);
       setChoosenLaw(Object.keys(newResult));
-    } else {
-      setLawFilted({});
-      setChoosenLaw([]);
-    }
+    } 
+    // else {
+    //   setLawFilted({});
+    //   setChoosenLaw([]);
+    // }
   }
 
   const NoneOfResutl = () => {
@@ -393,7 +412,7 @@ export function Detail2({}) {
             height: '100%',
             alignItems: 'center',
             justifyContent: 'center',
-            paddingBottom: 30,
+            paddingBottom: 90,
             paddingLeft: 30,
             paddingRight: 30,
           }}>
@@ -451,7 +470,8 @@ export function Detail2({}) {
             )}
           </Text>
           <Text style={styles.descriptionText}>
-          {'   '}{highlight(
+            {'   '}
+            {highlight(
               SearchResult[detailId]['lawDescription'],
               valueInput,
               `${i}ab`,
