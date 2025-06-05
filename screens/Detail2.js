@@ -159,13 +159,6 @@ export function Detail2({}) {
                 <React.Fragment key={`${i}htth`}>
                   <Text
                     style={
-                      // searchResultCount - inputRexgex.length + i - 1 <
-                      //   currentSearchPoint &&
-                      // searchResultCount - inputRexgex.length + i >=
-                      //   currentSearchPoint
-                      //   ? styles.highlight1
-                      //   : styles.highlight
-
                       i2.match(/aa/)
                         ? {...styles.chapterText, backgroundColor: 'yellow'}
                         : {backgroundColor: 'yellow'}
@@ -178,14 +171,6 @@ export function Detail2({}) {
                   key={`${i}vvv`}
                   style={
                     i2.match(/aa/) ? {...styles.chapterText} : {}
-
-                    //   {
-                    //   position: 'relative',
-                    //   display: 'flex',
-                    //   margin: 0,
-                    //   lineHeight: 23,
-
-                    // }
                   }>
                   {current}
                 </Text>,
@@ -199,18 +184,15 @@ export function Detail2({}) {
                     ? {textAlign: 'center'}
                     : {textAlign: 'justify'}
                 }>
-                {'   '}
-                {searchedPara}
+                {'   '}{searchedPara}
               </Text>
             </View>
           );
-          // return <View >{searchedPara}</View>;
-          // return <Text >{searchedPara}</Text>;
         } else {
-          return para;
+          return <Text>{'   '}{para}</Text>;
         }
       } else {
-        return para;
+          return <Text>{'   '}{para}</Text>;
       }
 
       // }
@@ -395,7 +377,7 @@ export function Detail2({}) {
       });
       setLawFilted(newResult);
       setChoosenLaw(Object.keys(newResult));
-    } 
+    }
     // else {
     //   setLawFilted({});
     //   setChoosenLaw([]);
@@ -470,7 +452,6 @@ export function Detail2({}) {
             )}
           </Text>
           <Text style={styles.descriptionText}>
-            {'   '}
             {highlight(
               SearchResult[detailId]['lawDescription'],
               valueInput,
@@ -757,7 +738,7 @@ export function Detail2({}) {
         </View>
       </View>
 
-      <View style={{marginTop: 0, flex: 1, backgroundColor: 'white'}}>
+      <View style={{marginTop: 0, flex: 1, backgroundColor: '#EEEFE4'}}>
         {loading4 ||
           ((loading5 || loading3) && (
             <TouchableOpacity

@@ -596,7 +596,7 @@ export function Detail1({}) {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{marginTop: 0, flex: 1, backgroundColor: 'white'}}>
+      <View style={{marginTop: 0, flex: 1, backgroundColor: '#EEEFE4'}}>
         {loading1 && (
           <TouchableOpacity
             style={{
