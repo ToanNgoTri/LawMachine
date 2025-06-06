@@ -23,48 +23,48 @@ admin.initializeApp({
 });
 
 const client = new MongoClient(
-  'mongodb+srv://gusteixeira25:JPwO1gvfCAjiuXKo@lawdatabase.jnsdwt3.mongodb.net/?retryWrites=true&w=majority&appName=LawDatabase',
+  'mongodb://thuvienphapluat:ZvQn9683p8NnPXFMdR1VX53HTK3Da1WqyXJpvtgMMASTRdDkyu87lFAL7aR5DiiN@188.245.52.121:6980/?directConnection=true',
 );
 
-exports.searchLaw = onRequest(async (req, res) => {
-  if (req.method === 'POST') {
-    // try {
-    //     const database = client.db("LawMachine");
-    //     const LawContent = database.collection("LawContent");
+// exports.searchLaw = onRequest(async (req, res) => {
+//   if (req.method === 'POST') {
+//     // try {
+//     //     const database = client.db("LawMachine");
+//     //     const LawContent = database.collection("LawContent");
 
-    //     LawContent.find({
-    //       $or: [
-    //         { _id: new RegExp(`${req.query.input}`, "i") },
-    //         { "info.lawDescription": new RegExp(`${req.query.input}`, "i") },
-    //         { "info.lawNameDisplay": new RegExp(`${req.query.input}`, "i") },
-    //       ],
-    //     })
-    //       .project({ info: 1 })
-    //       .sort({ "info.lawDaySign": -1 })
-    //       .toArray()
-    //       .then((o) => res.json(o));
-    //   } finally {
-    //   }
+//     //     LawContent.find({
+//     //       $or: [
+//     //         { _id: new RegExp(`${req.query.input}`, "i") },
+//     //         { "info.lawDescription": new RegExp(`${req.query.input}`, "i") },
+//     //         { "info.lawNameDisplay": new RegExp(`${req.query.input}`, "i") },
+//     //       ],
+//     //     })
+//     //       .project({ info: 1 })
+//     //       .sort({ "info.lawDaySign": -1 })
+//     //       .toArray()
+//     //       .then((o) => res.json(o));
+//     //   } finally {
+//     //   }
 
-    try {
-      const database = client.db('LawMachine');
-      const LawContent = database.collection('LawContent');
+//     try {
+//       const database = client.db('LawMachine');
+//       const LawContent = database.collection('LawSearchDescription');
 
-      LawContent.find({
-        $or: [
-          {_id: new RegExp(`${req.body.input}`, 'i')},
-          {'info.lawDescription': new RegExp(`${req.body.input.replace(/\s/img,'\\,?\\s\\,?').replace(/\\s/img,'\.')}`, 'i')},
-          {'info.lawNameDisplay': new RegExp(`${req.body.input.replace(/\s/img,'\\,?\\s\\,?').replace(/\\s/img,'\.')}`, 'i')},
-        ],
-      })
-        .project({info: 1})
-        .sort({'info.lawDaySign': -1})
-        .toArray()
-        .then(o => res.json(o));
-    } finally {
-    }
-  }
-});
+//       LawContent.find({
+//         $or: [
+//           {_id: new RegExp(`${req.body.input}`, 'i')},
+//           {'info.lawDescription': new RegExp(`${req.body.input.replace(/\s/img,'\\,?\\s\\,?').replace(/\\s/img,'\.')}`, 'i')},
+//           {'info.lawNameDisplay': new RegExp(`${req.body.input.replace(/\s/img,'\\,?\\s\\,?').replace(/\\s/img,'\.')}`, 'i')},
+//         ],
+//       })
+//         .project({info: 1})
+//         .sort({'info.lawDaySign': -1})
+//         .toArray()
+//         .then(o => res.json(o));
+//     } finally {
+//     }
+//   }
+// });
 
 exports.searchLawDescription = onRequest(async (req, res) => {
   if (req.method === 'POST') {
@@ -88,7 +88,7 @@ exports.searchLawDescription = onRequest(async (req, res) => {
 
     try {
       const database = client.db('LawMachine');
-      const LawContent = database.collection('LawDescription');
+      const LawContent = database.collection('LawSearchDescription');
 
       LawContent.find({
         $or: [
@@ -111,7 +111,7 @@ exports.countAllLaw = onRequest(async (req, res) => {
   if (req.method === 'POST') {
     try {
       const database = client.db('LawMachine');
-      const LawContent = database.collection('LawContent');
+      const LawContent = database.collection('LawCollection');
 
       const estimate = await LawContent.countDocuments();
       
@@ -136,7 +136,7 @@ exports.searchContent = onRequest(async (req, res) => {
 
     try {
       const database = client.db('LawMachine');
-      const LawSearch = database.collection('LawSearch');
+      const LawSearch = database.collection('LawSearchContent');
       LawSearch.find({fullText: new RegExp(`${req.body.input}`, 'i')})
         .project({info: 1})
         .sort({'info.lawDaySign': -1})
@@ -164,7 +164,7 @@ exports.callOneLaw = onRequest(async (req, res) => {
 
     try {
       const database = client.db('LawMachine');
-      const LawContent = database.collection('LawContent');
+      const LawContent = database.collection('LawCollection');
       // Query for a movie that has the title 'Back to the Future'
 
       a = await LawContent.findOne({_id: req.body.screen});
@@ -175,28 +175,12 @@ exports.callOneLaw = onRequest(async (req, res) => {
   }
 });
 
-// exports.stackscreen = onRequest(async (req, res) => {
-
-//   try {
-//     const database = client.db("LawMachine");
-//     const LawSearch = database.collection("LawSearch");
-
-//     LawSearch.find({})
-//       .project({ info: 1 })
-//       .toArray()
-//       .then((o) => res.json(o));
-//   } finally {
-//     // Ensures that the client will close when you finish/error
-//     // await client.close();
-//   }
-
-// });
 
 exports.getlastedlaws = onRequest(async (req, res) => {
   if (req.method === 'POST') {
     try {
       const database = client.db('LawMachine');
-      const LawContent = database.collection('LawContent');
+      const LawContent = database.collection('LawCollection');
 
       LawContent.find()
         .limit(10)
